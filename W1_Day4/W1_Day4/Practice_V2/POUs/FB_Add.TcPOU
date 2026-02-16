@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Add" Id="{41f68d66-c189-4ebc-98ce-b4a42573dec1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Add
+VAR
+    refValue : REFERENCE TO INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+]]></ST>
+    </Implementation>
+    <Method Name="EXECUTE" Id="{81726d5a-c0f0-40ec-b8d5-2d185edd3553}">
+      <Declaration><![CDATA[METHOD EXECUTE 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF refValue <> 0 THEN
+    refValue := refValue + 10;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetReference" Id="{464aa2f3-dfbd-4ac0-bc95-24018e26db2d}">
+      <Declaration><![CDATA[METHOD SetReference 
+VAR_INPUT
+    iRef : REFERENCE TO INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[refValue REF= iRef;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Add">
+      <LineId Id="14" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Add.EXECUTE">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Add.SetReference">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.71">
-	<Project ProjectGUID="{AF8CD546-E030-4BE8-B926-3F8CE02B6816}" Target64Bit="true" ShowHideConfigurations="#x3c7">
+	<Project ProjectGUID="{D0E0535E-77CD-4503-AD25-0DDA21CE2CDE}" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
 			<Settings MaxCpus="18" NonWinCpus="1">
 				<Cpu CpuId="17"/>
@@ -15,8 +15,8 @@
 			</Tasks>
 		</System>
 		<Plc>
-			<Project GUID="{8829DD1D-B7F6-467A-BEE5-37115087FC11}" Name="Practice_V1" PrjFilePath="Practice_V1\Practice_V1.plcproj" TmcFilePath="Practice_V1\Practice_V1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{3E155AC6-4137-ECD2-4083-BAAD106D464F}">
+			<Project GUID="{2EEA2223-044B-44AD-BA99-EEC45210D73A}" Name="Practice_V1" PrjFilePath="Practice_V1\Practice_V1.plcproj" TmcFilePath="Practice_V1\Practice_V1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{500ECB84-FCD3-540E-3559-CAFFDE76C151}">
 					<Name>Practice_V1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -35,16 +35,24 @@
 					</TaskPouOids>
 				</Instance>
 			</Project>
-			<Project GUID="{38459D44-F06E-4EAE-AC20-1A557C18236E}" Name="Practice_V2" PrjFilePath="Practice_V2\Practice_V2.plcproj" TmcFilePath="Practice_V2\Practice_V2.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2">
+			<Project GUID="{7D576B3D-7B98-4EC8-8A14-A4BC92E74211}" Name="Practice_V2" PrjFilePath="Practice_V2\Practice_V2.plcproj" TmcFilePath="Practice_V2\Practice_V2.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{157A7EAF-09DA-949D-72FD-2A1565736208}">
 					<Name>Practice_V2 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
 						<Context>
-							<Id>1</Id>
-							<Name>Default</Name>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010040</OTCID>
+							</ManualConfig>
+							<Priority>21</Priority>
+							<CycleTime>10000000</CycleTime>
 						</Context>
 					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="21" OTCID="#x08502041"/>
+					</TaskPouOids>
 				</Instance>
 			</Project>
 		</Plc>

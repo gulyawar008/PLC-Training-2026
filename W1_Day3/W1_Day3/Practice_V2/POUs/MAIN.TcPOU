@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{bf0107fb-dec4-4092-aedb-3c9e322b9917}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	stSensor : ST_SensorData;
+	bInitialized : BOOL := FALSE;
+
+  	fFahrenheit : REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*
+stSensor.rTemperature := 25.5;
+stSensor.rPressure := 1.2;
+
+IF stSensor.rTemperature > 50 THEN
+    stSensor.bAlarm := TRUE;
+END_IF 
+*)
+
+
+// Initialization (Only runs on the very first scan)
+IF NOT bInitialized THEN
+    stSensor.rTemperature := 25.5;
+    stSensor.rPressure := 1.2;
+    bInitialized := TRUE;
+END_IF
+
+
+IF NOT stSensor.bAlarm THEN
+    IF stSensor.rTemperature > 50.0 THEN
+        stSensor.bAlarm := TRUE; // The "Stop" signal
+    ELSE
+        // Increment will take place
+        stSensor.rTemperature := stSensor.rTemperature + 1.0;
+    END_IF
+END_IF
+
+
+
+
+// Celsius to Fahrenheit Program
+fFahrenheit := F_CelsiustoFahrenheit(fCelsius := 5.0);
+
+
+// ]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="6" Count="24" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="35" Count="3" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="44" Count="1" />
+      <LineId Id="43" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
