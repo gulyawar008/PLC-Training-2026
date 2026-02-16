@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FindMinMax" Id="{d8c3f14f-a8ff-4548-a67d-a8a902cf1ffe}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FindMinMax 
+VAR_INPUT
+	aWeight : ARRAY[1..20] OF REAL;
+END_VAR
+VAR_IN_OUT
+    minWeight : REAL;
+	maxWeight : REAL;
+END_VAR
+VAR
+	i : INT;
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[minWeight := aWeight[1];
+maxWeight := aWeight[1];
+
+     FOR i:=1 TO 20 DO
+		 IF aWeight[i]>maxWeight THEN
+			 maxWeight := aWeight[i];
+		 END_IF
+		 
+		 IF aWeight[i]<minWeight THEN
+			 minWeight := aWeight[i];
+		 END_IF
+		 
+	 END_FOR
+]]></ST>
+    </Implementation>
+    <LineIds Name="FindMinMax">
+      <LineId Id="20" Count="12" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

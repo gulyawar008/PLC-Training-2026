@@ -1,13 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
-  <POU Name="MAIN" Id="{36f30ec7-66ff-4db0-86bf-446a7bad072e}">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{36f30ec7-66ff-4db0-86bf-446a7bad072e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-END_VAR
-]]>
-    </Declaration>
+	stproductAnalysis : ST_ProductStats;
+	aProductWeight : ARRAY[1..20] OF REAL := [ 82.11, 15, 34.22, 54.33, 87.12, 45.22, 33.11, 25.39, 65.77, 78.68, 23.11, 97.34, 37.76, 22.90, 65.45, 87.22, 26.22, 56.90, 79.34, 94.12]; 
+	
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[stProductAnalysis := AnalyzeBatch(aProductWeight);
+
+
+]]></ST>
     </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="14" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="CalculateAverage" Id="{dcc3e047-7d3e-4918-9fd2-626449e2c964}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CalculateAverage : REAL
+VAR_INPUT
+	 arrMarks : ARRAY[1..20] OF REAL;
+END_VAR
+VAR
+	 i : INT;
+    sum : REAL := 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i := 1 TO 10 DO
+    sum := sum + arrMarks[i];
+END_FOR
+
+CalculateAverage := sum / 20;
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="CalculateAverage">
+      <LineId Id="20" Count="7" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
