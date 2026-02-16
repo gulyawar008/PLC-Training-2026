@@ -11,26 +11,43 @@ VAR_IN_OUT
 END_VAR
 VAR
 	i : INT;
-	
+	bFirst   : BOOL := TRUE;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[minWeight := aWeight[1];
-maxWeight := aWeight[1];
+      <ST><![CDATA[FOR i := 1 TO 20 DO
 
-     FOR i:=1 TO 20 DO
-		 IF aWeight[i]>maxWeight THEN
-			 maxWeight := aWeight[i];
-		 END_IF
-		 
-		 IF aWeight[i]<minWeight THEN
-			 minWeight := aWeight[i];
-		 END_IF
-		 
-	 END_FOR
-]]></ST>
+    IF (aWeight[i] >= 50.0) AND (aWeight[i] <= 500.0) THEN
+        
+        IF bFirst THEN
+            minWeight := aWeight[i];
+            maxWeight := aWeight[i];
+            bFirst := FALSE;
+        ELSE
+            
+            IF aWeight[i] > maxWeight THEN
+                maxWeight := aWeight[i];
+            END_IF
+            
+            IF aWeight[i] < minWeight THEN
+                minWeight := aWeight[i];
+            END_IF
+            
+        END_IF
+        
+    END_IF
+
+END_FOR
+
+
+IF bFirst THEN
+    minWeight := 0.0;
+    maxWeight := 0.0;
+END_IF]]></ST>
     </Implementation>
     <LineIds Name="FindMinMax">
-      <LineId Id="20" Count="12" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="125" Count="2" />
+      <LineId Id="129" Count="23" />
       <LineId Id="7" Count="0" />
     </LineIds>
   </POU>

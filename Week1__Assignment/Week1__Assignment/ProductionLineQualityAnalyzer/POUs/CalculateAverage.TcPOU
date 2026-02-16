@@ -3,26 +3,39 @@
   <POU Name="CalculateAverage" Id="{dcc3e047-7d3e-4918-9fd2-626449e2c964}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION CalculateAverage : REAL
 VAR_INPUT
-	 arrMarks : ARRAY[1..20] OF REAL;
+	 aWeight : ARRAY[1..20] OF REAL;
 END_VAR
 VAR
 	 i : INT;
     sum : REAL := 0;
+	   validCount : INT := 0;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i := 1 TO 10 DO
-    sum := sum + arrMarks[i];
+	 IF (aWeight[i] >=50.0) OR (aWeight[i] <= 500.0) THEN
+         sum := sum + aWeight[i];
+		 validCount := validCount + 1;
+    END_IF
+   
 END_FOR
 
-CalculateAverage := sum / 20;
 
-
-
-]]></ST>
+IF validCount > 0 THEN
+    CalculateAverage := sum / validCount;
+ELSE
+    CalculateAverage := 0.0;   
+END_IF]]></ST>
     </Implementation>
     <LineIds Name="CalculateAverage">
-      <LineId Id="20" Count="7" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="41" Count="3" />
       <LineId Id="7" Count="0" />
     </LineIds>
   </POU>

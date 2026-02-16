@@ -19,7 +19,7 @@ result.minWeight     :=   minWeight;
 result.maxWeight      :=   maxWeight;
 result.defectiveCount  := CountDefects(aWeight);
 
-AnalyzeBatch := result;
+AnalyzeBatch := result; 
 
 
 ]]></ST>

@@ -13,7 +13,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{9C2C4AB2-1EAD-4F19-B7DD-0446A521E1B3}" Name="ProductionLineQualityAnalyzer" PrjFilePath="ProductionLineQualityAnalyzer\ProductionLineQualityAnalyzer.plcproj" TmcFilePath="ProductionLineQualityAnalyzer\ProductionLineQualityAnalyzer.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{987400F6-08AF-CAA9-3DA9-410BE238A51A}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ProductionLineQualityAnalyzer\ProductionLineQualityAnalyzer.tmc" TmcHash="{D118E738-C7A0-FECE-7FD3-4A274C245122}">
 					<Name>ProductionLineQualityAnalyzer Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>

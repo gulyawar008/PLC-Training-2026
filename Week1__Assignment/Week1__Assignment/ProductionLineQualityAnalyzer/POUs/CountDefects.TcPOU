@@ -3,7 +3,7 @@
   <POU Name="CountDefects" Id="{582f5797-ee49-4933-9886-7261203357d6}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION CountDefects : INT
 VAR_INPUT
-	aWeight1 : ARRAY[1..20] OF REAL;
+	aWeight : ARRAY[1..20] OF REAL;
 END_VAR
 VAR_OUTPUT
 	count : INT := 0;
@@ -14,7 +14,7 @@ VAR
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i := 1 TO 20 DO
-    IF aWeight1[i] <50 OR aWeight1[i] > 500 THEN
+    IF (aWeight[i] <50) OR (aWeight[i] > 500) THEN
         count := count + 1;
     END_IF
 END_FOR
