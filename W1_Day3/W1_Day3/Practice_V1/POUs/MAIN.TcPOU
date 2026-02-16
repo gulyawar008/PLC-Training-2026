@@ -3,26 +3,72 @@
   <POU Name="MAIN" Id="{3ab7bafb-5171-4408-8641-3349c24690aa}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	iInt    : INT := 10;
+    iDint   : DINT := 100000;
+    uiInt   : UINT := 50;
+    result  : DINT;
+	
+	 rValue  : REAL := 10.5;
+    lrValue : LREAL := 20.123456;
+    total   : LREAL;
+	
+	counter: INT;
+	Var1: INT:=1;
+	i: INT;
+	sum: INT;
+	bRun: BOOL:=TRUE;
+
+
 	iNumber1  : INT := 5;
     iResult  : INT;
 	
 	 iNumber2 : INT := 5;
     fbAdd   : FB_Add;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//* Pass by value Addn Calculation
+      <ST><![CDATA[
+// Datatypes
+result := iInt + iDint + uiInt;
+
+ total :=  lrValue +  rValue;
+
+(*FOR counter:=1 TO 5 BY 1 DO
+    Var1:=Var1*2; 
+END_FOR; 
+*)
+
+IF bRun THEN
+    FOR i := 1 TO 5 DO
+        sum := sum + i;
+    END_FOR
+    bRun := FALSE;
+END_IF
+ 
+ 
+
+//* Pass by value Addn Calculation
 iResult := F_Add(iNumber1);
 
 
 // *Pass by reference Addn Calculation
-fbAdd(iValue := iNumber2);]]></ST>
+fbAdd(iValue := iNumber2);
+]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="14" Count="2" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="37" Count="2" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="95" Count="6" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="46" Count="6" />
+      <LineId Id="36" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

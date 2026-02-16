@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="F_MaxMarks" Id="{434cf2c8-008f-45a4-960e-1be8bbde6103}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_MaxMarks : REAL
+VAR_INPUT
+	arr : ARRAY[1..10] OF REAL;
+END_VAR
+VAR_IN_OUT
+    minMarks : REAL;
+	maxMarks : REAL;
+END_VAR
+VAR
+	i : INT;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[minMarks := arr[1];
+maxMarks := arr[1];
+
+     FOR i:=2 TO 10 DO
+		 IF arr[i] > maxMarks THEN
+			 maxMarks := arr[i];
+		 END_IF
+		 
+		 IF arr[i] < minMarks THEN
+			  minMarks := arr[i];
+		 END_IF
+		 
+	 END_FOR
+	 
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_MaxMarks">
+      <LineId Id="16" Count="13" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

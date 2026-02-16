@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{9020c1ef-0680-44ac-954e-ac272596eada}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+		aMarks : ARRAY[1..10] OF REAL  := [82.11, 15, 34.22, 54.33, 13.12, 45.22, 33.11, 25.39, 65.77, 78.68];
+		minMarks : REAL ;
+		maxMarks : REAL ;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_MaxMarks(aMarks, minMarks, maxMarks );]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

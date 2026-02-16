@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{291abc94-8b6e-4ed8-873a-fc6beddf0102}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	//stInstance : ST_Event;
+	bBoolean : BOOL := FALSE;
+	
+	eEventType1 : E_EventType := E_EventType.Alarm;
+	eEventSeverity1 : TcEventSeverity := TcEventSeverity.Info;
+	nEventIdentity1 : UDINT := 34;
+	sEventText1 : STRING(255) := 'This is a info Event';
+	
+	fbEventLogger : FB_EventLogger;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*IF NOT bBoolean THEN
+	F_UpdateEventTimeStamp(stEvent := stInstance );
+	bBoolean := TRUE;
+	
+END_IF  *)
+
+IF NOT bBoolean THEN
+	fbEventLogger.AddEvent(eEventType1, eEventSeverity1, nEventIdentity1, sEventText1);
+		bBoolean := TRUE;
+END_IF
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="30" Count="3" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
