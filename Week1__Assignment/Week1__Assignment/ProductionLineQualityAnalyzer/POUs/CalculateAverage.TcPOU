@@ -12,8 +12,8 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR i := 1 TO 10 DO
-	 IF (aWeight[i] >=50.0) OR (aWeight[i] <= 500.0) THEN
+      <ST><![CDATA[FOR i := 1 TO 20 DO
+	 IF (aWeight[i] >=50.0) AND (aWeight[i] <= 500.0) THEN
          sum := sum + aWeight[i];
 		 validCount := validCount + 1;
     END_IF
