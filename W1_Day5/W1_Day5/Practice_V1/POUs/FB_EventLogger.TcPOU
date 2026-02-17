@@ -36,7 +36,7 @@ END_VAR
 	F_UpdateEventTimeStamp(stEvent := aEventBuffer[CurrentEventBufferIndex]);
 	AddEvent := TRUE;
 ELSE
-    AddEvent := TRUE;
+    AddEvent := FALSE;
 END_IF
 ]]></ST>
       </Implementation>
