@@ -4,16 +4,39 @@
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	stproductAnalysis : ST_ProductStats;
-	aProductWeight : ARRAY[1..20] OF REAL := [ 82.11, 500, 34.22, 54.33, 487.12, 454.22, 533.11, 25.39, 65.77, 778.68, 56.11, 97.34, 412.76, 222.90, 501.45, 387.22, 26.22, 596.90, 79.34, 94.12]; 
+	aProductWeight : ARRAY[1..20] OF REAL ;
+	fbRand : DRAND;
+	i: INT;
+	rTemp    : REAL;
 	
+	bStart : BOOL := TRUE;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[stProductAnalysis := AnalyzeBatch(aProductWeight);
+      <ST><![CDATA[
+IF bStart THEN
+  FOR i := 1 TO 20 DO 
+        fbRand(); 
+	    rTemp := LREAL_TO_REAL(fbRand.Num);
+        aProductWeight[i] := 10.0 +  rTemp * 550.0;
+   END_FOR
+
+   bStart:=FALSE;
+END_IF
+
+stProductAnalysis := AnalyzeBatch(aProductWeight);
 
 
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
+      <LineId Id="43" Count="1" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="25" Count="0" />
       <LineId Id="14" Count="2" />
       <LineId Id="2" Count="0" />
     </LineIds>
