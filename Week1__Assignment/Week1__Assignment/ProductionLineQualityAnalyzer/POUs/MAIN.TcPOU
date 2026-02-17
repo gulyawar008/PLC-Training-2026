@@ -12,8 +12,7 @@ VAR
 	bStart : BOOL := TRUE;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-IF bStart THEN
+      <ST><![CDATA[IF bStart THEN
   FOR i := 1 TO 20 DO 
         fbRand(); 
 	    rTemp := LREAL_TO_REAL(fbRand.Num);
@@ -24,12 +23,10 @@ IF bStart THEN
 END_IF
 
 stProductAnalysis := AnalyzeBatch(aProductWeight);
-
-
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="43" Count="1" />
+      <LineId Id="44" Count="0" />
       <LineId Id="34" Count="1" />
       <LineId Id="38" Count="0" />
       <LineId Id="36" Count="1" />
@@ -37,7 +34,7 @@ stProductAnalysis := AnalyzeBatch(aProductWeight);
       <LineId Id="47" Count="0" />
       <LineId Id="42" Count="0" />
       <LineId Id="25" Count="0" />
-      <LineId Id="14" Count="2" />
+      <LineId Id="14" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

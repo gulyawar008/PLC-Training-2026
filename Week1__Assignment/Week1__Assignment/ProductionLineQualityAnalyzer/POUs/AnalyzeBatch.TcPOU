@@ -20,12 +20,10 @@ result.maxWeight      :=   maxWeight;
 result.defectiveCount  := CountDefects(aWeight);
 
 AnalyzeBatch := result; 
-
-
 ]]></ST>
     </Implementation>
     <LineIds Name="AnalyzeBatch">
-      <LineId Id="21" Count="9" />
+      <LineId Id="21" Count="7" />
       <LineId Id="7" Count="0" />
     </LineIds>
   </POU>

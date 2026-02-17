@@ -17,7 +17,6 @@ END_VAR
          sum := sum + aWeight[i];
 		 validCount := validCount + 1;
     END_IF
-   
 END_FOR
 
 
@@ -32,7 +31,7 @@ END_IF]]></ST>
       <LineId Id="37" Count="1" />
       <LineId Id="40" Count="0" />
       <LineId Id="36" Count="0" />
-      <LineId Id="21" Count="1" />
+      <LineId Id="22" Count="0" />
       <LineId Id="46" Count="0" />
       <LineId Id="45" Count="0" />
       <LineId Id="41" Count="3" />
