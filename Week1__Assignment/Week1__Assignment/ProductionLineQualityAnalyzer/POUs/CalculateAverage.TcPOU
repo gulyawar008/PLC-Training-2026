@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="CalculateAverage" Id="{dcc3e047-7d3e-4918-9fd2-626449e2c964}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CalculateAverage : REAL
+VAR_INPUT
+	 aWeight : ARRAY[1..20] OF REAL;
+END_VAR
+VAR
+	 i : INT;
+    rSum : REAL := 0;
+	nValidCount : INT := 0;
+	iValidCount: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i := 1 TO 20 DO
+	 IF (aWeight[i] >=50.0) AND (aWeight[i] <= 500.0) THEN
+         rSum := rSum + aWeight[i];
+		 iValidCount := iValidCount + 1;
+    END_IF
+END_FOR
+
+
+IF iValidCount > 0 THEN
+    CalculateAverage := rSum / iValidCount;
+ELSE
+    CalculateAverage := 0.0;   
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="CalculateAverage">
+      <LineId Id="20" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="41" Count="3" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
