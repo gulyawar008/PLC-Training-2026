@@ -10,20 +10,20 @@ VAR
 	rTemp    : REAL;
 	
 	bStart : BOOL := TRUE;
-END_VAR]]></Declaration>
+END_VAR
+]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bStart THEN
   FOR i := 1 TO 20 DO 
         fbRand(); 
 	    rTemp := LREAL_TO_REAL(fbRand.Num);
-        aProductWeight[i] := 10.0 +  rTemp * 550.0;
+        aProductWeight[i] := WeightConstants.rMinWeightConstant +  rTemp * WeightConstants.rMaxWeightConstant;
    END_FOR
 
    bStart:=FALSE;
 END_IF
 
-stProductAnalysis := AnalyzeBatch(aProductWeight);
-]]></ST>
+stProductAnalysis := AnalyzeBatch(aProductWeight);]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="44" Count="0" />
@@ -35,7 +35,6 @@ stProductAnalysis := AnalyzeBatch(aProductWeight);
       <LineId Id="42" Count="0" />
       <LineId Id="25" Count="0" />
       <LineId Id="14" Count="0" />
-      <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

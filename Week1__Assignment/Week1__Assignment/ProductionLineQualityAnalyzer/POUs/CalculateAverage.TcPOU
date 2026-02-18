@@ -7,21 +7,22 @@ VAR_INPUT
 END_VAR
 VAR
 	 i : INT;
-    sum : REAL := 0;
-	   validCount : INT := 0;
+    rSum : REAL := 0;
+	nValidCount : INT := 0;
+	iValidCount: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i := 1 TO 20 DO
 	 IF (aWeight[i] >=50.0) AND (aWeight[i] <= 500.0) THEN
-         sum := sum + aWeight[i];
-		 validCount := validCount + 1;
+         rSum := rSum + aWeight[i];
+		 iValidCount := iValidCount + 1;
     END_IF
 END_FOR
 
 
-IF validCount > 0 THEN
-    CalculateAverage := sum / validCount;
+IF iValidCount > 0 THEN
+    CalculateAverage := rSum / iValidCount;
 ELSE
     CalculateAverage := 0.0;   
 END_IF]]></ST>

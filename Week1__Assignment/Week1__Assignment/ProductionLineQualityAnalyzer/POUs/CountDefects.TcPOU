@@ -6,7 +6,7 @@ VAR_INPUT
 	aWeight : ARRAY[1..20] OF REAL;
 END_VAR
 VAR_OUTPUT
-	count : INT := 0;
+	iCount : INT := 0;
 END_VAR
 
 VAR
@@ -15,11 +15,11 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i := 1 TO 20 DO
     IF (aWeight[i] <50) OR (aWeight[i] > 500) THEN
-        count := count + 1;
+        iCount := iCount + 1;
     END_IF
 END_FOR
 
-CountDefects := count;
+CountDefects := iCount;
 
 
 ]]></ST>
