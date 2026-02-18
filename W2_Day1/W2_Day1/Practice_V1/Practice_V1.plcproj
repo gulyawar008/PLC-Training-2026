@@ -21,10 +21,13 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_Variables.TcPOU">
+    <Compile Include="POUs\FB_Motor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\F_ArraySum.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\I_Motor.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">

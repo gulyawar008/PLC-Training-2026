@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Motor" Id="{87eafeea-6e11-4a4a-b0ac-af4c09b9fc7f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Motor IMPLEMENTS I_Motor
+VAR
+    bRunning : BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Start" Id="{70aafd24-629a-40d6-af69-fcf362b29eff}">
+      <Declaration><![CDATA[METHOD Start : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bRunning := TRUE;
+Start := bRunning;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{59c0975e-97ed-4f07-a71b-150155b11fa3}">
+      <Declaration><![CDATA[METHOD Stop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bRunning := FALSE;
+Stop := bRunning;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Motor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.Start">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.Stop">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
