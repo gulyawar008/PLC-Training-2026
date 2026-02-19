@@ -23,7 +23,7 @@ END_IF  *)
 
 IF NOT bBoolean THEN
 	fbEventLogger.AddEvent(eEventType1, eEventSeverity1, nEventIdentity1, sEventText1);
-		bBoolean := TRUE;
+    bBoolean := TRUE;
 END_IF
 
 

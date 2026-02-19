@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="Motor" Id="{4d96e211-9f67-4647-98db-b86a39601f8d}">
+    <Declaration><![CDATA[INTERFACE Motor
+]]></Declaration>
+    <Method Name="SetSpeed" Id="{2c8dec59-44e2-4517-9e1f-08e61ec38aa0}">
+      <Declaration><![CDATA[METHOD SetSpeed : BOOL
+VAR_INPUT
+	 newFreq : REAL;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

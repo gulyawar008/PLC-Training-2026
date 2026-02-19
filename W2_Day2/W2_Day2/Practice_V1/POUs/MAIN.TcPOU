@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{9150e828-df83-4e5c-9718-e7145aa7cf8e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbVfd : VfdMotor;
+    isPowerOn : BOOL:= TRUE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+ 
+ IF isPowerOn THEN	 
+    fbVfd.Start();
+    fbVfd.SetSpeed(newFreq := 50.0);   //  SetSpeed method from the child
+ELSE
+	fbVfd.Stop();
+	fbVfd.SetSpeed(newFreq := 0.0);
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="9" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="20" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

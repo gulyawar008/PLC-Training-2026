@@ -3,19 +3,22 @@
   <POU Name="MAIN" Id="{51cccbd1-5c11-4bef-9fb9-f172d98c4aed}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	j: INT;
-	arr : ARRAY[1..2] OF INT ;
 	
-	 arrReal : ARRAY[1..3] OF REAL := [1.2, 2.5, 3.7];
-    arrInt  : ARRAY[1..3] OF INT;
-     i       : INT;
+	aSample : ARRAY[1..2] OF INT ;
+	
+	 aReal : ARRAY[1..3] OF REAL := [1.2, 2.5, 3.7];
+    aInt  : ARRAY[1..3] OF INT;
+     n       : INT;
 	 
-	 x : INT := 23;
-	 y : INT := 27;
-	 ans1 : INT;
-	 ans2: INT;
+	 aMarks : ARRAY[0..6] OF INT := [3, 8, 9, 7, 5 , 9, 6];
 	 
-	     motor : FB_Motor;
+	 nX : INT := 23;
+	 nY : INT := 27;
+	 nAns1 : INT;
+	 nAns2: INT;
+	 nAns3: INT;
+	 
+	fbmotor : FB_Motor;
     iMotor : I_Motor;
 
 	bTriggerStart : BOOL;      
@@ -28,19 +31,21 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[(*
-REPEAT j:=j+2; 
+REPEAT n:=n+2; 
 
-UNTIL j= 101 OR ARR[j] = 70 
+UNTIL j= 101 OR ARR[n] = 70 
 END_REPEAT; *)
 
 
-FOR i := 1 TO 3 DO
-    arrInt[i] := REAL_TO_INT(arrReal[i]);
+FOR n := 1 TO 3 DO
+    aInt[n] := REAL_TO_INT(aReal[n]);
 END_FOR
 
-ans1 := MAXOFTWO(x, y);
+ nAns1 := MAXOFTWO(nX, nY);
  
-ans2 := F_ArraySum(arrInt);
+ nAns2 := F_ArraySum(aInt);
+
+ nAns3 := F_ArraySum2(aMarks);
 
 (*IF  bIsAssigned THEN
    iMotor := motor;
@@ -49,7 +54,7 @@ ans2 := F_ArraySum(arrInt);
    bIsAssigned := FALSE;
 END_IF  *)
 
-       iMotor := motor;
+     iMotor := fbmotor;
 IF iMotor <> 0 THEN
     bIsAssigned := TRUE;
        
@@ -82,6 +87,8 @@ END_IF
       <LineId Id="31" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="34" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="248" Count="0" />
       <LineId Id="90" Count="0" />
       <LineId Id="184" Count="5" />
       <LineId Id="191" Count="4" />
