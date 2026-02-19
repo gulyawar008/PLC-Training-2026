@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="Conveyor" Id="{bd1496dd-35e8-47b4-a3a5-4c5102fbec2c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Conveyor
+VAR_INPUT
+    // We Inject the dependency via an Interface reference
+    itfMotor : GpMotor; 
+END_VAR
+VAR
+    isStarted : BOOL;
+END_VAR
+
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF isStarted THEN
+    itfMotor.Start(); // The conveyor doesn't know IF it's a Servo or Digital!
+ELSE
+    itfMotor.Stop();
+END_IF 
+
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Conveyor">
+      <LineId Id="50" Count="0" />
+      <LineId Id="52" Count="3" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

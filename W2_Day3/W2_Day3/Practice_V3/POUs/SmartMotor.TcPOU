@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="SmartMotor" Id="{87310dc6-ef4d-44c3-a7ed-d147a629e919}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SmartMotor 
+
+VAR
+	errorID: INT ;
+    isError: BOOL ;
+    isReady : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ActReset();
+
+ IF isError THEN
+	 isReady := TRUE;
+	 errorID := 0;
+ END_IF
+ 
+]]></ST>
+    </Implementation>
+    <Action Name="ActReset" Id="{5bc79f0a-a8d1-484d-b22f-10f825f9de79}">
+      <Implementation>
+        <ST><![CDATA[// Action: Act_Reset (Under FB_SmartMotor)
+	errorID:= 0;
+    isError:= FALSE ;
+    isReady := TRUE;]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="SmartMotor">
+      <LineId Id="22" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="23" Count="1" />
+    </LineIds>
+    <LineIds Name="SmartMotor.ActReset">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

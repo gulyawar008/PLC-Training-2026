@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="ServoMotor" Id="{3f3ec948-29f4-4471-ae7f-d0c24c896fb2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ServoMotor IMPLEMENTS GpMotor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	driveControl1 : DriveControl; // Complex internal logic
+		isRunning : BOOL:= FALSE ;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Start" Id="{5f1b2c96-eb69-475c-9549-f11631968d54}">
+      <Declaration><![CDATA[
+METHOD Start : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[driveControl1.Enable();
+driveControl1.MoveVelocity(3000);
+isRunning := TRUE;
+ Start := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{bc7a5dc7-195b-4770-b908-e0c8473a5c21}">
+      <Declaration><![CDATA[METHOD Stop : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[DriveCOntrol1.QuickStop();
+isRunning := FALSE;
+Stop := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="ServoMotor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="ServoMotor.Start">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="ServoMotor.Stop">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

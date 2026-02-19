@@ -12,7 +12,6 @@ END_VAR
     <Method Name="Start" Id="{89d4de6e-ea8a-45cb-b3e7-04fb59bbb775}">
       <Declaration><![CDATA[METHOD Start : BOOL
 VAR_INPUT
-	
 END_VAR
 ]]></Declaration>
       <Implementation>

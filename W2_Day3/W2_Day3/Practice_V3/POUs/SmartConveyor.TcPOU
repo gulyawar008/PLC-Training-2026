@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="SmartConveyor" Id="{4c4ecd3c-9f94-47de-860f-afa77e1b21bc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SmartConveyor
+VAR
+    isEnable : BOOL;
+    targetVelocity : REAL;
+    actualSpeed : REAL;
+    status : STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+Act_UpdateStatus(); // Call the Action every cycle
+
+actualSpeed :=110;
+targetVelocity:=150;
+
+
+IF  isEnable  THEN
+    // hardware call here: Drive.Move(_rTargetVelocity);
+    actualSpeed := targetVelocity; // Simplified simulation
+END_IF]]></ST>
+    </Implementation>
+    <Action Name="Act_UpdateStatus" Id="{e6853811-ff2e-465a-96ff-f919aa803d16}">
+      <Implementation>
+        <ST><![CDATA[IF isEnable THEN
+	
+    status := 'Running';
+ELSE
+    status := 'Stopped';
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Property Name="PropSpeed" Id="{154ae2c6-e630-4d4a-bf0f-b2a5afbaa900}">
+      <Declaration><![CDATA[PROPERTY PropSpeed : REAL]]></Declaration>
+      <Get Name="Get" Id="{1dedde95-ffaa-4fcb-8a76-aa853b03c171}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[PropSpeed := targetVelocity;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9b36b862-95f7-4d11-8caf-cabf5d45de65}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[// Inside the SET accessor:
+    IF actualSpeed > 100.0 THEN
+        targetVelocity := 100.0; // Safety cap
+    ELSE
+        targetVelocity := actualSpeed;
+    END_IF]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Transition Name="TargetReached" Id="{46c2ea46-318a-421e-a063-06fe4f28492c}">
+      <Implementation>
+        <ST><![CDATA[TargetReached := (ABS(actualSpeed - targetVelocity) < 0.5);]]></ST>
+      </Implementation>
+    </Transition>
+    <LineIds Name="SmartConveyor">
+      <LineId Id="17" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="33" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="SmartConveyor.Act_UpdateStatus">
+      <LineId Id="2" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="3" Count="2" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="SmartConveyor.PropSpeed.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="SmartConveyor.PropSpeed.Set">
+      <LineId Id="5" Count="4" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="SmartConveyor.TargetReached">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

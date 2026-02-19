@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="GpMotor" Id="{ff8d6bf2-a87f-4325-9e3d-a1de3cc13fa5}">
+    <Declaration><![CDATA[INTERFACE GpMotor
+]]></Declaration>
+    <Method Name="Start" Id="{93aa7bf5-a726-4e1a-a7e8-bc8b109babab}">
+      <Declaration><![CDATA[METHOD Start : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Stop" Id="{4c84ac34-4de8-4fc5-b5e2-902ab3525fb3}">
+      <Declaration><![CDATA[METHOD Stop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

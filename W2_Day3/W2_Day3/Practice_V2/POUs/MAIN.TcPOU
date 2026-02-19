@@ -1,14 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
-  <POU Name="MAIN" Id="{8d263d32-7edc-4f43-9fe5-57a298aa929f}" SpecialFunc="None">
+  <POU Name="MAIN" Id="{70310790-146b-4af4-924d-b054ad43cb50}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	myAccount : Account;
-    isSuccess  : BOOL
+   //  MyServo    : ServoMotor;
+	 MyDigitalMotor: DigitalMotor;
+    
+	
+	 MyConveyor : Conveyor(itfMotor := MyDigitalMotor);
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[isSuccess := myAccount.Deposit(lrAmount := 150.50);]]></ST>
+      <ST><![CDATA[MyConveyor();]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="2" Count="0" />

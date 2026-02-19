@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="DigitalMotor" Id="{1fd197b7-bfaf-4b38-aa69-a9cc063bbdd4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DigitalMotor IMPLEMENTS GpMotor
+VAR
+	isRunning : BOOL:= FALSE ;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Start" Id="{591ec9f3-5159-433d-9d71-b699dc48e37d}">
+      <Declaration><![CDATA[
+METHOD Start : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[isRunning := TRUE;
+Start := TRUE;
+	]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{1f44e524-d2d2-43ba-b9f8-0513dc410cc5}">
+      <Declaration><![CDATA[METHOD Stop : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[isRunning := FALSE;
+    Stop := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="DigitalMotor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="DigitalMotor.Start">
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DigitalMotor.Stop">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

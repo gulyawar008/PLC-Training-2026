@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="DriveControl" Id="{8e21d231-1779-4792-ad64-990034fa470d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DriveControl
+VAR
+    isHardwareEnabled : BOOL;
+    targetVelocity  : REAL;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Enable" Id="{3e2778b0-851d-4739-8690-9c412d5b2175}">
+      <Declaration><![CDATA[METHOD Enable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[isHardwareEnabled := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveVelocity" Id="{56164e5b-7099-494c-8b8c-899f46d97fe6}">
+      <Declaration><![CDATA[METHOD MoveVelocity : BOOL
+VAR_INPUT
+    inVelocity : REAL;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[targetVelocity:= inVelocity;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="QuickStop" Id="{0f40a846-a15f-4b05-a355-8a65eb0f8462}">
+      <Declaration><![CDATA[METHOD QuickStop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[targetVelocity := 0;
+isHardwareEnabled := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="DriveControl">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="DriveControl.Enable">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="DriveControl.MoveVelocity">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="DriveControl.QuickStop">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

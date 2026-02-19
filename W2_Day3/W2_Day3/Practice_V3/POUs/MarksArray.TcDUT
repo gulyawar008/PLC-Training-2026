@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="MarksArray" Id="{f7ce88c7-3e8b-474e-8792-d093185e6291}">
+    <Declaration><![CDATA[TYPE MarksArray : ARRAY[4..5, 1..5] OF INT; END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

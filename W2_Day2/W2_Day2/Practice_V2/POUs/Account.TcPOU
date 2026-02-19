@@ -11,8 +11,28 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Method Name="Deposit" Id="{f530cf4a-1f11-41cf-8f3d-3f217829e74f}">
+      <Declaration><![CDATA[METHOD PUBLIC Deposit : BOOL
+VAR_INPUT
+    lrAmount : LREAL;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF lrAmount > 0 THEN
+    lrBalance := lrBalance + lrAmount;
+    Deposit := TRUE;
+ELSE
+    Deposit := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
     <LineIds Name="Account">
       <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="Account.Deposit">
+      <LineId Id="10" Count="4" />
+      <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{ea538bcf-b1e1-4bae-98e9-2b608dfa5c89}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    uName : DiffNumbers;
+	n : INT :=7;
+	arrMarks: MarksArray;
+	
+	calculateSize : ULINT;
+	
+	currentSpeed: REAL ;
+	MySmartMotor : SmartMotor;
+	MySmartConveyor : SmartConveyor;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// calculateSize := SIZEOF(n);
+
+calculateSize := SIZEOF(uName);
+
+arrMarks[4,2] := 78;
+n := arrMarks[4,2];
+
+MySmartMotor();
+
+MySmartConveyor();
+currentSpeed := MySmartConveyor.PropSpeed;
+
+MySmartConveyor.PropSpeed := 75.0;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="36" Count="7" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="31" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
