@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_House" Id="{7c5f4edd-f1eb-4d8b-acb1-945195d2185d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_House
+
+VAR
+	   // Composition — Room created INSIDE House with its own constructor
+    room    : FB_Room();  
+    sOutput : STRING := '';
+	sout4:STRING := '';
+	
+	{attribute 'hide'};
+	x : INT :=55;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[sout4 := 'checking';]]></ST>
+    </Implementation>
+    <Method Name="showHouse" Id="{75c396d7-9ef7-41ca-8d69-8acc06e83a1a}">
+      <Declaration><![CDATA[METHOD showHouse
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sOutput := 'House contains a room';]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_House">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_House.showHouse">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

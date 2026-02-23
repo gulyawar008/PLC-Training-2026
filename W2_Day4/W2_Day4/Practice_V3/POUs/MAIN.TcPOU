@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{35bb62b3-38e8-4a14-8974-83882e375959}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    fbAnimal : FB_Animal;
+    fbDog    : FB_Dog;
+    sOut1    : STRING;
+    sOut2    : STRING;
+    bInit    : BOOL := TRUE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//  To implement method overriding 
+IF bInit THEN
+    bInit := FALSE;
+
+    fbAnimal.M_Eat();
+    sOut1 := fbAnimal.sOutput;    // 'Animal eats food'
+
+    fbDog.M_Eat();
+    sOut2 := fbDog.sOutput;       // 'Dog eats dog food'
+
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="14" Count="9" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

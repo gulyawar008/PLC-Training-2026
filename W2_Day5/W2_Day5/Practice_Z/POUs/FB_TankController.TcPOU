@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_TankController" Id="{cd7e79cb-9507-4be5-8556-14c64e2c6ca5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TankController IMPLEMENTS I_TankController
+VAR_INPUT
+	stTank: ST_Tank;
+END_VAR
+VAR
+	pTank : POINTER TO ST_Tank;
+	refTank : REFERENCE TO ST_Tank;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(*pPointer := ADR(i); //mn
+
+pPointer^ := 787;
+pTank786 := ADR(stTank);
+
+pTank786^.nId  := 67;
+CheckAlarm(pTank786);
+
+
+refTank REF= stTank;
+CoolTank(refTank);
+
+*)
+]]></ST>
+    </Implementation>
+    <Method Name="ApplyCooling" Id="{efce6a64-93ff-4fe3-ae63-4b9158a9ff4c}">
+      <Declaration><![CDATA[METHOD ApplyCooling
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[refTank REF= stTank;
+CoolTank(refTank);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CheckSafety" Id="{b0d5957e-ab68-403f-9edc-5c5ac4072277}">
+      <Declaration><![CDATA[
+METHOD CheckSafety : BOOL 
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pTank := ADR(stTank);
+
+pTank^.nId  := 67;
+CheckAlarm(pTank);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_TankController">
+      <LineId Id="17" Count="11" />
+      <LineId Id="41" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TankController.ApplyCooling">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TankController.CheckSafety">
+      <LineId Id="5" Count="2" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{3952dc9f-2ad2-4d7e-b082-7f895896c4e5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	    fbProfessor  : FB_Professor;    // Created independently — key to Aggregation
+    fbDepartment : FB_Department(sDept := 'Computer Science',pProf := ADR(fbProfessor));
+    sOut         : STRING;
+    bInit        : BOOL := TRUE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Aggregation 
+
+IF bInit THEN
+    bInit := FALSE;
+
+    // Professor p1 = new Professor("Dr. Sharma")
+    fbProfessor.SetName(sInputName := 'Dr. Sharma');
+
+    // Department dept = new Department("Computer Science", p1)
+    // Professor is passed from OUTSIDE — this is Aggregation
+ //  not --possible in twincat3  fbDepartment := FB_Department(sDept := 'Computer Science', pProf := ADR(fbProfessor));
+
+    // dept.showDepartment()
+    fbDepartment.showDepartment();
+    sOut := fbDepartment.sOutput;   // 'Department: Computer Science | Head Professor: Dr. Sharma'
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="23" Count="13" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

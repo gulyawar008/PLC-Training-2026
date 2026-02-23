@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{e7277967-7c80-4790-b86c-5c6e4198add1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    fbAnimal  : FB_Animal;
+    fbDog     : FB_Dog;
+
+    // Interface reference — this is what enables RUNTIME POLYMORPHISM
+    // Equivalent to:  Animal a;  in Java
+    aRef      : I_Animal;
+
+    sOut1     : STRING;
+    sOut2     : STRING;
+    sOut3     : STRING;
+    sOut4     : STRING;
+    sOut5     : STRING;
+
+    bInit     : BOOL := TRUE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// RunTime Polymorphism -- By using method overriding -- Dynamic Dispatc mechanism
+
+IF bInit THEN
+    bInit := FALSE;
+
+    // -----------------------------------------------
+    //  1: aRef points to FB_Animal
+    // Equivalent to: Animal a = new Animal();
+  
+    aRef := fbAnimal;
+    aRef.M_eat();                        // Calls FB_Animal.eat()
+    sOut1 := fbAnimal.sOutput;         // Animal eats food
+
+    aRef.M_Sleep();                      // Calls FB_Animal.sleep()
+    sOut2 := fbAnimal.sOutput;         // Animal sleeps
+
+    // 2: aRef now points to FB_Dog
+    // Equivalent to: Animal a = new Dog();
+    // THIS is Runtime Polymorphism!
+    // Same interface reference, different behavior at runtime
+ 
+    aRef := fbDog;
+    aRef.M_eat();                        // Calls FB_Dog.eat() — OVERRIDDEN!
+    sOut3 := fbDog.sOutput;            // 'Dog eats dog food'
+
+    aRef.M_Sleep();                      // Calls FB_Animal.sleep() — inherited
+    sOut4 := fbDog.sOutput;            // 'Animal sleeps'
+
+    // bark() is Dog-specific — must use fbDog directly
+    // Equivalent to: d.bark()
+    fbDog.M_Bark();
+    sOut5 := fbDog.sOutput;            // 'Dog barks'
+
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="54" Count="1" />
+      <LineId Id="6" Count="12" />
+      <LineId Id="20" Count="17" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

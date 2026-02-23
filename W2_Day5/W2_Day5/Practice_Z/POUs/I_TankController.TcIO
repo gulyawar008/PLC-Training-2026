@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_TankController" Id="{694224f3-b411-404f-9f19-e17cb45067f5}">
+    <Declaration><![CDATA[INTERFACE I_TankController
+]]></Declaration>
+    <Method Name="ApplyCooling" Id="{2d1b7223-85f0-478d-b4dc-b663201c99cf}">
+      <Declaration><![CDATA[METHOD ApplyCooling 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="CheckSafety" Id="{46370de7-60ed-4e93-bcd4-01bbd698d84c}">
+      <Declaration><![CDATA[METHOD CheckSafety : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

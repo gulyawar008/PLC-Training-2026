@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Student" Id="{0893fcce-5e45-4b23-bd05-566cb9853b2f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Student
+
+VAR
+	sName : STRING := '';  // private — underscore convention
+	sOutput : STRING := '';
+	  nId : INT := 9; 
+  
+END_VAR
+VAR_INPUT
+	 nId1: INT :=343; 
+END_VAR
+
+
+VAR_OUTPUT
+     nId2:INT := 32323;   // readable from outside
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Id" Id="{56f512ca-6eb2-40a2-bd5c-618ae51dadcb}">
+      <Declaration><![CDATA[PROPERTY Id : INT]]></Declaration>
+      <Get Name="Get" Id="{be809445-f595-4307-abdb-f9b360bac18d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Id := nId;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9c2c1e3e-6761-43c4-b70e-f5704f860063}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nId := Id;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Name" Id="{bb3f729e-78f2-4d6d-b737-cdf37c6f4e1b}">
+      <Declaration><![CDATA[PROPERTY Name : STRING]]></Declaration>
+      <Get Name="Get" Id="{c125d67f-26eb-4e6d-856a-f05205e7debe}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//GET
+Name := sName;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{4e76c15a-5945-4ee4-ac3e-16e2d4410297}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[// SET
+sName := Name;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_Student">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Student.Id.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Student.Id.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Student.Name.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Student.Name.Set">
+      <LineId Id="5" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

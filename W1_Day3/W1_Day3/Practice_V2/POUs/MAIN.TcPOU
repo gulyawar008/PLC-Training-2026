@@ -7,8 +7,7 @@ VAR
 	bInitialized : BOOL := FALSE;
 
   	fFahrenheit : REAL;
-	
-	
+
 	iNumber     : INT := 10;         
     refNumber   : REFERENCE TO INT;   
     pNumber     : POINTER TO INT;     
@@ -42,9 +41,6 @@ IF NOT stSensor.bAlarm THEN
     END_IF
 END_IF
 
-
-
-
 // Celsius to Fahrenheit Program
 fFahrenheit := F_CelsiustoFahrenheit(fCelsius := 5.0);
 
@@ -67,7 +63,7 @@ END_IF
     <LineIds Name="MAIN">
       <LineId Id="6" Count="24" />
       <LineId Id="2" Count="0" />
-      <LineId Id="35" Count="3" />
+      <LineId Id="38" Count="0" />
       <LineId Id="34" Count="0" />
       <LineId Id="42" Count="0" />
       <LineId Id="59" Count="1" />

@@ -7,16 +7,20 @@ VAR
 	errorID: INT ;
     isError: BOOL ;
     isReady : BOOL;
+	
+	isReset : BOOL := FALSE;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[ActReset();
+      <ST><![CDATA[
+    errorID:= 6589 ;
+    isError:= TRUE ;
+    isReady := FALSE;
 
- IF isError THEN
-	 isReady := TRUE;
-	 errorID := 0;
+
+ IF isReset THEN
+	 ActReset();
  END_IF
- 
 ]]></ST>
     </Implementation>
     <Action Name="ActReset" Id="{5bc79f0a-a8d1-484d-b22f-10f825f9de79}">
@@ -28,13 +32,11 @@ END_VAR
       </Implementation>
     </Action>
     <LineIds Name="SmartMotor">
+      <LineId Id="33" Count="2" />
       <LineId Id="22" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="23" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="40" Count="3" />
+      <LineId Id="24" Count="0" />
     </LineIds>
     <LineIds Name="SmartMotor.ActReset">
       <LineId Id="2" Count="0" />

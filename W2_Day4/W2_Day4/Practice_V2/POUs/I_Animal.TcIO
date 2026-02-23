@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_Animal" Id="{f5aaa00b-3cdb-4329-868c-853d7edb3954}">
+    <Declaration><![CDATA[INTERFACE I_Animal
+]]></Declaration>
+    <Method Name="M_Eat" Id="{bbdd65cc-00b5-4991-9dc6-4c13cf8501c8}">
+      <Declaration><![CDATA[METHOD M_Eat
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_Sleep" Id="{3b7b6e08-5300-4992-8975-705c31342553}">
+      <Declaration><![CDATA[METHOD M_Sleep : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

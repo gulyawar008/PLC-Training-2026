@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{129b2855-f271-4bb1-be96-51219f06ffe3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+
+	
+	stTank1 : ST_Tank;
+	stTank2 : ST_Tank;
+	stTank3 : ST_Tank;
+	fbTankController : FB_TankController;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+stTank1.nId := 3;
+stTank1.rlevel := 70;
+stTank1.rtemperature := 50;
+stTank1.bAlarm := FALSE;
+
+stTank2.nId := 5;
+stTank2.rlevel := 80;
+stTank2.rtemperature := 60;
+stTank2.bAlarm := FALSE;
+
+stTank3.nId := 6;
+stTank3.rlevel := 96;
+stTank3.rtemperature := 82;
+stTank3.bAlarm := FALSE;
+
+
+IF NOT fbTankController(stTank1).CheckSafety() THEN
+	fbTankController(stTank1).ApplyCooling();
+END_IF
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="39" Count="14" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="81" Count="1" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

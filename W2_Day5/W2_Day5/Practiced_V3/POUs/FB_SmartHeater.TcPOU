@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_SmartHeater" Id="{bcdc58e1-c42d-4e8a-827c-1b223fca30d2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SmartHeater
+VAR 
+    bIsOn : BOOL;
+    rTemperature   : REAL;
+    nStartCounter  : INT;
+	rMaxTemperature : REAL := 120.0;
+END_VAR
+
+VAR CONSTANT
+    sSerialNumber : STRING := 'HTR-2026-001';
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="SerialNumber" Id="{86fef662-6a18-4a03-ba6b-fac36230d6f6}">
+      <Declaration><![CDATA[PROPERTY SerialNumber : STRING]]></Declaration>
+      <Get Name="Get" Id="{322da664-80c8-4dd7-bf95-0257cb6cf4e2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[  SerialNumber := sSerialNumber;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{13628f6d-ec22-42d4-bfea-1f0aefcddd1e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="StartCount" Id="{51a7686f-552e-473a-b753-b62ed7dff70f}">
+      <Declaration><![CDATA[PROPERTY StartCount : INT]]></Declaration>
+      <Get Name="Get" Id="{aa1fd66c-1166-4b4b-a377-4a2f7afa6a5a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[StartCount := nStartCounter;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{8db8b32c-cd82-4f08-a8f0-f49d5712b45b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Temperature" Id="{3f884351-186a-475a-ae48-a9d0e540e80b}">
+      <Declaration><![CDATA[PROPERTY Temperature : REAL]]></Declaration>
+      <Get Name="Get" Id="{117fff14-e27b-409e-943a-a827336a400e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Temperature := rTemperature;
+]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b8b2dcd1-0c27-4767-b500-034436f5e8c4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[  IF bIsOn AND Temperature <= rMaxTemperature THEN
+        rTemperature := Temperature;
+    END_IF]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="TurnOff" Id="{50e567f8-46d1-4103-993b-eacc744c72af}">
+      <Declaration><![CDATA[METHOD TurnOff : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bIsOn := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TurnOn" Id="{58ecfa5c-b239-42d2-9c7e-5f3bc9d882fa}">
+      <Declaration><![CDATA[METHOD TurnOn : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT bIsOn THEN
+    bIsOn := TRUE;
+    nStartCounter := nStartCounter + 1;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_SmartHeater">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartHeater.SerialNumber.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartHeater.SerialNumber.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartHeater.StartCount.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartHeater.StartCount.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartHeater.Temperature.Get">
+      <LineId Id="6" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartHeater.Temperature.Set">
+      <LineId Id="5" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartHeater.TurnOff">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartHeater.TurnOn">
+      <LineId Id="6" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

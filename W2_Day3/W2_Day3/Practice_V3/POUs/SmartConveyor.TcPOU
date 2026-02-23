@@ -11,15 +11,14 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-Act_UpdateStatus(); // Call the Action every cycle
+Act_UpdateStatus();          // Call the Action E.C.
 
 actualSpeed :=110;
 targetVelocity:=150;
 
 
 IF  isEnable  THEN
-    // hardware call here: Drive.Move(_rTargetVelocity);
-    actualSpeed := targetVelocity; // Simplified simulation
+    actualSpeed := targetVelocity; 
 END_IF]]></ST>
     </Implementation>
     <Action Name="Act_UpdateStatus" Id="{e6853811-ff2e-465a-96ff-f919aa803d16}">
@@ -47,11 +46,12 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[// Inside the SET accessor:
-    IF actualSpeed > 100.0 THEN
-        targetVelocity := 100.0; // Safety cap
+          <ST><![CDATA[// Inside SET accessor:
+
+    IF PropSpeed > 100.0 THEN
+        targetVelocity := 100.0;         // Safety cap
     ELSE
-        targetVelocity := actualSpeed;
+        targetVelocity := PropSpeed;
     END_IF]]></ST>
         </Implementation>
       </Set>
@@ -68,7 +68,8 @@ END_VAR
       <LineId Id="41" Count="0" />
       <LineId Id="40" Count="0" />
       <LineId Id="22" Count="1" />
-      <LineId Id="33" Count="2" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="35" Count="0" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="SmartConveyor.Act_UpdateStatus">
@@ -81,7 +82,9 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="SmartConveyor.PropSpeed.Set">
-      <LineId Id="5" Count="4" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="6" Count="3" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="SmartConveyor.TargetReached">

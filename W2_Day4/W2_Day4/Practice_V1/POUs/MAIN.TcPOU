@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{243e63a1-9eac-4a10-9b51-140c7027cf0c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	   sOut1   : STRING;   //eat()
+	   sOut2   : STRING;   // sleep()
+       sOut3   : STRING;   // bark()
+	   bInit   : BOOL := TRUE;
+	   
+	   fbDog   : FB_Dog;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Implemented Inheritance
+IF bInit THEN
+    bInit := FALSE;
+
+    // d.eat() — Inherited from FB_Animal
+    fbDog.M_eat();
+    sOut1 := fbDog.sOutput;   // Animal eats food
+
+    // d.sleep() — Inherited from FB_Animal
+    fbDog.M_sleep();
+    sOut2 := fbDog.sOutput;   // Animal sleeps
+
+    // d.bark() — Own method of FB_Dog
+    fbDog.M_Bark();
+    sOut3 := fbDog.sOutput;   // Dog barks
+
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="28" Count="0" />
+      <LineId Id="11" Count="14" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

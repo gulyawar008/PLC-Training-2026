@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Animal" Id="{8daf69df-8f2e-49d0-8756-076b96a34518}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Animal
+VAR
+	 sOutput : STRING := '';
+	 
+	  x : INT := 8;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="M_Eat" Id="{1649086b-5256-41da-aee6-0fbc9699b7fe}">
+      <Declaration><![CDATA[METHOD M_Eat
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.sOutput := 'Animal eats food';]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Sleep" Id="{cc7a2d05-88b8-44dc-801c-c6d84e1e38c7}">
+      <Declaration><![CDATA[METHOD M_Sleep : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.sOutput := 'Animal sleeps';]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Animal">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Animal.M_Eat">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Animal.M_Sleep">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

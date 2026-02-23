@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Professor" Id="{00c1dd9b-40c8-4f24-a3e5-cfecc2666d09}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Professor
+
+VAR
+	
+    sName   : STRING := '';
+    sOutput : STRING := '';
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetName" Id="{f70eb46d-ad49-4a39-a018-5f95f50b4a46}">
+      <Declaration><![CDATA[METHOD GetName :  STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetName := sName;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetName" Id="{2cd17729-460f-4124-a775-4f07df511011}">
+      <Declaration><![CDATA[METHOD SetName 
+VAR_INPUT
+	    sInputName : STRING;
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sName := sInputName;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Professor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Professor.GetName">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Professor.SetName">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

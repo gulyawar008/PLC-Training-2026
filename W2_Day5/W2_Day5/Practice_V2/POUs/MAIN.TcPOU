@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{2ab91fb1-44c3-49b9-8737-0d5a6117a9d7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	 fbHouse : FB_House;
+    sOut1   : STRING;
+    sOut2   : STRING;
+    sOut3   : STRING;
+    bInit   : BOOL := TRUE;
+	
+	{attribute  'hide'};
+	 demo: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Composition 
+IF bInit THEN
+    bInit := FALSE;
+
+    //Constructor already ran — Room created and y set inside House
+     sOut1 := fbHouse.room.sOutput;    // 'Room created inside House'
+ 
+     sout2:= fbHouse.sout4;
+	 demo := fbHouse.x;
+   
+    fbHouse.showHouse();
+    sOut3 := fbHouse.sOutput;         // 'House contains a room'
+
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="11" Count="7" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="19" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

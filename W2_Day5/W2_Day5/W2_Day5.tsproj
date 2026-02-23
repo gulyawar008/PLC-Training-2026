@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.71">
+	<Project ProjectGUID="{C72B71E4-7F8C-468F-8E90-602FB27B3378}" Target64Bit="true" ShowHideConfigurations="#x3c7">
+		<System>
+			<Settings MaxCpus="18" NonWinCpus="1">
+				<Cpu CpuId="17"/>
+			</Settings>
+			<Tasks>
+				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+				<Task Id="4" Priority="21" CycleTime="100000" AmsPort="351" AdtTasks="true">
+					<Name>PlcTask1</Name>
+				</Task>
+				<Task Id="5" Priority="22" CycleTime="100000" AmsPort="352" AdtTasks="true">
+					<Name>PlcTask2</Name>
+				</Task>
+				<Task Id="6" Priority="23" CycleTime="100000" AmsPort="353" AdtTasks="true">
+					<Name>PlcTask3</Name>
+				</Task>
+				<Task Id="7" Priority="24" CycleTime="100000" AmsPort="354" AdtTasks="true">
+					<Name>PlcTask4</Name>
+				</Task>
+				<Task Id="8" Priority="25" CycleTime="100000" AmsPort="355" AdtTasks="true">
+					<Name>PlcTask5</Name>
+				</Task>
+				<Task Id="9" Priority="26" CycleTime="100000" AmsPort="356" AdtTasks="true">
+					<Name>PlcTask6</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{8631F720-F55B-4995-8435-A747D1949904}" Name="Practice_V1" PrjFilePath="Practice_V1\Practice_V1.plcproj" TmcFilePath="Practice_V1\Practice_V1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V1\Practice_V1.tmc" TmcHash="{9DE10DE1-FCF3-31F7-6B63-16BC51A504E6}">
+					<Name>Practice_V1 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010030</OTCID>
+							</ManualConfig>
+							<Priority>20</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{3A46B867-527C-4E8F-B728-E76E02468ABF}" Name="Practice_V2" PrjFilePath="Practice_V2\Practice_V2.plcproj" TmcFilePath="Practice_V2\Practice_V2.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V2\Practice_V2.tmc" TmcHash="{B220E233-3C06-C693-AA23-C6C5366C2CE6}">
+					<Name>Practice_V2 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010050</OTCID>
+							</ManualConfig>
+							<Priority>22</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="22" OTCID="#x08502041"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{3B96ACA0-4927-498E-B5AC-4F54F3F05662}" Name="Practiced_V3" PrjFilePath="Practiced_V3\Practiced_V3.plcproj" TmcFilePath="Practiced_V3\Practiced_V3.tmc" ReloadTmc="true" AmsPort="854" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x085020c0" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practiced_V3\Practiced_V3.tmc" TmcHash="{8FA026E7-6556-82A7-1261-7EBCA2CAC88D}">
+					<Name>Practiced_V3 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010080</OTCID>
+							</ManualConfig>
+							<Priority>25</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="25" OTCID="#x085020c1"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{B13CE6A6-DE53-43AB-8F91-6AC5E3AC7C81}" Name="Practice_V4" PrjFilePath="Practice_V4\Practice_V4.plcproj" TmcFilePath="Practice_V4\Practice_V4.tmc" ReloadTmc="true" AmsPort="855" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502100" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V4\Practice_V4.tmc" TmcHash="{88286AFA-75A5-AED2-D83A-46E8A10BD9D0}">
+					<Name>Practice_V4 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010090</OTCID>
+							</ManualConfig>
+							<Priority>26</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="26" OTCID="#x08502101"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+	</Project>
+</TcSmProject>

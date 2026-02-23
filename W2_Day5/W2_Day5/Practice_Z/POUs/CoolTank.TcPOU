@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="CoolTank" Id="{2cc98c59-0933-4d64-9a53-53333cea12b3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CoolTank
+VAR_INPUT
+	refIn : REFERENCE TO ST_Tank;
+END_VAR
+VAR
+	rSafeTemp : REAL := 50;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF refIn.rtemperature >80 THEN
+      refIn.rtemperature := refIn.rtemperature - 1;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="CoolTank">
+      <LineId Id="7" Count="0" />
+      <LineId Id="16" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

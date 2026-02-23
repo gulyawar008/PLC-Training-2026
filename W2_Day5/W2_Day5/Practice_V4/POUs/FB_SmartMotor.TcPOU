@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_SmartMotor" Id="{d78028df-126f-4a98-b687-5e01347f9090}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SmartMotor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	nStartCount : INT :=0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Counter" Id="{61cc2fe1-d7a6-4838-84e5-63ccccb76962}">
+      <Declaration><![CDATA[METHOD Counter : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[nStartCount := nStartCount + 1;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_SmartMotor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmartMotor.Counter">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

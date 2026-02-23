@@ -3,7 +3,7 @@
   <POU Name="MAIN" Id="{ea538bcf-b1e1-4bae-98e9-2b608dfa5c89}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-    uName : DiffNumbers;
+    num : DiffNumbers;
 	n : INT :=7;
 	arrMarks: MarksArray;
 	
@@ -12,27 +12,35 @@ VAR
 	currentSpeed: REAL ;
 	MySmartMotor : SmartMotor;
 	MySmartConveyor : SmartConveyor;
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// calculateSize := SIZEOF(n);
-
-calculateSize := SIZEOF(uName);
+calculateSize := SIZEOF(num);
 
 arrMarks[4,2] := 78;
 n := arrMarks[4,2];
 
+num.fA := 4;
+
 MySmartMotor();
 
 MySmartConveyor();
+
+MySmartConveyor.PropSpeed := 75.0;
 currentSpeed := MySmartConveyor.PropSpeed;
 
-MySmartConveyor.PropSpeed := 75.0;]]></ST>
+]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="36" Count="7" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="38" Count="3" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="42" Count="1" />
       <LineId Id="52" Count="0" />
       <LineId Id="50" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="71" Count="0" />
       <LineId Id="47" Count="0" />
       <LineId Id="51" Count="0" />
       <LineId Id="31" Count="0" />

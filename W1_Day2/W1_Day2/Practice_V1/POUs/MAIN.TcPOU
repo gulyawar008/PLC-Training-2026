@@ -9,8 +9,8 @@ END_VAR
     <Implementation>
       <ST><![CDATA[IF NOT bRunOnlyOnce THEN
 ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG,
-          msgFmtStr := 'Hello World',
-          strArg := '');
+          msgFmtStr := 'Hello  %s',
+          strArg := 'World');
 	bRunOnlyOnce := TRUE;
 END_IF
 

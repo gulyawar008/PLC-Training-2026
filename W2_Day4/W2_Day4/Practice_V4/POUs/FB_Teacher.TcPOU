@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Teacher" Id="{16c507c1-b16e-46ba-bf73-a161bb7277e7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Teacher
+VAR
+    _sName : STRING := '';  
+	sOutput : STRING := '';
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Name" Id="{6911d694-525c-4584-b3f8-46c3cdd6e170}">
+      <Declaration><![CDATA[PROPERTY Name : STRING]]></Declaration>
+      <Get Name="Get" Id="{37c7479e-95c6-4bc5-a301-3e61a0e06d38}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//GET
+Name := _sName;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{2952892b-5c02-45da-902b-4a5f5a21f212}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[// SET
+_sName := Name;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="teach" Id="{2c8dd030-0271-4730-b327-9550617c7756}">
+      <Declaration><![CDATA[METHOD teach
+VAR_INPUT
+	 pStudent : POINTER TO FB_Student;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sOutput := CONCAT(CONCAT(_sName, ' teaches '), pStudent^.Name);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Teacher">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Teacher.Name.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Teacher.Name.Set">
+      <LineId Id="5" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Teacher.teach">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

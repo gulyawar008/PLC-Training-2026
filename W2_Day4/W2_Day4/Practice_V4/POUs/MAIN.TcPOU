@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{0cf577c3-eb45-4479-b5f9-d39082f4f281}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbStudent : FB_Student;    
+    fbTeacher : FB_Teacher;    
+    sOut1     : STRING;
+    sOut2     : STRING;
+    bInit     : BOOL := TRUE;
+	
+	nVal : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//  Association (Uses A  Relationship)
+
+IF bInit THEN 
+	bInit:= FALSE;
+	
+	fbStudent.Name := 'David';
+	fbTeacher.Name := 'Henry';
+	
+	fbTeacher.teach(pStudent := ADR(fbStudent));
+	sOut1 := fbTeacher.sOutput;
+	
+	fbStudent.Id := 9987;
+	
+	
+    fbStudent.nId1:= 2222;
+	sOut2 := CONCAT('David``s id is: ', INT_TO_STRING(fbStudent.nId2));
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="36" Count="1" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="62" Count="1" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="68" Count="1" />
+      <LineId Id="79" Count="2" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="61" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

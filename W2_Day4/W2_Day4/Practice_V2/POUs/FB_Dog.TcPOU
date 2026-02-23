@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Dog" Id="{f9097222-8289-4bef-9e78-6409fca2889d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Dog EXTENDS FB_Animal
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="M_Bark" Id="{4e64948e-6881-450f-94f6-f2eae696d46f}">
+      <Declaration><![CDATA[METHOD M_Bark
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.sOutput := 'Dog barks';]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Eat" Id="{25a8afe3-5874-406b-b599-d82cd313fd78}">
+      <Declaration><![CDATA[METHOD M_Eat
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Overrides FB_Animal's eat() — exactly like @Override in Java
+THIS^.sOutput := 'Dog eats dog food';]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Dog">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Dog.M_Bark">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Dog.M_Eat">
+      <LineId Id="4" Count="0" />
+      <LineId Id="3" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

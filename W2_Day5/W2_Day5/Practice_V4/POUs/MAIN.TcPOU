@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{93ce6665-19a0-40c3-a40f-750cf122914b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	nVar : INT := 34;
+	fbSmartMotor : FB_SmartMotor;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nVar := fbSmartMotor.Counter();]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

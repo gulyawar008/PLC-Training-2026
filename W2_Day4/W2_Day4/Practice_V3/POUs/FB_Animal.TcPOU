@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Animal" Id="{75d990de-4ce1-4c07-8dcb-89fbf4624ec9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Animal
+VAR
+    sOutput : STRING := '';
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="M_Eat" Id="{adae790b-d64c-401e-879b-efb52f712bc3}">
+      <Declaration><![CDATA[METHOD M_Eat : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.sOutput := 'Animal eats food';]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Animal">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Animal.M_Eat">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
