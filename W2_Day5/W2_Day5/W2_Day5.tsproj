@@ -91,7 +91,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{B13CE6A6-DE53-43AB-8F91-6AC5E3AC7C81}" Name="Practice_V4" PrjFilePath="Practice_V4\Practice_V4.plcproj" TmcFilePath="Practice_V4\Practice_V4.tmc" ReloadTmc="true" AmsPort="855" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502100" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V4\Practice_V4.tmc" TmcHash="{88286AFA-75A5-AED2-D83A-46E8A10BD9D0}">
+				<Instance Id="#x08502100" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V4\Practice_V4.tmc" TmcHash="{4C4B459C-633A-DDD3-F146-5B935F5383E7}">
 					<Name>Practice_V4 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>

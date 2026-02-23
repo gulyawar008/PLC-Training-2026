@@ -3,15 +3,27 @@
   <POU Name="MAIN" Id="{93ce6665-19a0-40c3-a40f-750cf122914b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	nVar : INT := 34;
+	nVar1 : INT := -3;
+	nVar2 : INT := -4;
+	nVar3 : INT  := -55;
+	nVar4 : INT;
 	fbSmartMotor : FB_SmartMotor;
+	bBool : BOOL ;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[nVar := fbSmartMotor.Counter();]]></ST>
+      <ST><![CDATA[//nVar := fbSmartMotor.Counter();
+
+nVar4 := nVar3 + nVar2;
+
+bBool := IsGreaterThanten(rValue := nVar1);]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="2" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
