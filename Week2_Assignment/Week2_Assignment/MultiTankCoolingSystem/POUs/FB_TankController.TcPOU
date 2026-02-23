@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_TankController" Id="{43816d2c-bdb9-4c1b-a199-f9e27f5d77d2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TankController  IMPLEMENTS I_TankController
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	pTank : POINTER TO ST_Tank;
+	refTank : REFERENCE TO ST_Tank;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="ApplyCooling" Id="{dcda4b74-cb5f-42eb-91b7-a38b08874d10}">
+      <Declaration><![CDATA[METHOD ApplyCooling : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ApplyCooling := F_CoolTank(refTank);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CheckSafety" Id="{47aff38c-3a39-4906-a679-3ea03fa17498}">
+      <Declaration><![CDATA[METHOD CheckSafety : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CheckSafety := F_CheckAlarm(pTank);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{248400f0-08c7-4881-b437-c141ccf768f0}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+    refTankInit : REFERENCE TO ST_Tank;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ refTank REF=  refTankInit;
+ 
+ FB_init := TRUE;
+ ]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_TankController">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TankController.ApplyCooling">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TankController.CheckSafety">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TankController.FB_init">
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

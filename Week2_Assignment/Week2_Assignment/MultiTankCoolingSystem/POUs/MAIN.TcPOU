@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{55adf745-b895-4ebd-8e09-2db70c081c11}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	stTank1 : ST_Tank := (nId:= 23,  rtemperature :=78, rlevel := 85, bAlarm := FALSE);
+	stTank2 : ST_Tank := (nId:= 83,  rtemperature :=93, rlevel := 95, bAlarm := FALSE);
+	stTank3 : ST_Tank := (nId:= 93,  rtemperature :=98, rlevel := 92, bAlarm := FALSE);
+	fbTank1 : FB_TankController(stTank1);
+	fbTank2 : FB_TankController(stTank2);
+	
+	bBool : BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*IF NOT fbTank2.CheckSafety() THEN
+   fbTank2.ApplyCooling();
+END_IF  *)
+
+bBool := fbTank2.CheckSafety();
+   (*
+fbTank1();
+
+fbTank1.CheckSafety();
+fbTank1.ApplyCooling();
+
+fbTank2();
+
+fbTank2.CheckSafety();
+fbTank2.ApplyCooling();  *)]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="33" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="22" Count="3" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

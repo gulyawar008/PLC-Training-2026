@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="F_CheckAlarm" Id="{a26334d4-a409-44d5-9aef-8d86aab2a715}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckAlarm : BOOL
+VAR_INPUT
+	 pTank : POINTER TO ST_Tank;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF pTank = 0 THEN
+	RETURN(FALSE);
+END_IF
+
+IF (pTank^.rtemperature < -50) OR (pTank^.rlevel > 200) THEN
+	RETURN(FALSE);
+END_IF
+
+IF (pTank^.rlevel < 0) OR (pTank^.rlevel > 100) THEN
+	RETURN(FALSE);
+END_IF
+
+
+IF (pTank^.rtemperature >80) OR (pTank^.rlevel > 90) THEN
+	pTank^.bAlarm := TRUE;
+	F_CheckAlarm := TRUE;
+ELSE
+	pTank^.bAlarm := FALSE;
+	F_CheckAlarm := FALSE;
+END_IF
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_CheckAlarm">
+      <LineId Id="58" Count="0" />
+      <LineId Id="60" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="52" Count="3" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="9" Count="4" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="41" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
