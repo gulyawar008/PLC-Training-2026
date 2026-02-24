@@ -2,22 +2,18 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
   <POU Name="F_CoolTank" Id="{23eb2f19-1862-4331-a502-53c245c36ec3}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_CoolTank : BOOL
-VAR_INPUT
-	refTank :  REFERENCE TO ST_Tank;
+VAR_IN_OUT
+    refTank : ST_Tank;       
 END_VAR
 
-VAR CONSTANT
-	cMinTemp : REAL := 20.0;
-    cCoolingStep : REAL := 2.0;
-END_VAR
+
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Prevent unrealistic values
-IF refTank.rtemperature > cMinTemp THEN 
-	refTank.rtemperature := refTank.rtemperature - cCoolingStep;
+      <ST><![CDATA[IF refTank.rtemperature > GVL_TankConstants.rTEMP_MIN THEN 
+	refTank.rtemperature := refTank.rtemperature - GVL_TankConstants.rCOOL_RATE;
 		
-		IF refTank.rtemperature <  cMinTemp THEN
-			refTank.rtemperature :=  cMinTemp;
+		IF refTank.rtemperature < GVL_TankConstants.rTEMP_MIN THEN
+			refTank.rtemperature :=  GVL_TankConstants.rTEMP_MIN;
 		END_IF
 		
 	F_CoolTank := TRUE;
@@ -26,7 +22,6 @@ ELSE
 END_IF]]></ST>
     </Implementation>
     <LineIds Name="F_CoolTank">
-      <LineId Id="23" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="42" Count="0" />
       <LineId Id="44" Count="0" />
