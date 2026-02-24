@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <GVL Name="GVL_TankConstants" Id="{b561c434-bd60-425b-8fc1-693cb701da7b}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	// Temperature thresholds
+    rTEMP_ALARM_LIMIT   : REAL := 80.0;     
+    rTEMP_MIN           : REAL := 20.0;     
+    rTEMP_SENSOR_MIN    : REAL := -50.0;   
+    rTEMP_SENSOR_MAX    : REAL := 500.0;    
+
+    // Level thresholds
+    rLEVEL_ALARM_LIMIT  : REAL := 90.0;     
+    rLEVEL_SENSOR_MIN   : REAL := 0.0;      
+    rLEVEL_SENSOR_MAX   : REAL := 100.0;    
+
+    // Cooling
+    rCOOL_RATE          : REAL := 2.0;      // degrees reduced per cycle
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>
