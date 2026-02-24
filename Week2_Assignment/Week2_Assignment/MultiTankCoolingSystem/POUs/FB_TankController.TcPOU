@@ -65,7 +65,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[
 pTank  := ADR(refTankInit);
- FB_init := TRUE;
+FB_init := TRUE;
  ]]></ST>
       </Implementation>
     </Method>
