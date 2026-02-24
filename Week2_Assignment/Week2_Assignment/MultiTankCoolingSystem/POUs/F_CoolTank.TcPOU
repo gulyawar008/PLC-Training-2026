@@ -2,8 +2,8 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
   <POU Name="F_CoolTank" Id="{23eb2f19-1862-4331-a502-53c245c36ec3}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_CoolTank : BOOL
-VAR_IN_OUT
-    refTank : ST_Tank;       
+VAR_INPUT
+    refTank : REFERENCE TO ST_Tank;    
 END_VAR
 
 
