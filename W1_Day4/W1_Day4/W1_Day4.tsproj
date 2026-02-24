@@ -16,7 +16,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8829DD1D-B7F6-467A-BEE5-37115087FC11}" Name="Practice_V1" PrjFilePath="Practice_V1\Practice_V1.plcproj" TmcFilePath="Practice_V1\Practice_V1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{3E155AC6-4137-ECD2-4083-BAAD106D464F}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V1\Practice_V1.tmc" TmcHash="{A43EC6AF-A2A3-ADA9-6209-5118D3CA6279}">
 					<Name>Practice_V1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -36,15 +36,23 @@
 				</Instance>
 			</Project>
 			<Project GUID="{38459D44-F06E-4EAE-AC20-1A557C18236E}" Name="Practice_V2" PrjFilePath="Practice_V2\Practice_V2.plcproj" TmcFilePath="Practice_V2\Practice_V2.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V2\Practice_V2.tmc" TmcHash="{32CD976B-675F-CDCA-742D-4E0E252FBE3F}">
 					<Name>Practice_V2 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
 						<Context>
-							<Id>1</Id>
-							<Name>Default</Name>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010040</OTCID>
+							</ManualConfig>
+							<Priority>21</Priority>
+							<CycleTime>10000000</CycleTime>
 						</Context>
 					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="21" OTCID="#x08502041"/>
+					</TaskPouOids>
 				</Instance>
 			</Project>
 		</Plc>

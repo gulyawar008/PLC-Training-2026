@@ -15,11 +15,6 @@ VAR_TEMP
     tempVar : INT;
 END_VAR
 
-VAR_INST
-    staticVar : INT := 0;
-END_VAR
-
-
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[iValue := iValue + 10;
@@ -28,7 +23,7 @@ END_VAR
 
 normalVar := normalVar + 1;
 tempVar := tempVar + 1;
-staticVar := staticVar + 1;]]></ST>
+//staticVar := staticVar + 1;]]></ST>
     </Implementation>
     <LineIds Name="FB_Add">
       <LineId Id="9" Count="0" />

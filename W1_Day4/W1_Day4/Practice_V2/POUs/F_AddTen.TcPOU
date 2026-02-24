@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="F_AddTen" Id="{a0b0a04e-4da7-40ad-b0f0-fd6387dbfab5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_AddTen : INT
+VAR_INPUT
+	j: REFERENCE TO INT	;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_AddTen := j+10;]]></ST>
+    </Implementation>
+    <LineIds Name="F_AddTen">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
