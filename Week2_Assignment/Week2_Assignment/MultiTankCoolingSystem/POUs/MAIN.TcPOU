@@ -6,9 +6,9 @@ VAR
 	stTank1 : ST_Tank := (nId:= 019,  rtemperature :=97, rlevel := 77, bAlarm := FALSE);
 	stTank2 : ST_Tank := (nId:= 017,  rtemperature :=89, rlevel := 95, bAlarm := FALSE);
 	stTank3 : ST_Tank := (nId:= 021,  rtemperature :=98, rlevel := 76, bAlarm := FALSE);
-	fbTank1 : FB_TankController(pTankInput := ADR(stTank1));
-	fbTank2 : FB_TankController(pTankInput := ADR(stTank2));
-	fbTank3 : FB_TankController(pTankInput := ADR(stTank3));
+	fbTank1 : FB_TankController(pTankController := ADR(stTank1));
+	fbTank2 : FB_TankController(pTankController:= ADR(stTank2));
+	fbTank3 : FB_TankController(pTankController:= ADR(stTank3));
 	
 	sLog1   : STRING;
     sLog2   : STRING;
@@ -18,12 +18,12 @@ END_VAR
     <Implementation>
       <ST><![CDATA[fbTank1.CheckSafety();
 fbTank1.ApplyCooling();
-
+    
 fbTank2.CheckSafety();
 fbTank2.ApplyCooling();  
 
 fbTank3.CheckSafety();
-fbTank2.ApplyCooling();
+fbTank3.ApplyCooling();
 
 
 sLog1 := fbTank1.sLog;
