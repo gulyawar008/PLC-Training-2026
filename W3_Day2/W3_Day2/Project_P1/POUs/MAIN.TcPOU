@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{669186f2-c4c2-4561-8ece-657785eddca5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	//fbTon : TON := (PT := T#5S);
+	//fbTof : TOF := (PT := T#5S);
+	
+	(*fbRtrig : R_TRIG;
+	bInput : BOOL;
+	nTriggerCount : ULINT;   *)
+	
+   fbFtrig : F_TRIG;
+	bInput : BOOL;
+	nTriggerCount : ULINT;   
+	
+	sString1 : STRING := 'Hello '; 
+	sString2 : STRING := 'World ';
+	sResultString : STRING ;
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//fbTon(IN:= bInput);
+
+//fbTof(IN:= bInput);
+
+(*
+fbRtrig(CLK := bInput);
+IF fbRTrig.Q THEN
+	nTriggerCount := nTriggerCount + 1;
+END_IF                       
+*)
+
+fbFtrig(CLK := bInput);
+IF fbFTrig.Q THEN
+	nTriggerCount := nTriggerCount + 1;
+END_IF 
+  
+sResultString := CONCAT( STR1 := sString1, STR2 := sString2);
+  
+  
+  
+  
+  
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="40" Count="3" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="31" Count="4" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

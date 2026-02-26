@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Child1" Id="{fc5ffea7-5e51-4d8e-b3a4-23013a0a7b75}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Child1 EXTENDS FB_Parent
+VAR
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Eat" Id="{eeef6ae9-f238-4ae6-931b-1d18f91c0086}">
+      <Declaration><![CDATA[METHOD  Eat
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sOutput:= 'Child is eating ';]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Greet" Id="{10690703-0695-4f79-b32e-8ed40438a1d4}">
+      <Declaration><![CDATA[METHOD  Greet 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sOutput:= 'Child is greeting';]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Child1">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Child1.Eat">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Child1.Greet">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

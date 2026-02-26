@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{cca9bd04-ecad-48e8-a9eb-883ed9334d75}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	// fbParent : FB_Parent;  Cannot be instantiated
+	fbChild1 : FB_Child1;
+   // fbChild2 : FB_Child2;    // cannot instantiate — still abstract
+
+
+    sOut1    : STRING;
+    sOut2    : STRING;
+    sOut3    : STRING;
+    sOut4    : STRING;
+    bInit    : BOOL := TRUE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bInit THEN
+    bInit := FALSE;
+
+    sOut1 := fbChild1.sOutput;      // 'I am in the parent class'
+
+    fbChild1.greeting();
+    sOut2 := fbChild1.sOutput;      // 'Greetings of the day'
+
+    fbChild1.greet();
+    sOut3 := fbChild1.sOutput;      // 'Good Morning'
+
+    fbChild1.eat();
+    sOut4 := fbChild1.sOutput;      // 'Playing Soccer'
+
+   // fbChild2.connect();             // 'Connecting .....'   not possible -still abstract   
+
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="6" Count="15" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

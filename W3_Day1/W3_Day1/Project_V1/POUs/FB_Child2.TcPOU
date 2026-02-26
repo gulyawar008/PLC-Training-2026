@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Child2" Id="{028d2de8-85d8-463e-96c5-d7f7a4125ac8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT FB_Child2 EXTENDS FB_Parent
+
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Connect" Id="{d232b42a-badc-44d7-98d4-7efe237174e2}">
+      <Declaration><![CDATA[METHOD ABSTRACT Connect 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Child2">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Child2.Connect">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

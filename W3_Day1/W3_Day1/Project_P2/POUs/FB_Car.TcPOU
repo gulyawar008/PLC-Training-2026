@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Car" Id="{f8002561-94b2-4079-8a8d-200c7815a106}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Car EXTENDS FB_Vehicle
+
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Model" Id="{9676e5b3-5d40-4db0-a6c9-ba694e34ee10}">
+      <Declaration><![CDATA[METHOD Model
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sOutput:= 'MODEL Number is :  CAMN0035E021004';
+  ]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Car">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Car.Model">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

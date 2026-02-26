@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="F_CheckAlarm" Id="{a26334d4-a409-44d5-9aef-8d86aab2a715}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckAlarm : BOOL
+VAR_INPUT
+	pTankInput : POINTER TO ST_Tank;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Temperature sensor range validation 
+IF (pTankInput^.rTemperature < GVL_TankConstants.rTEMP_SENSOR_MIN) OR
+   (pTankInput^.rTemperature > GVL_TankConstants.rTEMP_SENSOR_MAX) THEN
+    F_CheckAlarm := FALSE;
+    RETURN;
+END_IF
+
+// Level sensor range validation
+IF (pTankInput^.rLevel < GVL_TankConstants.rLEVEL_SENSOR_MIN) OR
+   (pTankInput^.rLevel > GVL_TankConstants.rLEVEL_SENSOR_MAX) THEN
+    F_CheckAlarm := FALSE;
+    RETURN;
+END_IF
+
+//  Alarm limit check
+IF (pTankInput^.rTemperature > GVL_TankConstants.rTEMP_ALARM_LIMIT) OR
+   (pTankInput^.rLevel > GVL_TankConstants.rLEVEL_ALARM_LIMIT) THEN
+    pTankInput^.bAlarm := TRUE;
+    F_CheckAlarm       := TRUE;
+ELSE
+    pTankInput^.bAlarm := FALSE;
+    F_CheckAlarm       := FALSE;
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_CheckAlarm">
+      <LineId Id="91" Count="22" />
+      <LineId Id="41" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

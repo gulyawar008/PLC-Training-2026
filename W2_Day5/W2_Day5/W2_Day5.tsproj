@@ -27,6 +27,12 @@
 				<Task Id="9" Priority="26" CycleTime="100000" AmsPort="356" AdtTasks="true">
 					<Name>PlcTask6</Name>
 				</Task>
+				<Task Id="10" Priority="27" CycleTime="100000" AmsPort="357" AdtTasks="true">
+					<Name>PlcTask7</Name>
+				</Task>
+				<Task Id="11" Priority="28" CycleTime="100000" AmsPort="358" AdtTasks="true">
+					<Name>PlcTask8</Name>
+				</Task>
 			</Tasks>
 		</System>
 		<Plc>
@@ -91,7 +97,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{B13CE6A6-DE53-43AB-8F91-6AC5E3AC7C81}" Name="Practice_V4" PrjFilePath="Practice_V4\Practice_V4.plcproj" TmcFilePath="Practice_V4\Practice_V4.tmc" ReloadTmc="true" AmsPort="855" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502100" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V4\Practice_V4.tmc" TmcHash="{4C4B459C-633A-DDD3-F146-5B935F5383E7}">
+				<Instance Id="#x08502100" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V4\Practice_V4.tmc" TmcHash="{FCAC4256-F185-C7C4-9DD0-2E1DEC08123B}">
 					<Name>Practice_V4 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -107,6 +113,26 @@
 					</Contexts>
 					<TaskPouOids>
 						<TaskPouOid Prio="26" OTCID="#x08502101"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{1C5680C6-286C-4B6F-B4B6-C8087414C796}" Name="Practice_V6" PrjFilePath="Practice_V6\Practice_V6.plcproj" TmcFilePath="Practice_V6\Practice_V6.tmc" ReloadTmc="true" AmsPort="856" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502140" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V6\Practice_V6.tmc" TmcHash="{F98C5497-8E8B-87B6-4290-87C42FC1F1DE}">
+					<Name>Practice_V6 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x020100b0</OTCID>
+							</ManualConfig>
+							<Priority>28</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="28" OTCID="#x08502141"/>
 					</TaskPouOids>
 				</Instance>
 			</Project>

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{55adf745-b895-4ebd-8e09-2db70c081c11}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	stTank1 : ST_Tank := (nId:= 019,  rtemperature :=97, rlevel := 77, bAlarm := FALSE);
+	stTank2 : ST_Tank := (nId:= 017,  rtemperature :=89, rlevel := 95, bAlarm := FALSE);
+	stTank3 : ST_Tank := (nId:= 021,  rtemperature :=98, rlevel := 76, bAlarm := FALSE);
+	fbTank1 : FB_TankController(pTankController := ADR(stTank1));
+	fbTank2 : FB_TankController(pTankController:= ADR(stTank2));
+	fbTank3 : FB_TankController(pTankController:= ADR(stTank3));
+	    //  Interface pointers — runtime polymorphism
+    ipTank1  : I_TankController;
+    ipTank2  : I_TankController;
+    ipTank3  : I_TankController;
+	
+    bSafety1 : BOOL;
+    bSafety2 : BOOL;
+    bSafety3 : BOOL;
+
+	bCool1   : BOOL;
+    bCool2   : BOOL;
+    bCool3   : BOOL;
+	
+	sLog1   : STRING;
+    sLog2   : STRING;
+    sLog3   : STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*fbTank1.CheckSafety();
+bCool1 := fbTank1.ApplyCooling();
+    
+fbTank2.CheckSafety();
+fbTank2.ApplyCooling();  
+
+fbTank3.CheckSafety();
+fbTank3.ApplyCooling();
+
+
+sLog1 := fbTank1.sLog;
+sLog2 := fbTank2.sLog;
+sLog3 := fbTank3.sLog;*)
+
+//   Assign FB instances to interface pointers
+ipTank1 := fbTank1;
+ipTank2 := fbTank2;
+ipTank3 := fbTank3;
+
+// Call via interface pointer — runtime polymorphism
+// TwinCAT resolves which FB to call at runtime
+bSafety1 := ipTank1.CheckSafety();
+bSafety2 := ipTank2.CheckSafety();
+bSafety3 := ipTank3.CheckSafety();
+
+bCool1 := ipTank1.ApplyCooling();
+bCool2 := ipTank2.ApplyCooling();
+bCool3 := ipTank3.ApplyCooling();
+
+// Log must be read via FB directly
+// GetLog() is not part of interface
+
+sLog1 := fbTank1.sLog;
+sLog2 := fbTank2.sLog;
+sLog3 := fbTank3.sLog;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="12" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="24" Count="1" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="56" Count="3" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="133" Count="17" />
+      <LineId Id="154" Count="2" />
+      <LineId Id="109" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

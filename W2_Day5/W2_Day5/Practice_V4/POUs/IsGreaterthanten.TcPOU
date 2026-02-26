@@ -9,9 +9,7 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-
-IF rValue>10 THEN
+      <ST><![CDATA[IF rValue>10 THEN
 	IsGreaterthanten := TRUE;
 END_IF
 
@@ -19,8 +17,6 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="IsGreaterthanten">
-      <LineId Id="14" Count="0" />
-      <LineId Id="12" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="9" Count="1" />
       <LineId Id="16" Count="1" />

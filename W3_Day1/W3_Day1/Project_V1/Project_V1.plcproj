@@ -3,43 +3,34 @@
   <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{163a5a57-a3c1-4246-8920-8f19fc3d2208}</ProjectGuid>
+    <ProjectGuid>{ed84f8d1-fcb1-4f8f-9a64-27a5211694fd}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
-    <Name>Practice_V1</Name>
+    <Name>Project_V1</Name>
     <ProgramVersion>3.1.4024.0</ProgramVersion>
-    <Application>{8a7f2330-03da-440f-9fde-2359cb535b3b}</Application>
-    <TypeSystem>{eb354b3e-c10d-4e3e-9420-24192923b358}</TypeSystem>
-    <Implicit_Task_Info>{329b2a1f-ec53-4934-b882-63f6bc66872a}</Implicit_Task_Info>
-    <Implicit_KindOfTask>{46779562-5834-4070-900a-9205749731fb}</Implicit_KindOfTask>
-    <Implicit_Jitter_Distribution>{77f499e5-211c-468d-aabd-f290b7fa1139}</Implicit_Jitter_Distribution>
-    <LibraryReferences>{e3f43490-d7ab-42f1-85c1-5ae825b7f0c5}</LibraryReferences>
+    <Application>{99cdb705-3f8b-4ce8-9352-066789511b6b}</Application>
+    <TypeSystem>{0f9c0a16-7d07-4bd5-835d-43aea59c5ad1}</TypeSystem>
+    <Implicit_Task_Info>{939f0c46-3936-4c1d-bd86-301be45f8cf2}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{db9b2eb2-3750-4bfb-98e8-267ab87d7fb4}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{e4c5fc9a-344e-4700-96e6-c97f83ea914c}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{6ef0f897-2920-48ca-b2d6-1cae2c4871a3}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\E_EventType.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\ST_Event.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_CsvPersistentEventStorage.TcPOU">
+    <Compile Include="POUs\FB_Child1.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_EventLogger.TcPOU">
+    <Compile Include="POUs\FB_Child2.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_XmlPersistentEventStorage.TcPOU">
+    <Compile Include="POUs\FB_GrandChild.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\F_UpdateEventTimeStamp.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\I_PersistentEventStorage.TcIO">
+    <Compile Include="POUs\FB_Parent.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -61,24 +52,21 @@
       <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_System</Namespace>
     </PlaceholderReference>
-    <PlaceholderReference Include="Tc2_Utilities">
-      <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
-    </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Practice_V1.tmc">
+    <None Include="Project_V1.tmc">
       <SubType>Content</SubType>
     </None>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-        <Data>
-          <o xml:space="preserve" t="OptionKey">
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
@@ -99,13 +87,13 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-        </Data>
-        <TypeList>
-          <Type n="Hashtable">System.Collections.Hashtable</Type>
-          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-          <Type n="String">System.String</Type>
-        </TypeList>
-      </XmlArchive>
+  </Data>
+  <TypeList>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

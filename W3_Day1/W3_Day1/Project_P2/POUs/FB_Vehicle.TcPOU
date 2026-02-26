@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Vehicle" Id="{4c43a313-ee16-437a-8b82-ef5ed4134457}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT FB_Vehicle
+
+VAR
+		sOutput : STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Speed" Id="{5054b709-307e-4b93-bf1d-f40b9f285e37}">
+      <Declaration><![CDATA[METHOD ABSTRACT Speed
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="VehicleName" Id="{af49db2e-2bc0-4469-99c4-c2942b2aff3f}">
+      <Declaration><![CDATA[METHOD ABSTRACT VehicleName
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Vehicle">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Vehicle.Speed">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Vehicle.VehicleName">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
