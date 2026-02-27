@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{2904b480-5b50-4d06-ab74-faf235f25a7b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbProfiler : PROFILER;
+	ProfilerResult: PROFILERSTRUCT;
+	nFactorial : ULINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbProfiler(START := TRUE, RESET := TRUE);
+F_FindFactorial(n:= nFactorial);
+// HERE WE DO OUR CALCULATION	
+fbProfiler(START := FALSE);
+
+ProfilerResult := fbProfiler.DATA;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

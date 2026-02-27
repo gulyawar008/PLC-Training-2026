@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_NormalWash" Id="{4501bad4-73b6-4180-bc5c-3147bcd1749d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_NormalWash IMPLEMENTS I_WashStrategy
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetWashSettings" Id="{e376caec-c9b4-43e6-b724-82e3201f633c}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetWashSettings
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ProgramName" Id="{7f7c6360-78fe-436f-a4d1-1edf53ad730b}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD ProgramName : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_NormalWash">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalWash.GetWashSettings">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalWash.ProgramName">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

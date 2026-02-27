@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_EcoWash" Id="{1835ade7-aea4-4535-b27c-cd26b020b72e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EcoWash IMPLEMENTS I_WashStrategy
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetWashSettings" Id="{6b162565-bd4d-43c4-912d-4109d36d718a}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetWashSettings
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ProgramName" Id="{ec403252-a071-4ef3-8743-81c62b8e8044}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD ProgramName : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_EcoWash">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EcoWash.GetWashSettings">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EcoWash.ProgramName">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
