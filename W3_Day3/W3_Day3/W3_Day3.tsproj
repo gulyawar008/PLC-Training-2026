@@ -12,11 +12,17 @@
 				<Task Id="4" Priority="21" CycleTime="100000" AmsPort="351" AdtTasks="true">
 					<Name>PlcTask1</Name>
 				</Task>
+				<Task Id="5" Priority="22" CycleTime="100000" AmsPort="352" AdtTasks="true">
+					<Name>PlcTask2</Name>
+				</Task>
+				<Task Id="6" Priority="23" CycleTime="100000" AmsPort="353" AdtTasks="true">
+					<Name>PlcTask3</Name>
+				</Task>
 			</Tasks>
 		</System>
 		<Plc>
 			<Project GUID="{B439E902-E207-4E08-BCB0-9D9C897EDDEF}" Name="Project_P1" PrjFilePath="Project_P1\Project_P1.plcproj" TmcFilePath="Project_P1\Project_P1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{8B20D522-4373-AA40-DA8E-A36895E9BA2B}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P1\Project_P1.tmc" TmcHash="{8B20D522-4373-AA40-DA8E-A36895E9BA2B}">
 					<Name>Project_P1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -36,15 +42,63 @@
 				</Instance>
 			</Project>
 			<Project GUID="{19B099F7-B460-40D5-B7EA-E287D966BA6A}" Name="Project_P2" PrjFilePath="Project_P2\Project_P2.plcproj" TmcFilePath="Project_P2\Project_P2.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P2\Project_P2.tmc" TmcHash="{F001DBF2-ADBA-B934-1E2C-41F451CA2DD0}">
 					<Name>Project_P2 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
 						<Context>
-							<Id>1</Id>
-							<Name>Default</Name>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010040</OTCID>
+							</ManualConfig>
+							<Priority>21</Priority>
+							<CycleTime>10000000</CycleTime>
 						</Context>
 					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="21" OTCID="#x08502041"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{5E9120AC-74DB-4762-BDAD-D83502A234A3}" Name="Project_P3" PrjFilePath="Project_P3\Project_P3.plcproj" TmcFilePath="Project_P3\Project_P3.tmc" ReloadTmc="true" AmsPort="853" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P3\Project_P3.tmc" TmcHash="{B1717AE2-6FA6-5B6D-4D4F-CF85C7ED8504}">
+					<Name>Project_P3 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010050</OTCID>
+							</ManualConfig>
+							<Priority>22</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="22" OTCID="#x08502081"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{9B0ACC39-4FEF-4C27-93E7-3771EE1836C3}" Name="Project_P4" PrjFilePath="Project_P4\Project_P4.plcproj" TmcFilePath="Project_P4\Project_P4.tmc" ReloadTmc="true" AmsPort="854" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x085020c0" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P4\Project_P4.tmc" TmcHash="{B1D11C26-53B9-C13F-D12C-8E77B2F06330}">
+					<Name>Project_P4 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010060</OTCID>
+							</ManualConfig>
+							<Priority>23</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="23" OTCID="#x085020c1"/>
+					</TaskPouOids>
 				</Instance>
 			</Project>
 		</Plc>

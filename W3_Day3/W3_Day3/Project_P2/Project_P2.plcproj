@@ -18,14 +18,18 @@
     <LibraryReferences>{eea0f406-44c5-4188-b07a-6cb1aa157b50}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\E_WashState.TcDUT">
+    <Compile Include="DUTs\E_WashProgram.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\I_WashStrategy.TcIO">
+    <Compile Include="DUTs\E_WashState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\ST_WashSettings.TcDUT">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GVL_WashConstants.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
@@ -33,13 +37,16 @@
     <Compile Include="POUs\FB_EcoWash.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_IntensiveWatch.TcPOU">
+    <Compile Include="POUs\FB_IntensiveWash.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_NormalWash.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_WashingMachineController.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\I_WashStrategy.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -66,11 +73,16 @@
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Project_P2.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-  <Data>
-    <o xml:space="preserve" t="OptionKey">
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -104,13 +116,13 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-  </Data>
-  <TypeList>
-    <Type n="Hashtable">System.Collections.Hashtable</Type>
-    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-    <Type n="String">System.String</Type>
-  </TypeList>
-</XmlArchive>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

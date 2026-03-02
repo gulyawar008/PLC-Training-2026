@@ -280,8 +280,8 @@ GoTo(E_WashState.IDLE);
 ResetError    := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="SetStrategy" Id="{49dc33aa-a66e-47eb-a6c6-a164cba62a70}">
-      <Declaration><![CDATA[METHOD SetStrategy : BOOL
+    <Method Name="SelectStrategy" Id="{49dc33aa-a66e-47eb-a6c6-a164cba62a70}">
+      <Declaration><![CDATA[METHOD SelectStrategy : BOOL
 VAR_INPUT
 	ipGetStrategy : I_WashStrategy;
 	
@@ -292,13 +292,13 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF bRunning THEN
 	sLog := 'ERROR: Cannot change program while running.';
-	SetStrategy := FALSE;
+	SelectStrategy := FALSE;
 	RETURN;
 END_IF
 
 IF ipGetStrategy = 0 THEN
 	sLog := 'ERROR: Invalid strategy reference.';
-	SetStrategy := FALSE;
+	SelectStrategy := FALSE;
 	RETURN;
 END_IF
 
@@ -315,7 +315,7 @@ IF stWashSettings.rWashTemperature > GVL_WashConstants.TEMP_MAX OR
 	stWashSettings.rWashTemperature < GVL_WashConstants.TEMP_MIN THEN
 	sErrorMessage := 'Temperature out of safe range';
 	GoTo(E_WashState.ERROR);
-	SetStrategy := FALSE;
+	SelectStrategy := FALSE;
 	RETURN;
 END_IF
 
@@ -323,12 +323,12 @@ IF stWashSettings.nSpinSpeed > GVL_WashConstants.SPIN_MAX OR
 	stWashSettings.nSpinSpeed < GVL_WashConstants.SPIN_MIN THEN
 	sErrorMessage := 'Spin speed out of safe range';
 	GoTo(E_WashState.ERROR);
-	SetStrategy := FALSE;
+	SelectStrategy := FALSE;
 	RETURN;
 END_IF
 
     sLog       := CONCAT('Program selected: ', ipStrategy.GetProgramName());
-    SetStrategy := TRUE;
+    SelectStrategy := TRUE;
 ]]></ST>
       </Implementation>
     </Method>
@@ -443,34 +443,8 @@ GoTo(E_WashState.ERROR);]]></ST>
       <LineId Id="22" Count="1" />
       <LineId Id="25" Count="1" />
     </LineIds>
-    <LineIds Name="FB_WashingMachineController.SetStrategy">
-      <LineId Id="13" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="26" Count="1" />
-      <LineId Id="24" Count="1" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="10" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="32" Count="2" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="31" Count="0" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="42" Count="5" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="39" Count="1" />
-      <LineId Id="38" Count="0" />
+    <LineIds Name="FB_WashingMachineController.SelectStrategy">
+      <LineId Id="65" Count="38" />
       <LineId Id="35" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachineController.Start">

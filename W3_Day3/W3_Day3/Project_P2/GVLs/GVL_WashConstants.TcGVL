@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <GVL Name="GVL_WashConstants" Id="{67587482-48cd-492d-84af-1a8ed11fb6c7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	TEMP_MIN: 					REAL := 20.0;
+	TEMP_MAX: 					REAL := 90.0;
+	
+	SPIN_MIN: 					UINT := 400;
+	SPIN_MAX: 					UINT :=1600;
+	   
+	ECO_TEMP:        			REAL := 30.0;
+	ECO_SPIN: 					UINT := 600;
+	ECO_WASH_TIME: 				TIME := T#1M;
+	ECO_WASH_RINSE_TIME:		TIME := T#1M;
+	ECO_WASH_SPIN_TIME : 		TIME := T#1M;
+	ECO_DESC: 					STRING := 'Eco Wash - Low Energy, Gentle Cycle';
+		
+	NORMAL_TEMP:  				REAL := 40.0;
+	NORMAL_SPIN: 				UINT := 1000;
+	NORMAL_WASH_TIME:			TIME := T#1M;
+	NORMAL_WASH_RINSE_TIME:		TIME := T#1M;
+	NORMAL_WASH_SPIN_TIME:		TIME := T#1M;
+	NORMAL_DESC: 				STRING := 'Normal Wash - Standard everyday cycle';
+	
+	INTENSIVE_TEMP:  			REAL := 60.0;
+	INTENSIVE_SPIN: 			UINT := 1400;
+	INTENSIVE_WASH_TIME:		TIME := T#45M;
+	INTENSIVE_WASH_RINSE_TIME:	TIME := T#15M;
+	INTENSIVE_WASH_SPIN_TIME:	TIME := T#12M;
+	INTENSIVE_DESC: 			STRING := 'Intensive Wash - Heavy Duty, Deep Clean';
+	
+	DONE_HOLD_TIME:				TIME  := T#5S;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

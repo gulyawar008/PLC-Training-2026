@@ -30,11 +30,11 @@ END_VAR
       <ST><![CDATA[IF eSelectedProgram <> ePrevProgram THEN
     CASE eSelectedProgram OF
         E_WashProgram.ECO:
-            fbWashingMachineController.SetStrategy(ipGetStrategy := fbEcoWash);
+            fbWashingMachineController.SelectStrategy(ipGetStrategy := fbEcoWash);
         E_WashProgram.NORMAL:
-            fbWashingMachineController.SetStrategy(ipGetStrategy := fbNormalWash);
+            fbWashingMachineController.SelectStrategy(ipGetStrategy := fbNormalWash);
         E_WashProgram.INTENSIVE:
-            fbWashingMachineController.SetStrategy(ipGetStrategy := fbIntensiveWash);
+            fbWashingMachineController.SelectStrategy(ipGetStrategy := fbIntensiveWash);
     END_CASE
     ePrevProgram := eSelectedProgram; 
 END_IF

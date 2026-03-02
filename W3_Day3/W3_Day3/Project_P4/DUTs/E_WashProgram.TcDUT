@@ -1,16 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
-  <DUT Name="E_WashState" Id="{311d956f-1bfa-4c7c-8666-ae817009b0c9}">
+  <DUT Name="E_WashProgram" Id="{e27fb257-593f-41d4-9eda-27412b1347c9}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
-TYPE  E_WashState :
+TYPE  E_WashProgram :
 (
-	 IDLE     := 0,
-    WASHING  := 1,
-    RINSING  := 2,
-    SPINNING := 3,
-    DONE     := 4,
-    ERROR    := 99
+	NONE         := 0,
+    SOFT      := 1,
+    NORMAL    := 2,
+    HEAVY     := 3
 );
 END_TYPE
 ]]></Declaration>

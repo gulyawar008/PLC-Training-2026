@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{a49a1175-db04-4d4b-9ef1-0f142f4531a3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    // Create an instance of your custom FB
+    // Pattern: [InstanceName] : [Namespace].[BlockName];
+    fbMyCounter : FB_MaintenanceCounter;
+    
+    // Test inputs
+    bSensorInput : BOOL;
+    bResetButton : BOOL;
+    
+    // Test outputs
+    bAlarmActive : BOOL;
+    nCurrentVal  : UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbMyCounter(
+    bCountPulse := bSensorInput, 
+    bReset      := bResetButton, 
+    nLimit      := 10000,           // Maintenance after 10k cycles
+    nCurrentCount => nCurrentVal,   // Read output into local variable
+    bMaintenanceDue => bAlarmActive // Read alarm status
+);]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="33" Count="5" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{73842457-3347-4906-afa3-95cada3579ae}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    fbWashMachine   : FB_WashingMachine;
+    fbSoft          : FB_SoftWash;
+    fbNormal        : FB_NormalWash;
+    fbHeavy         : FB_HeavyWash;
+    ipStrategy      : I_WashStrategy;
+
+    eProgram        : E_WashProgram := E_WashProgram.NONE;
+    bSelectProgram  : BOOL := FALSE;    // ✅ trigger flag
+    bStart          : BOOL := FALSE;
+    bStop           : BOOL := FALSE;
+    bDoorClosed     : BOOL := FALSE;
+    bResetError     : BOOL := FALSE;
+
+    eCurrentState   : E_WashState;
+    tRemainingTime  : TIME;
+    bIsRunning      : BOOL;
+    nTotalCycles    : INT;
+    sCurrentProgram : STRING;
+    sLog            : STRING;
+    sError          : STRING;
+    bBool           : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+// ✅ STEP 1 — FB body FIRST every cycle
+fbWashMachine();
+
+// ✅ STEP 2 — Strategy only on trigger not every cycle
+IF bSelectProgram THEN
+    bSelectProgram := FALSE;
+
+    CASE eProgram OF
+        E_WashProgram.NONE:
+            ipStrategy := 0;            // ✅ NONE handled
+
+        E_WashProgram.SOFT:
+            ipStrategy := fbSoft;
+
+        E_WashProgram.NORMAL:
+            ipStrategy := fbNormal;
+
+        E_WashProgram.HEAVY:
+            ipStrategy := fbHeavy;
+    END_CASE
+
+    // ✅ only call SelectStrategy on trigger
+    bBool := fbWashMachine.SelectStrategy(ipGetStrategy := ipStrategy);
+END_IF
+
+// ✅ STEP 3 — Door control
+fbWashMachine.IsDoorClosed := bDoorClosed;
+
+// ✅ STEP 4 — Control inputs
+IF bStart THEN
+    fbWashMachine.Start();
+    bStart := FALSE;
+END_IF
+
+IF bStop THEN
+    fbWashMachine.Stop();
+    bStop := FALSE;
+END_IF
+
+IF bResetError THEN
+    fbWashMachine.ResetError();
+    bResetError := FALSE;
+END_IF
+
+// ✅ STEP 5 — Read outputs
+eCurrentState   := fbWashMachine.CurrentState;
+tRemainingTime  := fbWashMachine.RemainingTime;
+bIsRunning      := fbWashMachine.IsRunning;
+nTotalCycles    := fbWashMachine.TotalCycles;
+sCurrentProgram := fbWashMachine.CurrentProgram;
+sLog            := fbWashMachine.LogMessage;
+sError          := fbWashMachine.ErrorMessage;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="395" Count="52" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

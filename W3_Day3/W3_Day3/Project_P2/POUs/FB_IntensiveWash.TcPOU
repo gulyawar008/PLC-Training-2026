@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
-  <POU Name="FB_NormalWash" Id="{4501bad4-73b6-4180-bc5c-3147bcd1749d}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_NormalWash IMPLEMENTS I_WashStrategy
+  <POU Name="FB_IntensiveWash" Id="{1b624a9a-787a-46df-943d-ffbad20b2ca8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_IntensiveWash IMPLEMENTS I_WashStrategy
 VAR
 	stWashSettings : ST_WashSettings;
 END_VAR
@@ -9,7 +9,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="FB_init" Id="{cca724aa-2f2f-40b8-a35f-a84be90a8aef}">
+    <Method Name="FB_init" Id="{65b911fa-e470-4825-9c70-7cbfa5837ab3}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
@@ -18,42 +18,42 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF stWashSettings.sDescription = '' THEN
-	stWashSettings.rWashTemperature := GVL_WashConstants.NORMAL_TEMP;
-	stWashSettings.nSpinSpeed:= GVL_WashConstants.NORMAL_SPIN;
-	stWashSettings.tWashDuration := GVL_WashConstants.NORMAL_WASH_TIME;
-	stWashSettings.sDescription := GVL_WashConstants.NORMAL_DESC;
+	stWashSettings.rWashTemperature := GVL_WashConstants.INTENSIVE_TEMP;
+	stWashSettings.nSpinSpeed:= GVL_WashConstants.INTENSIVE_SPIN;
+	stWashSettings.tWashDuration := GVL_WashConstants.INTENSIVE_WASH_TIME;
+	stWashSettings.sDescription := GVL_WashConstants.INTENSIVE_DESC;
 	
 END_IF
 FB_init :=TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="GetProgramName" Id="{7f7c6360-78fe-436f-a4d1-1edf53ad730b}">
+    <Method Name="GetProgramName" Id="{994d12cf-fbc6-45d2-883a-a099bfdf27c6}">
       <Declaration><![CDATA[{warning 'add method implementation '}
 METHOD GetProgramName : STRING
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[GetProgramName := 'Normal'; ]]></ST>
+        <ST><![CDATA[GetProgramName := 'Intensive'; ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="GetRinseTime" Id="{5ade095b-1f78-4211-adac-0afdf8734c4c}">
-      <Declaration><![CDATA[METHOD GetRinseTime : TIME;
+    <Method Name="GetRinseTime" Id="{15aa26cc-268e-4c0c-902b-1a09f828145a}">
+      <Declaration><![CDATA[METHOD GetRinseTime : TIME
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[GetRinseTime := GVL_WashConstants.INTENSIVE_WASH_RINSE_TIME;]]></ST>
+        <ST><![CDATA[GetRinseTime := GVL_WashConstants.NORMAL_WASH_RINSE_TIME;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="GetSpinTime" Id="{88de4e58-e819-4bbe-a1a5-d1e131a9edcf}">
+    <Method Name="GetSpinTime" Id="{c61f6559-0b5f-4628-a4d5-ec64dceb2e68}">
       <Declaration><![CDATA[METHOD GetSpinTime : TIME
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[GetSpinTime := GVL_WashConstants.INTENSIVE_WASH_SPIN_TIME;]]></ST>
+        <ST><![CDATA[GetSpinTime := GVL_WashConstants.NORMAL_WASH_SPIN_TIME;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="GetWashSettings" Id="{e376caec-c9b4-43e6-b724-82e3201f633c}">
+    <Method Name="GetWashSettings" Id="{94ac178f-107e-4af5-9eb7-e84316509b2b}">
       <Declaration><![CDATA[
 METHOD GetWashSettings : ST_WashSettings
 ]]></Declaration>
@@ -61,24 +61,24 @@ METHOD GetWashSettings : ST_WashSettings
         <ST><![CDATA[GetWashSettings := stWashSettings;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_NormalWash">
+    <LineIds Name="FB_IntensiveWash">
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_NormalWash.FB_init">
+    <LineIds Name="FB_IntensiveWash.FB_init">
       <LineId Id="8" Count="5" />
       <LineId Id="7" Count="0" />
       <LineId Id="19" Count="0" />
     </LineIds>
-    <LineIds Name="FB_NormalWash.GetProgramName">
+    <LineIds Name="FB_IntensiveWash.GetProgramName">
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_NormalWash.GetRinseTime">
+    <LineIds Name="FB_IntensiveWash.GetRinseTime">
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_NormalWash.GetSpinTime">
+    <LineIds Name="FB_IntensiveWash.GetSpinTime">
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_NormalWash.GetWashSettings">
+    <LineIds Name="FB_IntensiveWash.GetWashSettings">
       <LineId Id="4" Count="0" />
     </LineIds>
   </POU>

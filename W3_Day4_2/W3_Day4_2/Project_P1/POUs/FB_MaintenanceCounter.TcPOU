@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_MaintenanceCounter" Id="{e845490c-d475-42d4-9822-5d76cb9b4e38}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MaintenanceCounter
+VAR_INPUT
+    bCountPulse      : BOOL;   
+    bReset           : BOOL;   
+    nLimit           : UDINT;  
+END_VAR
+VAR_OUTPUT
+    nCurrentCount    : UDINT;  
+    bMaintenanceDue  : BOOL;   
+END_VAR
+VAR
+    fbRisingEdge     : R_TRIG; 
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+fbRisingEdge(CLK := bCountPulse);
+
+
+IF fbRisingEdge.Q THEN
+    nCurrentCount := nCurrentCount + 1;
+END_IF
+
+IF bReset THEN
+    nCurrentCount := 0;
+END_IF
+
+
+bMaintenanceDue := (nCurrentCount >= nLimit) AND (nLimit > 0);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_MaintenanceCounter">
+      <LineId Id="34" Count="6" />
+      <LineId Id="42" Count="5" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

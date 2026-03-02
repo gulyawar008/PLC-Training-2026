@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_TankController" Id="{e62e7673-f95f-4797-a835-75c0f7d52b3e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TankController
+VAR_INPUT
+    bStart   : BOOL;
+    bStop    : BOOL;
+    bReset   : BOOL;
+    rLevel   : REAL;
+END_VAR
+
+VAR_OUTPUT
+    bInletValve  : BOOL;
+    bOutletValve : BOOL;
+    eState       : E_TankState;
+    sFaultMsg    : STRING;
+    sLog         : STRING;      // Watch in Online View
+END_VAR
+
+VAR
+    tonFillTimeout   : TON;
+    tonDrainTimeout  : TON;
+    tonResetDebounce : TON;
+    bStateEntry      : BOOL := TRUE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+// ── Timers ────────────────────────────────────────────────────
+tonFillTimeout  (IN := (eState = E_TankState.FILLING),          PT := T#30S);
+tonDrainTimeout (IN := (eState = E_TankState.DRAINING),         PT := T#45S);
+tonResetDebounce(IN := (eState = E_TankState.FAULT) AND bReset, PT := T#2S);
+
+// ── State Machine ─────────────────────────────────────────────
+CASE eState OF
+
+    E_TankState.IDLE:
+        IF bStateEntry THEN
+            bInletValve  := FALSE;
+            bOutletValve := FALSE;
+            sFaultMsg    := '';
+            sLog         := 'STATE: IDLE — Valves closed. Waiting for bStart.';
+            bStateEntry  := FALSE;
+        END_IF
+
+        IF bStart THEN
+            sLog := 'TRANSITION: IDLE → FILLING';
+            _GoTo(E_TankState.FILLING);
+        END_IF
+
+    E_TankState.FILLING:
+        IF bStateEntry THEN
+            bInletValve  := TRUE;
+            bOutletValve := FALSE;
+            sLog         := 'STATE: FILLING — Inlet valve OPEN.';
+            bStateEntry  := FALSE;
+        END_IF
+
+        IF tonFillTimeout.Q THEN
+            sFaultMsg    := 'Fill timeout 30s — level not reached';
+            sLog         := 'FAULT: Fill timeout 30s — level not reached';
+            bInletValve  := FALSE;
+            _GoTo(E_TankState.FAULT);
+
+        ELSIF rLevel >= 90.0 THEN
+            bInletValve  := FALSE;
+            sLog         := 'TRANSITION: FILLING → FULL — Level reached 90%';
+            _GoTo(E_TankState.FULL);
+        END_IF
+
+    E_TankState.FULL:
+        IF bStateEntry THEN
+            bInletValve  := FALSE;
+            bOutletValve := FALSE;
+            sLog         := 'STATE: FULL — Both valves closed. Waiting for bStop.';
+            bStateEntry  := FALSE;
+        END_IF
+
+        IF rLevel > 95.0 THEN
+            sFaultMsg    := 'Overflow — level exceeded 95%';
+            sLog         := 'FAULT: Overflow — level exceeded 95%';
+            _GoTo(E_TankState.FAULT);
+
+        ELSIF bStop THEN
+            sLog := 'TRANSITION: FULL → DRAINING — bStop received';
+            _GoTo(E_TankState.DRAINING);
+        END_IF
+
+    E_TankState.DRAINING:
+        IF bStateEntry THEN
+            bInletValve  := FALSE;
+            bOutletValve := TRUE;
+            sLog         := 'STATE: DRAINING — Outlet valve OPEN.';
+            bStateEntry  := FALSE;
+        END_IF
+
+        IF tonDrainTimeout.Q THEN
+            sFaultMsg    := 'Drain timeout 45s — level not cleared';
+            sLog         := 'FAULT: Drain timeout 45s — level not cleared';
+            bOutletValve := FALSE;
+            _GoTo(E_TankState.FAULT);
+
+        ELSIF rLevel <= 10.0 THEN
+            bOutletValve := FALSE;
+            sLog         := 'TRANSITION: DRAINING → IDLE — Tank empty';
+            _GoTo(E_TankState.IDLE);
+        END_IF
+
+    E_TankState.FAULT:
+        IF bStateEntry THEN
+            bInletValve  := FALSE;
+            bOutletValve := FALSE;
+            sLog         := 'STATE: FAULT — Safe state. Hold bReset 2s to clear.';
+            bStateEntry  := FALSE;
+        END_IF
+
+        IF tonResetDebounce.Q THEN
+            sLog      := 'TRANSITION: FAULT → IDLE — Fault acknowledged';
+            sFaultMsg := '';
+            _GoTo(E_TankState.IDLE);
+        END_IF
+
+    ELSE
+        _GoTo(E_TankState.IDLE);
+
+END_CASE
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="_GoTo" Id="{d5128fbd-1693-490d-908b-6b6eeca81812}">
+      <Declaration><![CDATA[METHOD PRIVATE _GoTo
+VAR_INPUT
+    eNext : E_TankState;
+END_VAR
+   ]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ eState      := eNext;
+    bStateEntry := TRUE;
+	]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="Act_AllValvesClosed" Id="{5dfa0208-0f4a-4015-9567-adee67d8aa35}">
+      <Implementation>
+        <ST><![CDATA[bInletValve  := FALSE;
+bOutletValve := FALSE;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Act_Fill" Id="{d8903feb-14b9-484e-80a0-ab6719bd0f9f}">
+      <Implementation>
+        <ST><![CDATA[ bInletValve  := TRUE;
+bOutletValve := FALSE;]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="FB_TankController">
+      <LineId Id="538" Count="101" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TankController._GoTo">
+      <LineId Id="11" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TankController.Act_AllValvesClosed">
+      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TankController.Act_Fill">
+      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{0fc0218c-b8f1-4336-8afb-39148bc3615c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    fbTank       : FB_TankController;
+    bStart       : BOOL;
+    bStop        : BOOL;
+    bReset       : BOOL;
+    rLevel       : REAL;
+    bInletValve  : BOOL;
+    bOutletValve : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbTank(
+    bStart  := bStart,
+    bStop   := bStop,
+    bReset  := bReset,
+    rLevel  := rLevel
+);
+
+// ── Map outputs ───────────────────────────────────────────────
+bInletValve  := fbTank.bInletValve;
+bOutletValve := fbTank.bOutletValve;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="338" Count="8" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

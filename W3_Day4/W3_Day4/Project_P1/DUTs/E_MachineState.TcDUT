@@ -3,7 +3,7 @@
   <DUT Name="E_MachineState" Id="{d11e1d8f-51f0-4036-9189-8bde2e0915ed}">
     <Declaration><![CDATA[TYPE E_MachineState :
 STRUCT
-	
+
 END_STRUCT
 END_TYPE
 ]]></Declaration>

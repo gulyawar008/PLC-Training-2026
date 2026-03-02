@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{7b6bf5e9-7720-4ec1-bf7e-55322b420a85}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	
+    fbWasher         : FB_WashingMachine; 
+    fbSoft           : FB_SoftWash; 
+    fbNormal         : FB_NormalWash; 
+    fbHeavy          : FB_HeavyWash; 
+    eSelectedProgram : E_WashProgram := E_WashProgram.NONE; 
+    ePrevProgram     : E_WashProgram := E_WashProgram.NONE; 
+    bLockDoor        : BOOL := FALSE; 
+    bStart           : BOOL := FALSE; 
+    bStop            : BOOL := FALSE; 
+    bResetError      : BOOL := FALSE; 
+
+    // Watch window outputs 
+    sLog          : STRING; 
+    sError        : STRING; 
+	tWashDuration : TIME;
+    eState        : E_WashState; 
+    tRemaining    : TIME; 
+    bRunning      : BOOL; 
+
+END_VAR 
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// ── Strategy Selection (on change) ─────────────────── 
+IF eSelectedProgram <> ePrevProgram THEN 
+
+    CASE eSelectedProgram OF 
+        E_WashProgram.SOFT:   fbWasher.SelectStrategy(ipStrategy := fbSoft); 
+        E_WashProgram.NORMAL: fbWasher.SelectStrategy(ipStrategy := fbNormal); 
+        E_WashProgram.HEAVY:  fbWasher.SelectStrategy(ipStrategy := fbHeavy); 
+    END_CASE 
+    ePrevProgram := eSelectedProgram; 
+END_IF 
+
+ 
+
+// ── Pulse inputs ───────────────────────────────────── 
+IF bLockDoor THEN 
+    fbWasher.LockDoor();
+    bLockDoor    := FALSE;
+ END_IF 
+IF bStart  THEN 
+   fbWasher.Start();    
+   bStart       := FALSE;
+ END_IF 
+IF bStop  THEN 
+   fbWasher.Stop();    
+   bStop        := FALSE;
+ END_IF 
+IF bResetError  THEN
+   fbWasher.ResetError(); 
+   bResetError  := FALSE; 
+END_IF 
+
+// ── Cyclic FB call ─────────────────────────────────── 
+fbWasher(); 
+
+// ── Read properties → Watch Window ─────────────────── 
+tWashDuration:= fbWasher.WashDuration;
+eState     := fbWasher.CurrentState; 
+tRemaining := fbWasher.RemainingTime;  
+bRunning   := fbWasher.IsRunning; 
+sLog       := fbWasher.LogMessage; 
+sError     := fbWasher.ErrorMessage; ]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="46" Count="0" />
+      <LineId Id="48" Count="2" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="62" Count="4" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="134" Count="2" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="137" Count="2" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="141" Count="1" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="146" Count="1" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

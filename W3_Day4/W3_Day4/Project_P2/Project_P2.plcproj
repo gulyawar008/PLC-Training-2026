@@ -3,24 +3,21 @@
   <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{99c2080a-2cb8-4b88-94c8-22433afe998d}</ProjectGuid>
+    <ProjectGuid>{13ed44d1-6666-45a4-8618-2719bd159482}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
-    <Name>Project_P1</Name>
+    <Name>Project_P2</Name>
     <ProgramVersion>3.1.4024.0</ProgramVersion>
-    <Application>{5cec949a-6f06-4ae1-a0cc-8525c59f3453}</Application>
-    <TypeSystem>{595a05dc-9d32-4407-8f7d-5a9a9d470127}</TypeSystem>
-    <Implicit_Task_Info>{e2a1aaad-8c95-4810-ba39-2015ab0a69f0}</Implicit_Task_Info>
-    <Implicit_KindOfTask>{3bb1a28d-35b5-4eb8-88a2-b35c53c860b4}</Implicit_KindOfTask>
-    <Implicit_Jitter_Distribution>{4b526941-21bc-4289-85ea-bc1bd75de4a2}</Implicit_Jitter_Distribution>
-    <LibraryReferences>{c690eaff-bbdd-4401-9b59-87ae12b44458}</LibraryReferences>
+    <Application>{670688ab-dcfa-4a71-8235-d684a55731f0}</Application>
+    <TypeSystem>{1b74abdd-a37f-4486-bdf2-678946448f08}</TypeSystem>
+    <Implicit_Task_Info>{a607f38d-7c91-45c7-a2df-b4757ff9699b}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{d5158eef-b54f-4b76-8b05-20590a6c12cb}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{979e025c-3762-40df-9164-4355fa1c564a}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{6546c06b-fe37-454b-928b-85bc89cf0edd}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\E_MachineState.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
@@ -35,6 +32,10 @@
     <Folder Include="POUs" />
   </ItemGroup>
   <ItemGroup>
+    <PlaceholderReference Include="Standard_Tools">
+      <DefaultResolution>Standard_Tools, * (MyCompany)</DefaultResolution>
+      <Namespace>Standard_Tools</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Standard">
       <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Standard</Namespace>
@@ -47,9 +48,12 @@
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_PackML">
+      <DefaultResolution>Tc3_PackML, * (Beckhoff Automation GmbH)</DefaultResolution>
+    </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Project_P1.tmc">
+    <None Include="Project_P2.tmc">
       <SubType>Content</SubType>
     </None>
   </ItemGroup>

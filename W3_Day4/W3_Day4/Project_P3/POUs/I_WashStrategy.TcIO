@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_WashStrategy" Id="{50ec7f30-3323-4529-9bcd-19835c1e8221}">
+    <Declaration><![CDATA[INTERFACE I_WashStrategy
+]]></Declaration>
+    <Method Name="GetProgramName" Id="{e62ca8db-a3dc-4d8f-b09a-8e4d6e604389}">
+      <Declaration><![CDATA[METHOD GetProgramName : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetRinseTime" Id="{5af991be-9a28-497e-989c-7841478a8551}">
+      <Declaration><![CDATA[METHOD GetRinseTime : TIME
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetSpinTime" Id="{6eafe6a8-f7be-4086-937d-f9c47bad3805}">
+      <Declaration><![CDATA[METHOD GetSpinTime : TIME
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetWashSettings" Id="{545d564f-9e67-4e1d-99b4-1e1bf46e76b4}">
+      <Declaration><![CDATA[METHOD GetWashSettings : ST_WashSettings
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <GVL Name="GVL_WashConstants" Id="{9277d41e-d25b-4c04-aa56-1cd65382f56d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+     // Temperature limits
+     TEMP_MIN           : REAL := 20.0;
+     TEMP_MAX           : REAL := 95.0;
+
+     // Speed limits
+     SPEED_MIN          : UINT  := 0;
+     SPEED_MAX          : UINT  := 1600;
+
+    // SOFT wash settings
+     SOFT_FILL          : TIME := T#30S;
+     SOFT_WASH          : TIME := T#30S;
+     SOFT_DRAIN         : TIME := T#30S;
+     SOFT_TEMP          : REAL := 30.0;
+     SOFT_SPEED         : UINT  := 400;
+
+    // NORMAL wash settings
+     NORMAL_FILL        : TIME := T#30S;
+     NORMAL_WASH        : TIME := T#30S;
+     NORMAL_DRAIN       : TIME := T#30S;
+     NORMAL_TEMP        : REAL := 40.0;
+     NORMAL_SPEED       : UINT  := 800;
+
+    // HEAVY wash settings
+     HEAVY_FILL         : TIME := T#4M;
+     HEAVY_WASH         : TIME := T#60M;
+     HEAVY_DRAIN        : TIME := T#4M;
+     HEAVY_TEMP         : REAL := 60.0;
+     HEAVY_SPEED        : UINT  := 1200;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

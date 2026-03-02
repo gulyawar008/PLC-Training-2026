@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_SoftWash" Id="{6b043722-bfdb-4fc2-b930-ac005af82bce}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SoftWash IMPLEMENTS I_WashStrategy
+VAR
+     stWashSettings   : ST_WashSettings;
+     bStarted   : BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{ac107336-e5fd-4103-89a4-917f149c10b4}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stWashSettings.tFillDuration  := GVL_WashConstants.SOFT_FILL;
+stWashSettings.tWashDuration  := GVL_WashConstants.SOFT_WASH;
+stWashSettings.tDrainDuration := GVL_WashConstants.SOFT_DRAIN;
+stWashSettings.rWashTemperature   := GVL_WashConstants.SOFT_TEMP;
+stWashSettings.nSpinSpeed     := GVL_WashConstants.SOFT_SPEED;
+stWashSettings.sDescription   := 'Soft wash — gentle cycle low temp';
+
+FB_init := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetDuration" Id="{f79856c6-80e5-4073-b33b-b6aa5da6a2ed}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetDuration : TIME
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetDuration := stWashSettings.tWashDuration;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetProgramName" Id="{e19bdd1e-d922-44db-b6c0-a2a741b58381}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetProgramName : STRING
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetProgramName := 'SOFT WASH';]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetWashSettings" Id="{df66c8da-2696-4042-ac99-05daf904a1d9}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetWashSettings : ST_WashSettings
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetWashSettings := stWashSettings;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Start" Id="{93c3279d-abbc-40ce-a312-81023cabebf8}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Start : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bStarted := TRUE;
+Start     := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_SoftWash">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SoftWash.FB_init">
+      <LineId Id="8" Count="6" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SoftWash.GetDuration">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SoftWash.GetProgramName">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SoftWash.GetWashSettings">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SoftWash.Start">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
