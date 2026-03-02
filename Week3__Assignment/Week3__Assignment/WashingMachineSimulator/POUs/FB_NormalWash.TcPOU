@@ -18,14 +18,12 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF stSettings.sDescription = '' THEN 
-    stSettings.rTemperature  := GVL_WashConstants.NORMAL_TEMP; 
-    stSettings.nSpinSpeed    := GVL_WashConstants.NORMAL_SPIN; 
-    stSettings.tWashDuration := GVL_WashConstants.NORMAL_WASH_TIME; 
-    stSettings.sDescription  := GVL_WashConstants.NORMAL_DESC; 
-END_IF 
+        <ST><![CDATA[stSettings.rTemperature  := GVL_WashConstants.NORMAL_TEMP; 
+stSettings.nSpinSpeed    := GVL_WashConstants.NORMAL_SPIN; 
+stSettings.tWashDuration := GVL_WashConstants.NORMAL_WASH_TIME; 
+stSettings.sDescription  := GVL_WashConstants.NORMAL_DESC; 
 
- FB_init := TRUE;]]></ST>
+FB_init := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="GetDuration" Id="{7a82bdcf-7c45-449f-b64f-7b4116fa5130}">
@@ -33,7 +31,7 @@ END_IF
 METHOD GetDuration : TIME
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[    GetDuration := stSettings.tWashDuration; 
+        <ST><![CDATA[GetDuration := stSettings.tWashDuration; 
 ]]></ST>
       </Implementation>
     </Method>
@@ -50,7 +48,7 @@ METHOD GetProgramName : STRING
 METHOD GetSettings : ST_WashSettings
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[ GetSettings := stSettings; ]]></ST>
+        <ST><![CDATA[GetSettings := stSettings; ]]></ST>
       </Implementation>
     </Method>
     <Method Name="Start" Id="{d6ca3d32-fd76-4dee-b80c-59ece26bcca3}">
@@ -66,12 +64,11 @@ Start     := TRUE; ]]></ST>
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_NormalWash.FB_init">
-      <LineId Id="8" Count="0" />
       <LineId Id="10" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="25" Count="0" />
       <LineId Id="14" Count="0" />
       <LineId Id="16" Count="0" />
-      <LineId Id="18" Count="1" />
+      <LineId Id="18" Count="0" />
       <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_NormalWash.GetDuration">

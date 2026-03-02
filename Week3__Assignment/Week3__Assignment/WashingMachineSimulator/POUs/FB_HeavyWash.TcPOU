@@ -18,13 +18,10 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-    stSettings.rTemperature  := GVL_WashConstants.HEAVY_TEMP; 
-    stSettings.nSpinSpeed    := GVL_WashConstants.HEAVY_SPIN; 
-    stSettings.tWashDuration := GVL_WashConstants.HEAVY_WASH_TIME; 
-    stSettings.sDescription  := GVL_WashConstants.HEAVY_DESC; 
-
-
+        <ST><![CDATA[stSettings.rTemperature  := GVL_WashConstants.HEAVY_TEMP; 
+stSettings.nSpinSpeed    := GVL_WashConstants.HEAVY_SPIN; 
+stSettings.tWashDuration := GVL_WashConstants.HEAVY_WASH_TIME; 
+stSettings.sDescription  := GVL_WashConstants.HEAVY_DESC; 
 
 FB_init := TRUE;]]></ST>
       </Implementation>
@@ -51,7 +48,7 @@ METHOD GetProgramName : STRING
 METHOD GetSettings : ST_WashSettings
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[ GetSettings := stSettings; ]]></ST>
+        <ST><![CDATA[GetSettings := stSettings; ]]></ST>
       </Implementation>
     </Method>
     <Method Name="Start" Id="{78e9b4e5-1a49-435d-995b-4ef35591c35a}">
@@ -67,12 +64,10 @@ Start     := TRUE; ]]></ST>
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_HeavyWash.FB_init">
-      <LineId Id="8" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="12" Count="0" />
       <LineId Id="14" Count="0" />
-      <LineId Id="16" Count="1" />
-      <LineId Id="7" Count="0" />
+      <LineId Id="16" Count="0" />
       <LineId Id="19" Count="0" />
       <LineId Id="18" Count="0" />
     </LineIds>

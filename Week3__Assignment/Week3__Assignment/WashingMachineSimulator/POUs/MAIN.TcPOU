@@ -15,7 +15,6 @@ VAR
     bStop            : BOOL := FALSE; 
     bResetError      : BOOL := FALSE; 
 
-    // Watch window outputs 
     sLog          : STRING; 
     sError        : STRING; 
 	tWashDuration : TIME;
@@ -26,8 +25,7 @@ VAR
 END_VAR 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// ── Strategy Selection (on change) ─────────────────── 
-IF eSelectedProgram <> ePrevProgram THEN 
+      <ST><![CDATA[IF eSelectedProgram <> ePrevProgram THEN 
 
     CASE eSelectedProgram OF 
         E_WashProgram.SOFT:   fbWasher.SelectStrategy(ipStrategy := fbSoft); 
@@ -38,8 +36,6 @@ IF eSelectedProgram <> ePrevProgram THEN
 END_IF 
 
  
-
-// ── Pulse inputs ───────────────────────────────────── 
 IF bLockDoor THEN 
     fbWasher.LockDoor();
     bLockDoor    := FALSE;
@@ -57,10 +53,8 @@ IF bResetError  THEN
    bResetError  := FALSE; 
 END_IF 
 
-// ── Cyclic FB call ─────────────────────────────────── 
 fbWasher(); 
 
-// ── Read properties → Watch Window ─────────────────── 
 tWashDuration:= fbWasher.WashDuration;
 eState     := fbWasher.CurrentState; 
 tRemaining := fbWasher.RemainingTime;  
@@ -69,7 +63,10 @@ sLog       := fbWasher.LogMessage;
 sError     := fbWasher.ErrorMessage; ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="6" Count="39" />
+      <LineId Id="7" Count="9" />
+      <LineId Id="19" Count="16" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="40" Count="5" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

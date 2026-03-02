@@ -3,35 +3,29 @@
   <POU Name="FB_WashingMachine" Id="{182d94af-703d-4404-b9f5-16db70894ffa}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_WashingMachine
 VAR
-
-    // ── State ────────────────────────────────────────── 
     eState      : E_WashState := E_WashState.IDLE; 
     bStateEntry : BOOL        := TRUE; 
-    // ── Strategy (interface reference — DIP) ─────────── 
+
     ipGetStrategy   : I_WashStrategy; 
     bStrategySet : BOOL := FALSE; 
-    // ── Cached settings from strategy ───────────────── 
+
     stWashSettings  : ST_WashSettings; 
-    // ── Control flags ───────────────────────────────── 
+
    bDoorLocked : BOOL := FALSE; 
-    bRunning    : BOOL := FALSE; 
- // ── Monitoring / Log ────────────────────────────── 
+   bRunning    : BOOL := FALSE; 
+
     sLog      : STRING; 
     sErrorMessage : STRING; 
-// ── Timers ──────────────────────────────────────── 
-    fbOnState     : TON;   // Drives each timed state 
-    fbOnCompleted : TON;   // Auto-return COMPLETED → IDLE 
+
+    fbOnState     : TON;    
+    fbOnCompleted : TON;   
 
 	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// ── Cyclic timers ──────────────────────────────────────── 
-
-fbOnState    (IN := bRunning, PT := stWashSettings.tWashDuration); 
-fbOnCompleted(IN := (eState = E_WashState.COMPLETED), 
-
-              PT := GVL_WashConstants.COMPLETED_HOLD_TIME); 
+      <ST><![CDATA[fbOnState    (IN := bRunning, PT := stWashSettings.tWashDuration); 
+fbOnCompleted(IN := (eState = E_WashState.COMPLETED),  PT := GVL_WashConstants.COMPLETED_HOLD_TIME); 
 
 
 CASE eState OF 
@@ -43,7 +37,7 @@ CASE eState OF
         bStateEntry := FALSE; 
     END_IF 
 
-  E_WashState.FILLING:                         // NEW STATE 
+  E_WashState.FILLING:                     
     IF bStateEntry THEN 
         fbOnState(IN := FALSE, PT := GVL_WashConstants.FILL_TIME); 
         fbOnState(IN := TRUE,  PT := GVL_WashConstants.FILL_TIME); 
@@ -74,7 +68,7 @@ CASE eState OF
         GoTo(E_WashState.DRAINING); 
     END_IF 
 
-  E_WashState.DRAINING:                        // NEW STATE 
+  E_WashState.DRAINING:                    
     IF bStateEntry THEN 
         fbOnState(IN := FALSE, PT := GVL_WashConstants.DRAIN_TIME); 
         fbOnState(IN := TRUE,  PT := GVL_WashConstants.DRAIN_TIME); 
@@ -108,7 +102,7 @@ CASE eState OF
         bDoorLocked := FALSE; 
         sLog        := CONCAT('STATE: ERROR — ', sErrorMessage); 
         bStateEntry := FALSE; 
-    END_IF  // Cleared only via ResetError() 
+    END_IF  
   ELSE 
 
     GoTo(E_WashState.IDLE); 
@@ -122,7 +116,7 @@ END_CASE ]]></ST>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[ CurrentState := eState; 
+          <ST><![CDATA[CurrentState := eState; 
 
 ]]></ST>
         </Implementation>
@@ -143,8 +137,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[
-    ErrorMessage := sErrorMessage; ]]></ST>
+          <ST><![CDATA[ErrorMessage := sErrorMessage; ]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{2afaca2f-d3dc-4310-b7e2-31172879f092}">
@@ -157,15 +150,14 @@ END_VAR
       </Set>
     </Property>
     <Method Name="GoTo" Id="{0d6ddf0b-eea5-4757-815f-acba3a290d2f}">
-      <Declaration><![CDATA[METHOD PRIVATE GoTo : BOOL
+      <Declaration><![CDATA[METHOD PRIVATE GoTo 
 VAR_INPUT 
 eNext : E_WashState;
- END_VAR 
+END_VAR 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
- eState := eNext;
- bStateEntry := TRUE; ]]></ST>
+        <ST><![CDATA[eState := eNext;
+bStateEntry := TRUE; ]]></ST>
       </Implementation>
     </Method>
     <Property Name="IsRunning" Id="{05ce31fd-bba2-439b-a2ae-6ff6e930fec9}">
@@ -175,8 +167,7 @@ eNext : E_WashState;
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[
-    IsRunning := bRunning; ]]></ST>
+          <ST><![CDATA[IsRunning := bRunning; ]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{30254e30-a4d2-4e57-9824-9ea3d28be941}">
@@ -194,13 +185,11 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[ IF eState <> E_WashState.IDLE THEN 
+        <ST><![CDATA[IF eState <> E_WashState.IDLE THEN 
+	sLog := 'ERROR: Door lock only from IDLE.'; LockDoor := FALSE; RETURN;
+END_IF 
 
-        sLog := 'ERROR: Door lock only from IDLE.'; LockDoor := FALSE; RETURN; 
-
-    END_IF 
-
-    bDoorLocked := TRUE; 
+bDoorLocked := TRUE; 
 sLog := 'Door LOCKED.'; 
 LockDoor := TRUE; 
 ]]></ST>
@@ -213,8 +202,7 @@ LockDoor := TRUE;
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[
-    LogMessage := sLog;]]></ST>
+          <ST><![CDATA[LogMessage := sLog;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{882225c5-3cba-457f-942a-e086df3ee95f}">
@@ -234,14 +222,10 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[ IF fbOnState.PT > fbOnState.ET THEN 
-
-        RemainingTime := fbOnState.PT - fbOnState.ET; 
-
-    ELSE 
-
-        RemainingTime := T#0S; 
-
-    END_IF ]]></ST>
+     RemainingTime := fbOnState.PT - fbOnState.ET; 
+ ELSE 
+     RemainingTime := T#0S; 
+ END_IF ]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{7de6a2ec-98fc-4124-952c-9819ccee5d24}">
@@ -261,13 +245,13 @@ END_VAR
       <Implementation>
         <ST><![CDATA[IF eState <> E_WashState.ERROR THEN 
        sLog := 'RESET: Not in ERROR.'; ResetError := FALSE; RETURN; 
-    END_IF 
+END_IF 
 	
-    sErrorMessage    := ''; 
-    bStrategySet := FALSE; 
-    sLog         := 'RESET: Error cleared. Select program and restart.'; 
-    GoTo(E_WashState.IDLE);
-    ResetError := TRUE; 
+sErrorMessage    := ''; 
+bStrategySet := FALSE; 
+sLog         := 'RESET: Error cleared. Select program and restart.'; 
+GoTo(E_WashState.IDLE);
+ResetError := TRUE; 
 
  ]]></ST>
       </Implementation>
@@ -292,7 +276,6 @@ END_VAR ]]></Declaration>
     ipGetStrategy   := ipStrategy; 
     stWashSettings   := ipGetStrategy.GetSettings(); 
     bStrategySet := TRUE; 
-    // Validate temperature 
 
     IF stWashSettings.rTemperature > GVL_WashConstants.TEMP_MAX OR 
        stWashSettings.rTemperature < GVL_WashConstants.TEMP_MIN THEN 
@@ -300,15 +283,13 @@ END_VAR ]]></Declaration>
         GoTo(E_WashState.ERROR); SelectStrategy := FALSE; RETURN; 
     END_IF 
 
-    // Validate spin speed 
-
     IF stWashSettings.nSpinSpeed > GVL_WashConstants.SPIN_MAX OR 
       stWashSettings.nSpinSpeed < GVL_WashConstants.SPIN_MIN THEN 
         sErrorMessage := 'Spin speed out of safe range'; 
         GoTo(E_WashState.ERROR); SelectStrategy := FALSE; RETURN; 
     END_IF 
 
-    ipGetStrategy.Start();   // Call strategy Start() per interface contract 
+    ipGetStrategy.Start();   
     sLog          := CONCAT('Program selected: ', ipGetStrategy.GetProgramName()); 
     SelectStrategy := TRUE; 
 ]]></ST>
@@ -322,19 +303,19 @@ END_VAR
       <Implementation>
         <ST><![CDATA[IF eState <> E_WashState.IDLE THEN 
         sLog := 'ERROR: Not in IDLE.'; Start := FALSE; RETURN; 
-    END_IF 
+END_IF 
 	
-    IF NOT bStrategySet OR ipGetStrategy = 0 THEN 
-        sLog := 'ERROR: No program selected.'; Start := FALSE; RETURN; 
-    END_IF 
+IF NOT bStrategySet OR ipGetStrategy = 0 THEN 
+    sLog := 'ERROR: No program selected.'; Start := FALSE; RETURN; 
+END_IF 
 	
-    IF NOT bDoorLocked THEN 
+IF NOT bDoorLocked THEN 
         sLog := 'ERROR: Door not locked.'; Start := FALSE; RETURN; 
-    END_IF 
+END_IF 
 
     bRunning := TRUE; 
     sLog     := CONCAT('START: ', ipGetStrategy.GetProgramName()); 
-    GoTo(E_WashState.FILLING);   // First state is now FILLING 
+    GoTo(E_WashState.FILLING);   
     Start     := TRUE; 
 
  ]]></ST>
@@ -346,13 +327,12 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// Edge case — already idle
-    IF NOT bRunning THEN 
-       sLog := 'STOP: Not running.'; RETURN; 
-   END_IF 
-    sErrorMessage := 'Cycle stopped by operator'; 
-    GoTo(E_WashState.ERROR); 
+        <ST><![CDATA[IF NOT bRunning THEN 
+      sLog := 'STOP: Not running.'; RETURN; 
+END_IF 
+
+sErrorMessage := 'Cycle stopped by operator'; 
+GoTo(E_WashState.ERROR); 
 ]]></ST>
       </Implementation>
     </Method>
@@ -363,11 +343,11 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[   IF bStrategySet AND ipGetStrategy <> 0 THEN
-        WashDuration := ipGetStrategy.GetDuration();
-    ELSE
-        WashDuration := T#0S;
-    END_IF]]></ST>
+          <ST><![CDATA[IF bStrategySet AND ipGetStrategy <> 0 THEN
+   WashDuration := ipGetStrategy.GetDuration();
+ELSE
+   WashDuration := T#0S;
+END_IF]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{66c8d3f3-e5b6-466a-b023-197b4efad9aa}">
@@ -380,7 +360,8 @@ END_VAR
       </Set>
     </Property>
     <LineIds Name="FB_WashingMachine">
-      <LineId Id="232" Count="85" />
+      <LineId Id="234" Count="1" />
+      <LineId Id="238" Count="79" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.CurrentState.Get">
@@ -392,39 +373,41 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.ErrorMessage.Get">
-      <LineId Id="9" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.ErrorMessage.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.GoTo">
-      <LineId Id="7" Count="0" />
       <LineId Id="5" Count="0" />
       <LineId Id="10" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.IsRunning.Get">
-      <LineId Id="10" Count="0" />
       <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.IsRunning.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.LockDoor">
-      <LineId Id="6" Count="6" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="11" Count="1" />
       <LineId Id="14" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.LogMessage.Get">
-      <LineId Id="5" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.LogMessage.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.RemainingTime.Get">
-      <LineId Id="5" Count="7" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.RemainingTime.Set">
@@ -438,7 +421,7 @@ END_VAR
       <LineId Id="44" Count="0" />
       <LineId Id="46" Count="0" />
       <LineId Id="48" Count="0" />
-      <LineId Id="50" Count="0" />
+      <LineId Id="57" Count="0" />
       <LineId Id="52" Count="0" />
       <LineId Id="51" Count="0" />
       <LineId Id="9" Count="0" />
@@ -453,11 +436,13 @@ END_VAR
       <LineId Id="106" Count="2" />
       <LineId Id="110" Count="0" />
       <LineId Id="112" Count="0" />
-      <LineId Id="114" Count="2" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="116" Count="0" />
       <LineId Id="118" Count="0" />
       <LineId Id="120" Count="0" />
       <LineId Id="122" Count="0" />
-      <LineId Id="124" Count="4" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="127" Count="1" />
       <LineId Id="130" Count="0" />
       <LineId Id="132" Count="0" />
       <LineId Id="134" Count="0" />
@@ -484,10 +469,10 @@ END_VAR
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.Stop">
-      <LineId Id="9" Count="1" />
       <LineId Id="27" Count="0" />
       <LineId Id="33" Count="0" />
       <LineId Id="32" Count="0" />
+      <LineId Id="37" Count="0" />
       <LineId Id="29" Count="0" />
       <LineId Id="31" Count="0" />
       <LineId Id="5" Count="0" />
