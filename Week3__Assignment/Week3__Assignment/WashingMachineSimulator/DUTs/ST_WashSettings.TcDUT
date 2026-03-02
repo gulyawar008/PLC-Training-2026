@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_WashSettings" Id="{f3af4df4-8231-448e-ad6c-b6bcee888732}">
+    <Declaration><![CDATA[TYPE ST_WashSettings :
+STRUCT
+	rTemperature : REAL;
+    nSpinSpeed : UINT;
+    tWashDuration : TIME;
+    sDescription : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

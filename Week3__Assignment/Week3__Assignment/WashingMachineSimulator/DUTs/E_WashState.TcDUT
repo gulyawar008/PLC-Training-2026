@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_WashState" Id="{e06a349d-38c6-465f-992b-7aed98202eb1}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE  E_WashState :
+(
+		IDLE        := 0,
+    FILLING     := 1,
+    WASHING     := 2,
+    DRAINING    := 3,
+    COMPLETED   := 4,
+    ERROR       := 5
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

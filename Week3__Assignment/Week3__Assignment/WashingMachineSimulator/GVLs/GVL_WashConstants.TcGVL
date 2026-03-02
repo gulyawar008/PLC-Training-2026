@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <GVL Name="GVL_WashConstants" Id="{7fbc0f86-6258-4ca5-ac0c-4fa9ca1bd72d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT 
+    // ── Safety Limits ─────────────────────────────── 
+
+    TEMP_MIN : REAL := 20.0;   TEMP_MAX : REAL := 90.0; 
+    SPIN_MIN : UINT := 400;    SPIN_MAX : UINT := 1600; 
+
+    // ── Fill & Drain Durations (NEW) ───────────────── 
+
+    FILL_TIME  : TIME := T#30S;   // Water fill phase 
+    DRAIN_TIME : TIME := T#30S;   // Drain phase 
+// ── Soft Wash ──────────────────────────────────── 
+
+    SOFT_TEMP      : REAL   := 30.0; 
+    SOFT_SPIN      : UINT   := 600; 
+    SOFT_WASH_TIME : TIME   := T#1M; 
+    SOFT_DESC      : STRING := 'Soft Wash — Gentle, low energy'; 
+    // ── Normal Wash ────────────────────────────────── 
+
+    NORMAL_TEMP      : REAL   := 40.0; 
+    NORMAL_SPIN      : UINT   := 1000; 
+    NORMAL_WASH_TIME : TIME   := T#1M; 
+    NORMAL_DESC      : STRING := 'Normal Wash — Everyday cycle'; 
+
+    // ── Heavy Wash ─────────────────────────────────── 
+
+    HEAVY_TEMP      : REAL   := 60.0; 
+    HEAVY_SPIN      : UINT   := 1400; 
+    HEAVY_WASH_TIME : TIME   := T#1M; 
+    HEAVY_DESC      : STRING := 'Heavy Wash — Deep clean, heavy duty'; 
+    // ── Completed hold before auto-return to IDLE ──── 
+
+    COMPLETED_HOLD_TIME : TIME := T#5S; 
+END_VAR ]]></Declaration>
+  </GVL>
+</TcPlcObject>

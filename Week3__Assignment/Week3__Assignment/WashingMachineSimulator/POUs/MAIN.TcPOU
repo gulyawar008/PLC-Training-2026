@@ -1,13 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
-  <POU Name="MAIN" Id="{a55b22b3-f07c-499b-952b-344353201abd}">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{a55b22b3-f07c-499b-952b-344353201abd}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-END_VAR
-]]>
-    </Declaration>
+	
+    fbWasher         : FB_WashingMachine; 
+    fbSoft           : FB_SoftWash; 
+    fbNormal         : FB_NormalWash; 
+    fbHeavy          : FB_HeavyWash; 
+    eSelectedProgram : E_WashProgram := E_WashProgram.NONE; 
+    ePrevProgram     : E_WashProgram := E_WashProgram.NONE; 
+    bLockDoor        : BOOL := FALSE; 
+    bStart           : BOOL := FALSE; 
+    bStop            : BOOL := FALSE; 
+    bResetError      : BOOL := FALSE; 
+
+    // Watch window outputs 
+    sLog          : STRING; 
+    sError        : STRING; 
+	tWashDuration : TIME;
+    eState        : E_WashState; 
+    tRemaining    : TIME; 
+    bRunning      : BOOL; 
+
+END_VAR 
+]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[// ── Strategy Selection (on change) ─────────────────── 
+IF eSelectedProgram <> ePrevProgram THEN 
+
+    CASE eSelectedProgram OF 
+        E_WashProgram.SOFT:   fbWasher.SelectStrategy(ipStrategy := fbSoft); 
+        E_WashProgram.NORMAL: fbWasher.SelectStrategy(ipStrategy := fbNormal); 
+        E_WashProgram.HEAVY:  fbWasher.SelectStrategy(ipStrategy := fbHeavy); 
+    END_CASE 
+    ePrevProgram := eSelectedProgram; 
+END_IF 
+
+ 
+
+// ── Pulse inputs ───────────────────────────────────── 
+IF bLockDoor THEN 
+    fbWasher.LockDoor();
+    bLockDoor    := FALSE;
+ END_IF 
+IF bStart  THEN 
+   fbWasher.Start();    
+   bStart       := FALSE;
+ END_IF 
+IF bStop  THEN 
+   fbWasher.Stop();    
+   bStop        := FALSE;
+ END_IF 
+IF bResetError  THEN
+   fbWasher.ResetError(); 
+   bResetError  := FALSE; 
+END_IF 
+
+// ── Cyclic FB call ─────────────────────────────────── 
+fbWasher(); 
+
+// ── Read properties → Watch Window ─────────────────── 
+tWashDuration:= fbWasher.WashDuration;
+eState     := fbWasher.CurrentState; 
+tRemaining := fbWasher.RemainingTime;  
+bRunning   := fbWasher.IsRunning; 
+sLog       := fbWasher.LogMessage; 
+sError     := fbWasher.ErrorMessage; ]]></ST>
     </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="6" Count="39" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>

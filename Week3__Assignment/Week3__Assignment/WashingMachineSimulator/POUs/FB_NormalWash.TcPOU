@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_NormalWash" Id="{1a40042c-adbf-4b51-8b38-404cab057683}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_NormalWash IMPLEMENTS I_WashStrategy
+VAR
+	 bStarted : BOOL := FALSE; 
+	 stSettings : ST_WashSettings;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{f1536ea9-43f7-4a5e-a2e1-5f4c5af6adcb}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF stSettings.sDescription = '' THEN 
+    stSettings.rTemperature  := GVL_WashConstants.NORMAL_TEMP; 
+    stSettings.nSpinSpeed    := GVL_WashConstants.NORMAL_SPIN; 
+    stSettings.tWashDuration := GVL_WashConstants.NORMAL_WASH_TIME; 
+    stSettings.sDescription  := GVL_WashConstants.NORMAL_DESC; 
+END_IF 
+
+ FB_init := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetDuration" Id="{7a82bdcf-7c45-449f-b64f-7b4116fa5130}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetDuration : TIME
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[    GetDuration := stSettings.tWashDuration; 
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetProgramName" Id="{2bc7e14b-0b7b-471c-a067-5f9298e74cf0}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetProgramName : STRING
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetProgramName := 'NORMAL'; ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetSettings" Id="{940ca7a1-1be0-4abc-b0f9-cd30c21e2f50}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetSettings : ST_WashSettings
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ GetSettings := stSettings; ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Start" Id="{d6ca3d32-fd76-4dee-b80c-59ece26bcca3}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Start : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bStarted := TRUE; 
+Start     := TRUE; ]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_NormalWash">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalWash.FB_init">
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalWash.GetDuration">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalWash.GetProgramName">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalWash.GetSettings">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalWash.Start">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
