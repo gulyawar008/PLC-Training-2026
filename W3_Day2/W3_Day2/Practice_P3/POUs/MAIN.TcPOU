@@ -1,13 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
-  <POU Name="MAIN" Id="{64ea7b3e-8b06-47d5-912b-f0cbff26cfe2}">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{64ea7b3e-8b06-47d5-912b-f0cbff26cfe2}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	fbTon : TON ;
+	bInput : BOOL ;
+	bInput1 : BOOL ;
+	bInput2 : BOOL ;
+	bReset : BOOL;
+	nTriggerCount :ULINT;
+	sLog: STRING := 'Hi there, I am using timer function block';
+	sLog2 : STRING;
 END_VAR
-]]>
-    </Declaration>
+]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[(*fbTon(IN:= bInput, PT := T#5S);
+IF fbTon.Q THEN
+	nTriggerCount := nTriggerCount + 1;
+END_IF 
+
+sLog2 := sLog;
+*)
+ fbTon (IN := bInput2, PT := T#5S); 
+
+IF bReset THEN
+    fbTon (IN := bInput1, PT := T#5S);  // Step 1: reset ET to 0
+    bReset := FALSE;
+END_IF
+
+fbTon(IN:= bInput, PT := T#5S);
+IF fbTon.Q THEN
+	nTriggerCount := nTriggerCount + 1;
+END_IF 
+
+ fbTon (IN := bInput2, PT := T#5S);      // Step 2: runs normally]]></ST>
     </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="38" Count="3" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="33" Count="2" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>

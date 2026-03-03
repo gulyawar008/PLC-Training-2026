@@ -19,7 +19,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{F1E4AC49-4A4B-48A4-8AA5-B74FFC8716AC}" Name="Project_P1" PrjFilePath="Project_P1\Project_P1.plcproj" TmcFilePath="Project_P1\Project_P1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{6A8F4C3F-0EF4-1BF3-C413-EA95BF5187B8}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P1\Project_P1.tmc" TmcHash="{AAF5CA50-F9DA-91A0-3653-45EA38179D23}">
 					<Name>Project_P1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -39,7 +39,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{C1C3F79F-4FE1-437E-9E85-56F3A00C91AB}" Name="Project_P2" PrjFilePath="Project_P2\Project_P2.plcproj" TmcFilePath="Project_P2\Project_P2.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{A0D00672-DAE0-FE94-6C5A-A42FD9B5A457}">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P2\Project_P2.tmc" TmcHash="{D845F913-40CF-0138-6E1E-4C1B1BA2DF1C}">
 					<Name>Project_P2 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -59,15 +59,23 @@
 				</Instance>
 			</Project>
 			<Project GUID="{FFB6BD38-C69D-4295-940B-CDBE5ED1935C}" Name="Practice_P3" PrjFilePath="Practice_P3\Practice_P3.plcproj" TmcFilePath="Practice_P3\Practice_P3.tmc" ReloadTmc="true" AmsPort="853" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2">
+				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{6AFB1ED5-7A47-E0A9-AFD2-14C9C56A0C38}">
 					<Name>Practice_P3 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
 						<Context>
-							<Id>1</Id>
-							<Name>Default</Name>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010050</OTCID>
+							</ManualConfig>
+							<Priority>22</Priority>
+							<CycleTime>10000000</CycleTime>
 						</Context>
 					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="22" OTCID="#x08502081"/>
+					</TaskPouOids>
 				</Instance>
 			</Project>
 		</Plc>
