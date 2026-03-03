@@ -407,7 +407,7 @@ END_VAR
       <LineId Id="5" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="9" Count="0" />
-      <LineId Id="11" Count="0" />
+      <LineId Id="14" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.RemainingTime.Set">

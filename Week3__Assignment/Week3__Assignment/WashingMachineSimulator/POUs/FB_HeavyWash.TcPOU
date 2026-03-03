@@ -27,8 +27,7 @@ FB_init := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="GetDuration" Id="{86db14ab-625b-4bb7-a994-003ec6a66b96}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD GetDuration : TIME
+      <Declaration><![CDATA[METHOD GetDuration : TIME
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[GetDuration := stSettings.tWashDuration ;
@@ -36,24 +35,21 @@ METHOD GetDuration : TIME
       </Implementation>
     </Method>
     <Method Name="GetProgramName" Id="{8637de0d-40fd-42ba-804e-ccf96594f716}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD GetProgramName : STRING
+      <Declaration><![CDATA[METHOD GetProgramName : STRING
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[GetProgramName := 'HEAVY'; ]]></ST>
       </Implementation>
     </Method>
     <Method Name="GetSettings" Id="{48daccf0-d622-4f0c-8fd4-c7412b99fd2e}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD GetSettings : ST_WashSettings
+      <Declaration><![CDATA[METHOD GetSettings : ST_WashSettings
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[GetSettings := stSettings; ]]></ST>
       </Implementation>
     </Method>
     <Method Name="Start" Id="{78e9b4e5-1a49-435d-995b-4ef35591c35a}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD Start : BOOL
+      <Declaration><![CDATA[METHOD Start : BOOL
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[bStarted := TRUE; 
