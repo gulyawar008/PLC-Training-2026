@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_HeavyWash" Id="{b328f795-7fca-4f9b-befa-cc3fc249bc0e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HeavyWash IMPLEMENTS I_WashStrategy
+VAR
+	 bStarted : BOOL := FALSE; 
+	 stSettings : ST_WashSettings;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{6bba0abe-2e8b-4730-ae6a-c44784daf780}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stSettings.rTemperature  := GVL_WashConstants.HEAVY_TEMP; 
+stSettings.nSpinSpeed    := GVL_WashConstants.HEAVY_SPIN; 
+stSettings.tWashDuration := GVL_WashConstants.HEAVY_WASH_TIME; 
+stSettings.sDescription  := GVL_WashConstants.HEAVY_DESC; 
+
+FB_init := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetDuration" Id="{86db14ab-625b-4bb7-a994-003ec6a66b96}">
+      <Declaration><![CDATA[METHOD GetDuration : TIME
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetDuration := stSettings.tWashDuration ;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetProgramName" Id="{8637de0d-40fd-42ba-804e-ccf96594f716}">
+      <Declaration><![CDATA[METHOD GetProgramName : STRING
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetProgramName := 'HEAVY'; ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetSettings" Id="{48daccf0-d622-4f0c-8fd4-c7412b99fd2e}">
+      <Declaration><![CDATA[METHOD GetSettings : ST_WashSettings
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetSettings := stSettings; ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Start" Id="{78e9b4e5-1a49-435d-995b-4ef35591c35a}">
+      <Declaration><![CDATA[METHOD Start : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bStarted := TRUE; 
+Start     := TRUE; ]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_HeavyWash">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HeavyWash.FB_init">
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HeavyWash.GetDuration">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HeavyWash.GetProgramName">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HeavyWash.GetSettings">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HeavyWash.Start">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

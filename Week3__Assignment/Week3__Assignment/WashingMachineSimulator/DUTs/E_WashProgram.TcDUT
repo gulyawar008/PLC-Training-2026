@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_WashProgram" Id="{61354ddb-7f24-40de-a0d0-9053a1ffd6e9}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE  E_WashProgram :
+(
+	NONE      := 0,
+    SOFT      := 1,
+    NORMAL    := 2,
+    HEAVY     := 3
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

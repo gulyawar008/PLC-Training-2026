@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_WashingMachine" Id="{182d94af-703d-4404-b9f5-16db70894ffa}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_WashingMachine
+VAR
+    eState      : E_WashState := E_WashState.IDLE; 
+    bStateEntry : BOOL        := TRUE; 
+
+    ipGetStrategy   : I_WashStrategy; 
+    bStrategySet    : BOOL := FALSE; 
+
+    stWashSettings  : ST_WashSettings; 
+
+    bDoorLocked : BOOL := FALSE; 
+    bRunning    : BOOL := FALSE; 
+
+    sLog          : STRING; 
+    sErrorMessage : STRING; 
+
+    fbOnState     : TON;    
+    fbOnCompleted : TON;   
+
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbOnState    (IN := bRunning, PT := stWashSettings.tWashDuration); 
+fbOnCompleted(IN := (eState = E_WashState.COMPLETED),  PT := GVL_WashConstants.COMPLETED_HOLD_TIME); 
+
+
+CASE eState OF 
+  E_WashState.IDLE: 
+    IF bStateEntry THEN 
+        bRunning    := FALSE; 
+        bDoorLocked := FALSE; 
+        sLog        := 'STATE: IDLE — Select program and press Start.'; 
+        bStateEntry := FALSE; 
+    END_IF 
+
+  E_WashState.FILLING:                     
+    IF bStateEntry THEN 
+        fbOnState(IN := FALSE, PT := GVL_WashConstants.FILL_TIME); 
+        fbOnState(IN := TRUE,  PT := GVL_WashConstants.FILL_TIME); 
+        sLog        := 'STATE: FILLING — Drum filling with water.'; 
+        bStateEntry := FALSE; 
+    END_IF 
+
+    fbOnState(IN := TRUE, PT := GVL_WashConstants.FILL_TIME); 
+    IF fbOnState.Q THEN 
+        sLog := 'TRANSITION: FILLING → WASHING'; 
+        GoTo(E_WashState.WASHING); 
+    END_IF 
+
+  E_WashState.WASHING: 
+    IF bStateEntry THEN 
+        fbOnState(IN := FALSE, PT := stWashSettings.tWashDuration); 
+        fbOnState(IN := TRUE,  PT := stWashSettings.tWashDuration); 
+        sLog := CONCAT('STATE: WASHING — Program: ', 
+                  CONCAT(ipGetStrategy.GetProgramName(), 
+                  CONCAT(' | Temp: ', 
+                  CONCAT(REAL_TO_STRING(stWashSettings.rTemperature), 'C')))); 
+        bStateEntry := FALSE; 
+    END_IF 
+
+    fbOnState(IN := TRUE, PT := stWashSettings.tWashDuration); 
+    IF fbOnState.Q THEN 
+        sLog := 'TRANSITION: WASHING → DRAINING'; 
+        GoTo(E_WashState.DRAINING); 
+    END_IF 
+
+  E_WashState.DRAINING:                    
+    IF bStateEntry THEN 
+        fbOnState(IN := FALSE, PT := GVL_WashConstants.DRAIN_TIME); 
+        fbOnState(IN := TRUE,  PT := GVL_WashConstants.DRAIN_TIME); 
+        sLog        := 'STATE: DRAINING — Emptying drum.'; 
+        bStateEntry := FALSE; 
+    END_IF 
+
+    fbOnState(IN := TRUE, PT := GVL_WashConstants.DRAIN_TIME); 
+    IF fbOnState.Q THEN 
+        sLog := 'TRANSITION: DRAINING → COMPLETED'; 
+        GoTo(E_WashState.COMPLETED); 
+    END_IF 
+
+  E_WashState.COMPLETED: 
+    IF bStateEntry THEN 
+        bRunning    := FALSE; 
+        sLog        := 'STATE: COMPLETED — Cycle done. Door unlocking soon.'; 
+        bStateEntry := FALSE; 
+    END_IF 
+
+    fbOnCompleted(IN := TRUE, PT := GVL_WashConstants.COMPLETED_HOLD_TIME); 
+    IF fbOnCompleted.Q THEN 
+        sLog := 'TRANSITION: COMPLETED → IDLE'; 
+        GoTo(E_WashState.IDLE); 
+    END_IF 
+
+  E_WashState.ERROR: 
+    IF bStateEntry THEN 
+        bRunning    := FALSE; 
+        bDoorLocked := FALSE; 
+        sLog        := CONCAT('STATE: ERROR — ', sErrorMessage); 
+        bStateEntry := FALSE; 
+    END_IF  
+  ELSE 
+
+    GoTo(E_WashState.IDLE); 
+END_CASE ]]></ST>
+    </Implementation>
+    <Property Name="CurrentState" Id="{d69cb94e-a7b2-4bd0-9661-5e10d0a1df2b}">
+      <Declaration><![CDATA[PROPERTY CurrentState : E_WashState]]></Declaration>
+      <Get Name="Get" Id="{3fc6311a-f53f-4bce-a7c2-3e8078fa9d41}">
+        <Declaration><![CDATA[VAR
+	eCurrentState: E_WashState;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CurrentState := eState; 
+
+]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{097f0d05-d0e7-4c3a-aad4-5670303745e2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ErrorMessage" Id="{855ecaa8-948b-46a2-81bb-097035a257c1}">
+      <Declaration><![CDATA[PROPERTY ErrorMessage : STRING]]></Declaration>
+      <Get Name="Get" Id="{8387c281-0323-48c5-a7c1-7900485f94af}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorMessage := sErrorMessage; ]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{2afaca2f-d3dc-4310-b7e2-31172879f092}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="GoTo" Id="{0d6ddf0b-eea5-4757-815f-acba3a290d2f}">
+      <Declaration><![CDATA[METHOD PRIVATE GoTo 
+VAR_INPUT 
+eNext : E_WashState;
+END_VAR 
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[eState := eNext;
+bStateEntry := TRUE; ]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IsRunning" Id="{05ce31fd-bba2-439b-a2ae-6ff6e930fec9}">
+      <Declaration><![CDATA[PROPERTY IsRunning : BOOL]]></Declaration>
+      <Get Name="Get" Id="{6ec5ce81-8d8a-4cb2-a657-4f8c749c0e28}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsRunning := bRunning; ]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{30254e30-a4d2-4e57-9824-9ea3d28be941}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="LockDoor" Id="{e3177fec-6683-41aa-94f6-9d039fb67bd4}">
+      <Declaration><![CDATA[METHOD LockDoor : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eState <> E_WashState.IDLE THEN 
+	sLog := 'ERROR: Door lock only from IDLE.'; LockDoor := FALSE; 
+    RETURN;
+END_IF 
+
+bDoorLocked := TRUE; 
+sLog := 'Door LOCKED.'; 
+LockDoor := TRUE; 
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="LogMessage" Id="{e9542b3e-00d9-4d10-8acc-dad4ea2fc7b9}">
+      <Declaration><![CDATA[PROPERTY LogMessage : STRING]]></Declaration>
+      <Get Name="Get" Id="{0cc44213-e29f-46d7-b2b0-0d2e31cf18d4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[LogMessage := sLog;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{882225c5-3cba-457f-942a-e086df3ee95f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="RemainingTime" Id="{3e393044-01f3-4c2b-b907-f51eed3a5a8e}">
+      <Declaration><![CDATA[PROPERTY  RemainingTime : TIME]]></Declaration>
+      <Get Name="Get" Id="{57aa9742-0208-4dd7-9579-c7f79b9e0560}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ IF fbOnState.PT > fbOnState.ET THEN 
+     RemainingTime := fbOnState.PT - fbOnState.ET; 
+ ELSE 
+     RemainingTime := T#0S; 
+ END_IF ]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{7de6a2ec-98fc-4124-952c-9819ccee5d24}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="ResetError" Id="{6eb0be3c-ae30-46d6-bc3f-446ce0a650d5}">
+      <Declaration><![CDATA[METHOD ResetError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eState <> E_WashState.ERROR THEN 
+       sLog := 'RESET: Not in ERROR.'; ResetError := FALSE; 
+       RETURN; 
+END_IF 
+	
+sErrorMessage := ''; 
+bStrategySet := FALSE; 
+sLog         := 'RESET: Error cleared. Select program and restart.'; 
+GoTo(E_WashState.IDLE);
+ResetError := TRUE; 
+
+ ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SelectStrategy" Id="{11f9c0a5-9ac0-443b-9068-0c6940a261ee}">
+      <Declaration><![CDATA[METHOD  SelectStrategy : BOOL
+
+VAR_INPUT 
+    ipStrategy : I_WashStrategy; 
+END_VAR ]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bRunning THEN 
+       sLog := 'ERROR: Cannot change program while running.';
+       SelectStrategy := FALSE; 
+       RETURN; 
+    END_IF 
+
+    IF ipStrategy = 0 THEN 
+        sLog := 'ERROR: Invalid strategy reference.'; 
+        SelectStrategy := FALSE; 
+        RETURN;
+    END_IF 
+
+    ipGetStrategy   := ipStrategy; 
+    stWashSettings   := ipGetStrategy.GetSettings(); 
+    bStrategySet := TRUE; 
+
+    IF stWashSettings.rTemperature > GVL_WashConstants.TEMP_MAX OR 
+       stWashSettings.rTemperature < GVL_WashConstants.TEMP_MIN THEN 
+        sErrorMessage := 'Temperature out of safe range'; 
+        GoTo(E_WashState.ERROR); SelectStrategy := FALSE; 
+        RETURN; 
+    END_IF 
+
+    IF stWashSettings.nSpinSpeed > GVL_WashConstants.SPIN_MAX OR 
+      stWashSettings.nSpinSpeed < GVL_WashConstants.SPIN_MIN THEN 
+        sErrorMessage := 'Spin speed out of safe range'; 
+        GoTo(E_WashState.ERROR); SelectStrategy := FALSE; 
+        RETURN; 
+    END_IF 
+
+    ipGetStrategy.Start();   
+    sLog          := CONCAT('Program selected: ', ipGetStrategy.GetProgramName()); 
+    SelectStrategy := TRUE; 
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Start" Id="{2d973bb1-1019-4bf5-b0f1-6f99297b2521}">
+      <Declaration><![CDATA[METHOD  Start : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eState <> E_WashState.IDLE THEN 
+        sLog := 'ERROR: Not in IDLE.'; 
+        Start := FALSE; 
+        RETURN; 
+END_IF 
+	
+IF NOT bStrategySet OR ipGetStrategy = 0 THEN 
+    sLog := 'ERROR: No program selected.'; 
+    Start := FALSE; 
+    RETURN; 
+END_IF 
+	
+IF NOT bDoorLocked THEN 
+        sLog := 'ERROR: Door not locked.'; Start := FALSE; RETURN; 
+END_IF 
+
+    bRunning := TRUE; 
+    sLog     := CONCAT('START: ', ipGetStrategy.GetProgramName()); 
+    GoTo(E_WashState.FILLING);   
+    Start     := TRUE; 
+
+ ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{1c3be39f-7ad2-40d8-b663-0a6b75deae94}">
+      <Declaration><![CDATA[METHOD  Stop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT bRunning THEN 
+      sLog := 'STOP: Not running.'; 
+      RETURN; 
+END_IF 
+
+sErrorMessage := 'Cycle stopped by operator'; 
+GoTo(E_WashState.ERROR); 
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="WashDuration" Id="{94ebbba6-10d1-4fb1-b3fe-8a14774ccaa3}">
+      <Declaration><![CDATA[PROPERTY WashDuration : TIME]]></Declaration>
+      <Get Name="Get" Id="{3ff4800e-bf6c-4d5e-ae3e-6baa3b76ca66}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF bStrategySet AND ipGetStrategy <> 0 THEN
+   WashDuration := ipGetStrategy.GetDuration();
+ELSE
+   WashDuration := T#0S;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{66c8d3f3-e5b6-466a-b023-197b4efad9aa}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_WashingMachine">
+      <LineId Id="234" Count="1" />
+      <LineId Id="238" Count="63" />
+      <LineId Id="303" Count="14" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.CurrentState.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.CurrentState.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.ErrorMessage.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.ErrorMessage.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.GoTo">
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.IsRunning.Get">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.IsRunning.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.LockDoor">
+      <LineId Id="6" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="11" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.LogMessage.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.LogMessage.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.RemainingTime.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.RemainingTime.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.ResetError">
+      <LineId Id="38" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.SelectStrategy">
+      <LineId Id="92" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="98" Count="2" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="106" Count="2" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="127" Count="1" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="136" Count="2" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.Start">
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="82" Count="1" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="84" Count="1" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="67" Count="2" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="75" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.Stop">
+      <LineId Id="27" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.WashDuration.Get">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_WashingMachine.WashDuration.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
