@@ -5,7 +5,7 @@
 {attribute 'strict'}
 TYPE  E_WashState :
 (
-		IDLE        := 0,
+	IDLE        := 0,
     FILLING     := 1,
     WASHING     := 2,
     DRAINING    := 3,

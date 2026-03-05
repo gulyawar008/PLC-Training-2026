@@ -6,9 +6,9 @@
 TYPE  E_WashProgram :
 (
 	NONE      := 0,
-    SOFT       := 1,
+    SOFT      := 1,
     NORMAL    := 2,
-    HEAVY := 3
+    HEAVY     := 3
 );
 END_TYPE
 ]]></Declaration>
