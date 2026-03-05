@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_ReadCoil" Id="{1ccb2c5d-4f5c-44a7-846e-1ec317b1d795}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ReadCoil
+VAR
+	fbMBReadCoils : FB_MBReadCoils;
+	nReadValue: BYTE;
+	
+	eReadState : (WAIT, TRIGGER, READ);
+	
+	fbTrigger : R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbTrigger();
+IF fbTrigger.Q THEN 
+	IF eReadState = WAIT THEN
+		eReadState := TRIGGER;
+	END_IF
+END_IF
+
+CASE eReadState OF 
+	WAIT:
+	//DO
+	
+	TRIGGER:
+	fbMBReadCoils(
+ 	   sIPAddr  := '172.23.0.218',
+       nTCPPort  := 502,
+       nUnitID    :=16#FF,
+       nQuantity  := 1,
+       nMBAddr  := 0,
+       cbLength := SIZEOF(nReadValue) ,    
+       pDestAddr := ADR(nReadValue),
+       bExecute   := TRUE ,
+       tTimeout:= ,
+       bError =>   ,
+       nErrId => ,
+       cbRead  =>   );
+	
+	eReadState := READ;
+	
+	READ:
+	//Wait for the response 
+	fbMBReadCoils(bExecute := FALSE);
+	IF NOT fbMBReadCoils.bBusy OR fbMBReadCoils.bError THEN
+		eReadState:= WAIT;
+	END_IF
+	
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ReadCoil">
+      <LineId Id="16" Count="5" />
+      <LineId Id="24" Count="16" />
+      <LineId Id="42" Count="10" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

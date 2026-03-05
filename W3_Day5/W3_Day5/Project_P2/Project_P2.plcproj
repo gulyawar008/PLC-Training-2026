@@ -3,34 +3,28 @@
   <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{bf585fe8-fd35-4286-9727-4161eb47a82d}</ProjectGuid>
+    <ProjectGuid>{8c23ec05-a81f-4cbf-bfa4-e92856a5c556}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
-    <Name>Practice_V1</Name>
+    <Name>Project_P2</Name>
     <ProgramVersion>3.1.4024.0</ProgramVersion>
-    <Application>{1ee1a3d9-2836-4788-a30e-77ca25e6cbf5}</Application>
-    <TypeSystem>{98a1447f-ed80-424f-8c89-3ce2647433d5}</TypeSystem>
-    <Implicit_Task_Info>{83593793-263d-4b88-942d-33cee733aa10}</Implicit_Task_Info>
-    <Implicit_KindOfTask>{86e98528-2e46-460c-b5e7-9c317d6d2e17}</Implicit_KindOfTask>
-    <Implicit_Jitter_Distribution>{6d25da02-df1f-4c21-aa43-bfc63f9647b1}</Implicit_Jitter_Distribution>
-    <LibraryReferences>{6e2baf9d-95ef-4aa7-8ca7-9278d447f177}</LibraryReferences>
+    <Application>{291e3b89-d85a-499a-b723-4701cf9d7c36}</Application>
+    <TypeSystem>{79097702-c0fe-4673-ae9b-495d1a85c53f}</TypeSystem>
+    <Implicit_Task_Info>{15b45c84-5bf8-412d-b761-25b630bf7adf}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{21a9c6b3-3902-4669-a3ec-40ba6c4cd26e}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{bc2c0508-cb04-430b-9449-a3429dae615d}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{5c994e7c-378f-40e3-9f28-ea99800117ae}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_ReadCoil.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MAIN_FAST.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\PRG_1.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Task_11.TcTTO">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -41,6 +35,9 @@
     <Folder Include="POUs" />
   </ItemGroup>
   <ItemGroup>
+    <PlaceholderReference Include="Tc2_ModbusSrv">
+      <DefaultResolution>Tc2_ModbusSrv, * (Beckhoff Automation GmbH)</DefaultResolution>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Standard">
       <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Standard</Namespace>
@@ -55,7 +52,7 @@
     </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Practice_V1.tmc">
+    <None Include="Project_P2.tmc">
       <SubType>Content</SubType>
     </None>
   </ItemGroup>

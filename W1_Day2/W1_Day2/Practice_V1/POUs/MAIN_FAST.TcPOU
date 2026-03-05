@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN_FAST" Id="{d416186c-e383-4bb0-b869-5e7bc4e524c4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN_FAST
+VAR
+	nCount : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nCount := nCount + 1;
+PRG_1();]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN_FAST">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

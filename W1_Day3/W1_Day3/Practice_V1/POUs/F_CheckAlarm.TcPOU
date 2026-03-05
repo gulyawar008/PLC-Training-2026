@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="F_CheckAlarm" Id="{de105176-8cb3-44c4-9ab8-f754e35ea5a4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckAlarm : BOOL
+VAR_INPUT
+	 stData : ST_Machine; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF stData.rTemperature > 50 THEN 
+   F_CheckAlarm := TRUE; 
+ELSE 
+   F_CheckAlarm := FALSE; 
+END_IF 
+
+ 
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_CheckAlarm">
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="3" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

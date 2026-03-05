@@ -27,7 +27,9 @@ END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF eSelectedProgram <> ePrevProgram THEN
+      <ST><![CDATA[//working
+
+IF eSelectedProgram <> ePrevProgram THEN
     CASE eSelectedProgram OF
         E_WashProgram.ECO:
             fbWashingMachineController.SetStrategy(ipGetStrategy := fbEcoWash);
@@ -86,6 +88,7 @@ sLog     := fbWashingMachineController.LogMessage;
 sError   := fbWashingMachineController.ErrorMessage;]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
+      <LineId Id="174" Count="1" />
       <LineId Id="135" Count="9" />
       <LineId Id="35" Count="1" />
       <LineId Id="38" Count="34" />

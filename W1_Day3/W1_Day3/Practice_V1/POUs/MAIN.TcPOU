@@ -3,37 +3,6 @@
   <POU Name="MAIN" Id="{3ab7bafb-5171-4408-8641-3349c24690aa}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	iInt    : INT := 10;
-    iDint   : DINT := 100000;
-    uiInt   : UINT := 50;
-    result  : DINT;
-	nVal : INT  :=2;
-	
-	 rValue  : REAL := 10.5;
-    lrValue : LREAL := 20.123456;
-    total   : LREAL;
-	
-	// Bool
-	 bStart  : BOOL := TRUE;
-    bStop   : BOOL := FALSE;
-    bMotor  : BOOL;
-	
-//	STRING Practice
-     sName : STRING := 'TWINCAT';
-      sMsg : STRING;
-	  
-	  //2D ARRay
-	  matrix : ARRAY[1..3, 1..3] OF INT;
-	  i,j : INT;
-	
-
-	counter: INT;
-	Var1: INT:=1;
-	
-	sum: INT;
-	bRun: BOOL:=TRUE;
-
-
 	iNumber1  : INT := 5;
     iResult  : INT;
 	
@@ -43,61 +12,17 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-// Datatypes
-result := iInt + iDint + uiInt;
-
-total :=  lrValue +  rValue;
-
-bMotor := bStart AND NOT bStop;
-
-sMsg := CONCAT('Hello ', sName);
-nVal :=9;
-nVal := nVal+2;
-
-
-(*FOR counter:=1 TO 5 BY 1 DO
-    Var1:=Var1*2; 
-END_FOR; 
-*)
-
-IF bRun THEN
-    FOR i := 1 TO 5 DO
-        sum := sum + i;
-    END_FOR
-      bRun := FALSE;
-END_IF
- 
- 
-
-//* Pass by value Addn Calculation
+      <ST><![CDATA[//* Pass by value Addn Calculation
 iResult := F_Add(iNumber1);
-
-
 // *Pass by reference Addn Calculation
 fbAdd(iValue := iNumber2);
-]]></ST>
+PRG_1();
+PRG_2();]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="26" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="37" Count="1" />
-      <LineId Id="134" Count="0" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="147" Count="0" />
-      <LineId Id="146" Count="0" />
-      <LineId Id="191" Count="0" />
-      <LineId Id="149" Count="0" />
-      <LineId Id="148" Count="0" />
-      <LineId Id="140" Count="0" />
-      <LineId Id="89" Count="0" />
-      <LineId Id="91" Count="0" />
-      <LineId Id="94" Count="0" />
-      <LineId Id="102" Count="0" />
-      <LineId Id="95" Count="6" />
-      <LineId Id="69" Count="1" />
-      <LineId Id="46" Count="6" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="232" Count="0" />
       <LineId Id="36" Count="0" />
     </LineIds>
   </POU>

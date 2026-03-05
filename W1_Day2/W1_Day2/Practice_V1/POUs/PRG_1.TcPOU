@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="PRG_1" Id="{6c9bef0d-f3e5-45c1-b5f7-36d7b9cf93d7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_1
+VAR
+	sLog : STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[sLog := 'Hi, there!';]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_1">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

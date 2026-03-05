@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="PRG_2" Id="{20322c36-74c7-4c6a-bd5a-3f033d256884}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_2
+VAR
+	iInt    : INT := 10;
+    iDint   : DINT := 100000;
+    uiInt   : UINT := 50;
+    result  : DINT;
+	nVal : INT  :=2;
+	
+	 rValue  : REAL := 10.5;
+    lrValue : LREAL := 20.123456;
+    total   : LREAL;
+	
+	// Bool
+	 bStart  : BOOL := TRUE;
+    bStop   : BOOL := FALSE;
+    bMotor  : BOOL;
+	
+//	STRING Practice
+     sName : STRING := 'TWINCAT';
+      sMsg : STRING;
+	  
+	  //2D ARRay
+	  matrix : ARRAY[1..3, 1..3] OF INT;
+	  i,j : INT;
+	
+
+	counter: INT;
+	Var1: INT:=1;
+	
+	sum: INT;
+	bRun: BOOL:=TRUE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Datatypes
+result := iInt + iDint + uiInt;
+
+total :=  lrValue +  rValue;
+
+bMotor := bStart AND NOT bStop;
+
+sMsg := CONCAT('Hello ', sName);
+nVal :=9;
+nVal := nVal+2;
+
+
+(*FOR counter:=1 TO 5 BY 1 DO
+    Var1:=Var1*2; 
+END_FOR; 
+*)
+
+IF bRun THEN
+    FOR i := 1 TO 5 DO
+        sum := sum + i;
+    END_FOR
+      bRun := FALSE;
+END_IF
+ ]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_2">
+      <LineId Id="6" Count="22" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

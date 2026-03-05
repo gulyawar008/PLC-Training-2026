@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.71">
-	<Project ProjectGUID="{C429B059-4EE7-4BF3-A332-79DB6BD0595D}" Target64Bit="true" ShowHideConfigurations="#x3c7">
+	<Project ProjectGUID="{96F46693-78D1-4767-9B9D-0AD12F679036}" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
 			<Settings MaxCpus="18" NonWinCpus="1">
 				<Cpu CpuId="17"/>
@@ -9,28 +9,16 @@
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
-				<Task Id="4" Priority="1" CycleTime="100000" AmsPort="351" AdtTasks="true">
-					<Name>Task 11</Name>
-				</Task>
 			</Tasks>
 		</System>
 		<Plc>
-			<Project GUID="{BF585FE8-FD35-4286-9727-4161EB47A82D}" Name="Practice_V1" PrjFilePath="Practice_V1\Practice_V1.plcproj" TmcFilePath="Practice_V1\Practice_V1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V1\Practice_V1.tmc" TmcHash="{BC113EAC-22B0-B6F8-43E7-85C3D48AE2F4}">
-					<Name>Practice_V1 Instance</Name>
+			<Project GUID="{0A66F1A8-513B-421F-93B3-3430043D47DC}" Name="Project_P1" PrjFilePath="Project_P1\Project_P1.plcproj" TmcFilePath="Project_P1\Project_P1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{D816EE4A-1E0C-AA50-3C1F-2F42AD72FFEE}">
+					<Name>Project_P1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
 						<Context>
 							<Id>0</Id>
-							<Name>Task_11</Name>
-							<ManualConfig>
-								<OTCID>#x02010040</OTCID>
-							</ManualConfig>
-							<Priority>1</Priority>
-							<CycleTime>10000000</CycleTime>
-						</Context>
-						<Context>
-							<Id>1</Id>
 							<Name>PlcTask</Name>
 							<ManualConfig>
 								<OTCID>#x02010030</OTCID>
@@ -40,7 +28,6 @@
 						</Context>
 					</Contexts>
 					<TaskPouOids>
-						<TaskPouOid Prio="1" OTCID="#x08502002"/>
 						<TaskPouOid Prio="20" OTCID="#x08502001"/>
 					</TaskPouOids>
 				</Instance>

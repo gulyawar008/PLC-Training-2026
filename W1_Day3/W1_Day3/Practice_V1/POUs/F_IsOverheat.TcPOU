@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="F_IsOverheat" Id="{77c2eefc-c493-4b8f-9922-a172f92317d1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_IsOverheat : BOOL
+VAR_INPUT
+	 rTemp : REAL; 
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+F_IsOverheat := rTemp > 80.0; 
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_IsOverheat">
+      <LineId Id="27" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
