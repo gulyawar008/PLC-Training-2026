@@ -3,8 +3,9 @@
   <POU Name="FB_SoftWash" Id="{20098e3f-b3d7-4b4d-bf5b-8d6ee14faa53}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_SoftWash IMPLEMENTS I_WashStrategy
 VAR
-	 stSettings : ST_WashSettings; 
-    bStarted : BOOL := FALSE; 
+	  bStarted : BOOL := FALSE; 
+	  stSettings : ST_WashSettings; 
+  
 END_VAR
 ]]></Declaration>
     <Implementation>

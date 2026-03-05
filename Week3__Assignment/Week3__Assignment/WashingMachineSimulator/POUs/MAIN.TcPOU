@@ -28,9 +28,12 @@ END_VAR
       <ST><![CDATA[IF eSelectedProgram <> ePrevProgram THEN 
 
     CASE eSelectedProgram OF 
-        E_WashProgram.SOFT:   fbWasher.SelectStrategy(ipStrategy := fbSoft); 
-        E_WashProgram.NORMAL: fbWasher.SelectStrategy(ipStrategy := fbNormal); 
-        E_WashProgram.HEAVY:  fbWasher.SelectStrategy(ipStrategy := fbHeavy); 
+        E_WashProgram.SOFT:   
+        fbWasher.SelectStrategy(ipStrategy := fbSoft); 
+        E_WashProgram.NORMAL:
+        fbWasher.SelectStrategy(ipStrategy := fbNormal); 
+        E_WashProgram.HEAVY:  
+        fbWasher.SelectStrategy(ipStrategy := fbHeavy); 
     END_CASE 
     ePrevProgram := eSelectedProgram; 
 END_IF 
@@ -63,7 +66,13 @@ sLog       := fbWasher.LogMessage;
 sError     := fbWasher.ErrorMessage; ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="7" Count="9" />
+      <LineId Id="7" Count="3" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="13" Count="3" />
       <LineId Id="19" Count="16" />
       <LineId Id="37" Count="1" />
       <LineId Id="40" Count="5" />

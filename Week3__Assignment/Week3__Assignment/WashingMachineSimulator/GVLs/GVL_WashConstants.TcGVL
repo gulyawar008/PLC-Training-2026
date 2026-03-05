@@ -24,7 +24,7 @@ VAR_GLOBAL CONSTANT
 
     HEAVY_TEMP      : REAL   := 60.0; 
     HEAVY_SPIN      : UINT   := 1400; 
-    HEAVY_WASH_TIME : TIME   := T#1M; 
+    HEAVY_WASH_TIME : TIME   := T#2M; 
     HEAVY_DESC      : STRING := 'Heavy Wash — Deep clean, heavy duty'; 
 
     COMPLETED_HOLD_TIME : TIME := T#5S; 

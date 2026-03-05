@@ -7,14 +7,14 @@ VAR
     bStateEntry : BOOL        := TRUE; 
 
     ipGetStrategy   : I_WashStrategy; 
-    bStrategySet : BOOL := FALSE; 
+    bStrategySet    : BOOL := FALSE; 
 
     stWashSettings  : ST_WashSettings; 
 
-   bDoorLocked : BOOL := FALSE; 
-   bRunning    : BOOL := FALSE; 
+    bDoorLocked : BOOL := FALSE; 
+    bRunning    : BOOL := FALSE; 
 
-    sLog      : STRING; 
+    sLog          : STRING; 
     sErrorMessage : STRING; 
 
     fbOnState     : TON;    
@@ -90,7 +90,6 @@ CASE eState OF
     END_IF 
 
     fbOnCompleted(IN := TRUE, PT := GVL_WashConstants.COMPLETED_HOLD_TIME); 
-
     IF fbOnCompleted.Q THEN 
         sLog := 'TRANSITION: COMPLETED → IDLE'; 
         GoTo(E_WashState.IDLE); 
@@ -186,7 +185,8 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF eState <> E_WashState.IDLE THEN 
-	sLog := 'ERROR: Door lock only from IDLE.'; LockDoor := FALSE; RETURN;
+	sLog := 'ERROR: Door lock only from IDLE.'; LockDoor := FALSE; 
+    RETURN;
 END_IF 
 
 bDoorLocked := TRUE; 
@@ -244,10 +244,11 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF eState <> E_WashState.ERROR THEN 
-       sLog := 'RESET: Not in ERROR.'; ResetError := FALSE; RETURN; 
+       sLog := 'RESET: Not in ERROR.'; ResetError := FALSE; 
+       RETURN; 
 END_IF 
 	
-sErrorMessage    := ''; 
+sErrorMessage := ''; 
 bStrategySet := FALSE; 
 sLog         := 'RESET: Error cleared. Select program and restart.'; 
 GoTo(E_WashState.IDLE);
@@ -265,12 +266,14 @@ END_VAR ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF bRunning THEN 
        sLog := 'ERROR: Cannot change program while running.';
-        SelectStrategy := FALSE; RETURN; 
+       SelectStrategy := FALSE; 
+       RETURN; 
     END_IF 
 
     IF ipStrategy = 0 THEN 
         sLog := 'ERROR: Invalid strategy reference.'; 
-        SelectStrategy := FALSE; RETURN;
+        SelectStrategy := FALSE; 
+        RETURN;
     END_IF 
 
     ipGetStrategy   := ipStrategy; 
@@ -280,13 +283,15 @@ END_VAR ]]></Declaration>
     IF stWashSettings.rTemperature > GVL_WashConstants.TEMP_MAX OR 
        stWashSettings.rTemperature < GVL_WashConstants.TEMP_MIN THEN 
         sErrorMessage := 'Temperature out of safe range'; 
-        GoTo(E_WashState.ERROR); SelectStrategy := FALSE; RETURN; 
+        GoTo(E_WashState.ERROR); SelectStrategy := FALSE; 
+        RETURN; 
     END_IF 
 
     IF stWashSettings.nSpinSpeed > GVL_WashConstants.SPIN_MAX OR 
       stWashSettings.nSpinSpeed < GVL_WashConstants.SPIN_MIN THEN 
         sErrorMessage := 'Spin speed out of safe range'; 
-        GoTo(E_WashState.ERROR); SelectStrategy := FALSE; RETURN; 
+        GoTo(E_WashState.ERROR); SelectStrategy := FALSE; 
+        RETURN; 
     END_IF 
 
     ipGetStrategy.Start();   
@@ -302,11 +307,15 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF eState <> E_WashState.IDLE THEN 
-        sLog := 'ERROR: Not in IDLE.'; Start := FALSE; RETURN; 
+        sLog := 'ERROR: Not in IDLE.'; 
+        Start := FALSE; 
+        RETURN; 
 END_IF 
 	
 IF NOT bStrategySet OR ipGetStrategy = 0 THEN 
-    sLog := 'ERROR: No program selected.'; Start := FALSE; RETURN; 
+    sLog := 'ERROR: No program selected.'; 
+    Start := FALSE; 
+    RETURN; 
 END_IF 
 	
 IF NOT bDoorLocked THEN 
@@ -328,7 +337,8 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF NOT bRunning THEN 
-      sLog := 'STOP: Not running.'; RETURN; 
+      sLog := 'STOP: Not running.'; 
+      RETURN; 
 END_IF 
 
 sErrorMessage := 'Cycle stopped by operator'; 
@@ -361,7 +371,8 @@ END_VAR
     </Property>
     <LineIds Name="FB_WashingMachine">
       <LineId Id="234" Count="1" />
-      <LineId Id="238" Count="79" />
+      <LineId Id="238" Count="63" />
+      <LineId Id="303" Count="14" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_WashingMachine.CurrentState.Get">
@@ -391,6 +402,7 @@ END_VAR
     <LineIds Name="FB_WashingMachine.LockDoor">
       <LineId Id="6" Count="0" />
       <LineId Id="19" Count="0" />
+      <LineId Id="23" Count="0" />
       <LineId Id="18" Count="0" />
       <LineId Id="11" Count="1" />
       <LineId Id="14" Count="0" />
@@ -416,6 +428,7 @@ END_VAR
     <LineIds Name="FB_WashingMachine.ResetError">
       <LineId Id="38" Count="0" />
       <LineId Id="40" Count="0" />
+      <LineId Id="61" Count="0" />
       <LineId Id="42" Count="0" />
       <LineId Id="53" Count="0" />
       <LineId Id="44" Count="0" />
@@ -430,9 +443,11 @@ END_VAR
       <LineId Id="92" Count="0" />
       <LineId Id="94" Count="0" />
       <LineId Id="96" Count="0" />
+      <LineId Id="147" Count="0" />
       <LineId Id="98" Count="2" />
       <LineId Id="102" Count="0" />
       <LineId Id="104" Count="0" />
+      <LineId Id="148" Count="0" />
       <LineId Id="106" Count="2" />
       <LineId Id="110" Count="0" />
       <LineId Id="112" Count="0" />
@@ -441,11 +456,13 @@ END_VAR
       <LineId Id="118" Count="0" />
       <LineId Id="120" Count="0" />
       <LineId Id="122" Count="0" />
+      <LineId Id="149" Count="0" />
       <LineId Id="124" Count="0" />
       <LineId Id="127" Count="1" />
       <LineId Id="130" Count="0" />
       <LineId Id="132" Count="0" />
       <LineId Id="134" Count="0" />
+      <LineId Id="150" Count="0" />
       <LineId Id="136" Count="2" />
       <LineId Id="140" Count="0" />
       <LineId Id="142" Count="0" />
@@ -454,10 +471,12 @@ END_VAR
     <LineIds Name="FB_WashingMachine.Start">
       <LineId Id="51" Count="0" />
       <LineId Id="53" Count="0" />
+      <LineId Id="82" Count="1" />
       <LineId Id="55" Count="0" />
       <LineId Id="77" Count="0" />
       <LineId Id="57" Count="0" />
       <LineId Id="59" Count="0" />
+      <LineId Id="84" Count="1" />
       <LineId Id="61" Count="0" />
       <LineId Id="78" Count="0" />
       <LineId Id="63" Count="0" />
@@ -471,6 +490,7 @@ END_VAR
     <LineIds Name="FB_WashingMachine.Stop">
       <LineId Id="27" Count="0" />
       <LineId Id="33" Count="0" />
+      <LineId Id="41" Count="0" />
       <LineId Id="32" Count="0" />
       <LineId Id="37" Count="0" />
       <LineId Id="29" Count="0" />
