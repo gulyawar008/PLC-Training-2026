@@ -25,7 +25,7 @@ CASE eReadState OF
 	
 	TRIGGER:
 	fbMBReadCoils(
- 	   sIPAddr  := '172.23.0.218',
+ 	   sIPAddr  := '10.17.76.191',
        nTCPPort  := 502,
        nUnitID    :=16#FF,
        nQuantity  := 1,
