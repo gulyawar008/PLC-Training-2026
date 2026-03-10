@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="PRG_3" Id="{e59885e0-22a5-4b72-81b0-3ca279aa34e3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_3
+VAR
+	nCount: INT ;
+	nCount2: INT ;
+	fbprg : FB_PRG;
+	
+END_VAR
+VAR
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nCount := nCOunt +1;
+
+ fbprg();]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_3">
+      <LineId Id="5" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -17,13 +17,16 @@ iResult := F_Add(iNumber1);
 // *Pass by reference Addn Calculation
 fbAdd(iValue := iNumber2);
 PRG_1();
-PRG_2();]]></ST>
+PRG_2();
+PRG_3();
+]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="47" Count="1" />
       <LineId Id="51" Count="1" />
       <LineId Id="232" Count="0" />
       <LineId Id="36" Count="0" />
+      <LineId Id="242" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

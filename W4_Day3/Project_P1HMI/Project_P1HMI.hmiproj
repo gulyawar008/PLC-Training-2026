@@ -12,7 +12,7 @@
     <HmiTitle>Please enter your Title...</HmiTitle>
     <HmiVerboseLevel>2</HmiVerboseLevel>
     <HmiVersion>1.0.0.0</HmiVersion>
-    <HmiCommunicationServerPort>3000</HmiCommunicationServerPort>
+    <HmiCommunicationServerPort>3001</HmiCommunicationServerPort>
     <HmiLogTcHmiServerMessages>false</HmiLogTcHmiServerMessages>
     <HmiLogDesignerModeComMessages>false</HmiLogDesignerModeComMessages>
     <HmiServerVersion>Latest</HmiServerVersion>
@@ -26,12 +26,13 @@
     <HmiViewportMaximumScale />
     <HmiViewportUserScaleable>Default</HmiViewportUserScaleable>
     <HmiPostProcessing>True</HmiPostProcessing>
-    <Name>W4_Day3HMI</Name>
-    <HmiCommunicationRouterPort>10102</HmiCommunicationRouterPort>
-    <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
+    <Name>Project_P1HMI</Name>
+    <HmiCommunicationRouterPort>10100</HmiCommunicationRouterPort>
+    <HmiCommunicationServerAuthPort>13001</HmiCommunicationServerAuthPort>
     <HmiInitial>1.12.762.56</HmiInitial>
     <HmiRecent>1.12.762.56</HmiRecent>
     <HmiServerNodeAdvancedView>False</HmiServerNodeAdvancedView>
+    <HmiCfgWindowBringIntoViewAutomatically>True</HmiCfgWindowBringIntoViewAutomatically>
   </PropertyGroup>
   <PropertyGroup>
     <TwinCATHmi_Tasks>$(TcHmiDirectory)\MSBuild\Beckhoff.TwinCAT.HMI.tasks</TwinCATHmi_Tasks>
@@ -41,7 +42,7 @@
   <Import Project="$(TwinCATHmi_Targets)" />
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>3260f823-51cc-4402-9043-41be4924d644</ProjectGuid>
+    <ProjectGuid>9e54607e-9f45-419b-b86d-f6efcc9119f3</ProjectGuid>
     <RootNamespace>TwinCAT3HmiProject</RootNamespace>
     <AssemblyName>TwinCAT3HmiProject</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
@@ -57,7 +58,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>TwinCAT HMI</PlatformTarget>
-    <DefaultNamespace>W4_Day3HMI</DefaultNamespace>
+    <DefaultNamespace>Project_P1HMI</DefaultNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|TwinCAT HMI' ">
     <DebugType>pdbonly</DebugType>
@@ -67,7 +68,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>TwinCAT HMI</PlatformTarget>
-    <DefaultNamespace>W4_Day3HMI</DefaultNamespace>
+    <DefaultNamespace>Project_P1HMI</DefaultNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="'$(RestoreProjectStyle)' == 'PackageReference'" />
   <PropertyGroup>
@@ -123,7 +124,7 @@
     <Folder Include="Themes\Base\" />
     <Folder Include="Themes\Base-Dark\" />
     <Folder Include="Server">
-      <WorkingDirectory>W4_Day3HMI</WorkingDirectory>
+      <WorkingDirectory>Project_P1HMI</WorkingDirectory>
     </Folder>
     <Folder Include="Properties" />
     <Content Include=".eslintrc.json">

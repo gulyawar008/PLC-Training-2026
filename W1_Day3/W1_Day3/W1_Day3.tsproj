@@ -19,7 +19,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{2EEA2223-044B-44AD-BA99-EEC45210D73A}" Name="Practice_V1" PrjFilePath="Practice_V1\Practice_V1.plcproj" TmcFilePath="Practice_V1\Practice_V1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V1\Practice_V1.tmc" TmcHash="{7DC62312-F7DD-EB9F-FAC8-360EC7798A4D}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V1\Practice_V1.tmc" TmcHash="{E3956E4A-64A8-C087-A825-76F55C5C5462}">
 					<Name>Practice_V1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -59,7 +59,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{8B2DCE16-7003-4FAF-83CD-73DDB59EB853}" Name="Practice_V3" PrjFilePath="Practice_V3\Practice_V3.plcproj" TmcFilePath="Practice_V3\Practice_V3.tmc" ReloadTmc="true" AmsPort="853" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V3\Practice_V3.tmc" TmcHash="{CE01F550-5031-9B45-E566-48F4B21C1E83}">
+				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V3\Practice_V3.tmc" TmcHash="{CDEC8DD3-E8BF-F397-8480-2FFE98A4E9A2}">
 					<Name>Practice_V3 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>

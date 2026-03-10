@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_PRG" Id="{870d768e-c33a-41a5-9442-dabb3a5a44e5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PRG
+VAR
+    _rResult : REAL := 0.0;
+END_VAR
+VAR_TEMP
+    rTempA    : REAL := 10.0; ;    // temporary — created on stack
+    rTempB    : REAL := 20.0;;    // destroyed after method ends
+    nTempIdx  : INT := 0;;     // NOT initialized — may have garbage value
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+
+_rResult  := rTempA + rTempB;
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_PRG">
+      <LineId Id="16" Count="0" />
+      <LineId Id="27" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

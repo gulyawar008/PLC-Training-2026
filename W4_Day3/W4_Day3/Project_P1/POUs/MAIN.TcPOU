@@ -1,13 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
-  <POU Name="MAIN" Id="{9c4acb28-eaad-49c5-b677-378fc888d8eb}">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{9c4acb28-eaad-49c5-b677-378fc888d8eb}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	bStartStop : BOOL;
+	nCounter : INT;
 END_VAR
-]]>
-    </Declaration>
+]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[IF bStartStop THEN 
+	nCounter := nCounter + 1;
+END_IF]]></ST>
     </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="11" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>

@@ -10,10 +10,17 @@ END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[F_MaxMarks(aMarks, minMarks, maxMarks );]]></ST>
+      <ST><![CDATA[
+
+F_MaxMarks(aMarks, minMarks, maxMarks );
+
+PRG_2();]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
+      <LineId Id="10" Count="1" />
       <LineId Id="2" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

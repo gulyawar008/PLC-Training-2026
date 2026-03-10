@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="PRG_2" Id="{27b9f65f-cda2-41e6-b7b5-af9577c19a59}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_2
+VAR
+    
+    rResult : REAL;
+END_VAR
+VAR_TEMP
+    rTempCalc   : REAL;   // ✅ valid in PROGRAM
+    bTempFlag   : BOOL;
+    nTempIndex  : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rTempCalc  := 0.0;
+bTempFlag  := FALSE;
+nTempIndex := 0;
+
+rTempCalc  := 100.0 * 2.0;
+bTempFlag  := rTempCalc > 100.0;
+rResult    := rTempCalc;
+// destroyed each cycle ✅]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_2">
+      <LineId Id="18" Count="6" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
