@@ -12,7 +12,7 @@
     <HmiTitle>Please enter your Title...</HmiTitle>
     <HmiVerboseLevel>2</HmiVerboseLevel>
     <HmiVersion>1.0.0.0</HmiVersion>
-    <HmiCommunicationServerPort>3001</HmiCommunicationServerPort>
+    <HmiCommunicationServerPort>3002</HmiCommunicationServerPort>
     <HmiLogTcHmiServerMessages>false</HmiLogTcHmiServerMessages>
     <HmiLogDesignerModeComMessages>false</HmiLogDesignerModeComMessages>
     <HmiServerVersion>Latest</HmiServerVersion>
@@ -27,8 +27,8 @@
     <HmiViewportUserScaleable>Default</HmiViewportUserScaleable>
     <HmiPostProcessing>True</HmiPostProcessing>
     <Name>Project_P1HMI</Name>
-    <HmiCommunicationRouterPort>10100</HmiCommunicationRouterPort>
-    <HmiCommunicationServerAuthPort>13001</HmiCommunicationServerAuthPort>
+    <HmiCommunicationRouterPort>10103</HmiCommunicationRouterPort>
+    <HmiCommunicationServerAuthPort>13002</HmiCommunicationServerAuthPort>
     <HmiInitial>1.12.762.56</HmiInitial>
     <HmiRecent>1.12.762.56</HmiRecent>
     <HmiServerNodeAdvancedView>False</HmiServerNodeAdvancedView>
@@ -119,6 +119,7 @@
     <Folder Include="Imports\Videos" />
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
+    <Folder Include="Contents" />
     <Folder Include="Themes" />
     <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />
@@ -129,6 +130,15 @@
     <Folder Include="Properties" />
     <Content Include=".eslintrc.json">
       <Visible>false</Visible>
+    </Content>
+    <Content Include="Contents\Content1.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\Content2.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\ethercat_active.svg">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
       <SubType>Content</SubType>

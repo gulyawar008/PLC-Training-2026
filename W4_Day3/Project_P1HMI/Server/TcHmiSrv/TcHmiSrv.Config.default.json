@@ -34,8 +34,8 @@
     "DISCOVERY": 2,
     "ENABLE_SERVER_UPDATE": true,
     "ENDPOINTS": [
-        "http://127.0.0.1:13001",
-        "http://127.0.0.1:3001"
+        "http://127.0.0.1:13002",
+        "http://127.0.0.1:3002"
     ],
     "ETAGENABLED": true,
     "EXTENSIONS": {
@@ -3374,6 +3374,22 @@
     "UPLOADTIMEOUT": "PT20S",
     "USEINT64STRING": false,
     "USERGROUPS": {
+        "HP WorkBook Users": {
+            "ENABLED": true,
+            "FILEACCESS": 3,
+            "FILES": {},
+            "SYMBOLACCESS": 0,
+            "SYMBOLS": {
+                "AddOrChangeUser": 0,
+                "ChangeUserSettings": 0,
+                "RemoveUser": 0,
+                "TcHmiUserManagement.AddUser": 0,
+                "TcHmiUserManagement.DisableUser": 0,
+                "TcHmiUserManagement.EnableUser": 0,
+                "TcHmiUserManagement.RemoveUser": 0,
+                "TcHmiUserManagement.RenameUser": 0
+            }
+        },
         "__SystemAdministrators": {
             "ENABLED": true,
             "FILEACCESS": 3,

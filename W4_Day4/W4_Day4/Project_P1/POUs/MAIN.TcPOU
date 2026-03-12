@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{07be9315-bd6c-497f-ac91-1f5c0df55c13}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	bLight : BOOL;
+	  rSpeedSetpoint : REAL := 0.0;   // HMI writes here
+    rActualSpeed   : REAL := 0.0;   // PLC reads this
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+rActualSpeed := rSpeedSetpoint * 0.9;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="9" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

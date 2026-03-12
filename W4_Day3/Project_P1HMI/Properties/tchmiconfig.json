@@ -53,7 +53,22 @@
     }
   ],
   "userControls": [],
-  "content": [],
+  "content": [
+    {
+      "url": "Contents/Content1.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Contents/Content2.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    }
+  ],
   "views": [
     {
       "url": "Desktop.view",
@@ -64,7 +79,14 @@
   ],
   "userFunctions": [],
   "symbols": {
-    "internal": {},
+    "internal": {
+      "ModelNumber": {
+        "value": 5671,
+        "type": "tchmi:general#/definitions/UINT",
+        "persist": true,
+        "readonly": true
+      }
+    },
     "themedResources": {}
   },
   "trigger": [],
