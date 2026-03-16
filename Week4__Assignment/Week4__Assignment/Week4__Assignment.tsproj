@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.71">
+	<Project ProjectGUID="{87DD0AAB-3AD4-4636-B949-475376A338BE}" Target64Bit="true" ShowHideConfigurations="#x3c7">
+		<System>
+			<Settings MaxCpus="18" NonWinCpus="1">
+				<Cpu CpuId="17"/>
+			</Settings>
+			<Tasks>
+				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+				<Task Id="4" CycleTime="10000" AmsPort="351" AdtTasks="true">
+					<Name>PlcTask_1</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{B0E04C03-B931-4A1D-AB62-E3418EF45C71}" Name="BottleFillingMachine" PrjFilePath="BottleFillingMachine\BottleFillingMachine.plcproj" TmcFilePath="BottleFillingMachine\BottleFillingMachine.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{9529B72F-9629-91C7-EAF6-177673F26D0E}">
+					<Name>BottleFillingMachine Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="1">
+						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>GVL_IO.bStartButton</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.bStopButton</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.bBottleSensor</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.bLevelSensor</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.bResetButton</Name>
+							<Type>BIT</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>GVL_IO.bConveyorMotor</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.bFillingValve</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.bAlarmLamp</Name>
+							<Type>BIT</Type>
+						</Var>
+					</Vars>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010030</OTCID>
+							</ManualConfig>
+							<Priority>20</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+	</Project>
+</TcSmProject>

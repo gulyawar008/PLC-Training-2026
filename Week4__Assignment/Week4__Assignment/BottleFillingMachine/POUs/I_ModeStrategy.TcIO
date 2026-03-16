@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_ModeStrategy" Id="{cc8e4adc-361f-4dca-85da-c9f56893437c}">
+    <Declaration><![CDATA[INTERFACE I_ModeStrategy
+]]></Declaration>
+    <Method Name="GetModeName" Id="{45c0ebfd-cee8-4c82-8918-e071c7f7e82b}">
+      <Declaration><![CDATA[METHOD  GetModeName : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Reset" Id="{7b7dc837-4956-41f7-a0b0-cc88b257989e}">
+      <Declaration><![CDATA[METHOD Reset
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ShouldLoop" Id="{43fbe660-50e4-475c-86ad-d1ebadc16c85}">
+      <Declaration><![CDATA[METHOD ShouldLoop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

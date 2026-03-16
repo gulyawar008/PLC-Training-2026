@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{cd7b39e7-8c72-429a-9195-c7114f175f1f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbMachine : FB_Machine;
+
+	fbAuto     : FB_AutoStrategy;
+    fbManual   : FB_ManualStrategy;
+    ipMachine  : I_MachineControl;
+
+	eMachineState : E_MachineState;
+	nBottleCount : INT;
+	bMachineRunning : BOOL;
+	sAlarm : STRING;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ipMachine := fbMachine;
+
+
+IF GVL_IO.eSIM_ModeSelect = E_MachineMode.AUTO THEN
+    fbMachine.SetModeStrategy(ipStrategy := fbAuto);
+ELSE
+    fbMachine.SetModeStrategy(ipStrategy := fbManual);
+END_IF
+
+fbAuto();
+fbManual();
+fbMachine();
+
+eMachineState := fbMachine.CurrentState;
+nBottleCount := fbMachine.BottleCount;
+bMachineRunning := fbMachine.IsMachineRunning;
+sAlarm := fbMachine.AlarmMessage;
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="7" Count="1" />
+      <LineId Id="10" Count="17" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

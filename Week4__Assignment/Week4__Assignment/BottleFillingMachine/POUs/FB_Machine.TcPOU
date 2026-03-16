@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Machine" Id="{57e437c5-4ef2-408c-a07e-1576db212170}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Machine IMPLEMENTS I_MachineControl
+VAR
+  // ── State ─────────────────────────────────────────────
+    eState  : E_MachineState := E_MachineState.IDLE;
+    bEntry  : BOOL           := TRUE;
+    nBottles: INT            := 0;
+
+    // ── Sub FBs ───────────────────────────────────────────
+    fbConveyor : FB_Conveyor;
+    fbValve    : FB_FillingValve;
+    fbAlarm    : FB_AlarmHandler;
+  
+    ipSelectMode    : I_ModeStrategy;
+
+    // ── Timers ────────────────────────────────────────────
+     tonFillTimeout  : TON;   // safety timeout in FILLING
+    tonFillDone     : TON;   // pause after fill
+    tonResume       : TON;   // belt travel time
+    tonBottleArrive : TON;   // AUTO bottle arrive simulation
+    tonSimFill      : TON;   // AUTO fill duration simulation
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+fbConveyor();
+fbValve();
+fbAlarm();
+
+// Button handling — hardware OR SIM
+IF (GVL_IO.bStopButton OR GVL_IO.bSIM_Stop)
+   AND eState <> E_MachineState.IDLE
+   AND eState <> E_MachineState.ERROR THEN
+    Stop();
+    GVL_IO.bSIM_Stop := FALSE;
+END_IF
+
+IF (GVL_IO.bStartButton OR GVL_IO.bSIM_Start) THEN
+    Start();
+    GVL_IO.bSIM_Start := FALSE;
+END_IF
+
+IF (GVL_IO.bResetButton OR GVL_IO.bSIM_Reset) THEN
+    Reset();
+    GVL_IO.bSIM_Reset := FALSE;
+END_IF
+
+// ════════════════════════════════════════════════════
+// Update status for Watch Window and HMI
+// ════════════════════════════════════════════════════
+GVL_IO.eCurrentState   := eState;
+GVL_IO.nBottleCount    := nBottles;
+GVL_IO.bMachineRunning := IsMachineRunning;
+
+
+// STATE MACHINE
+
+CASE eState OF
+
+    // IDLE — everything off, waiting for start
+E_MachineState.IDLE:
+    IF bEntry THEN
+        fbConveyor.Stop();
+        fbValve.Close();
+        fbAlarm.ClearAlarm();
+        tonBottleArrive(IN := FALSE, PT := GVL_Constants.BOTTLE_ARRIVE);
+        tonSimFill(IN      := FALSE, PT := GVL_Constants.SIM_FILL_TIME);
+
+        // Guard against NULL strategy pointer
+        IF ipSelectMode <> 0 THEN
+            GVL_IO.sLog := CONCAT(ipSelectMode.GetModeName(), ' — IDLE. Press Start');
+        ELSE
+            GVL_IO.sLog := 'IDLE — Press Start';
+        END_IF
+
+         bEntry := FALSE;
+    END_IF
+
+    // ─────────────────────────────────────────────────
+    // CONVEYOR — belt running, waiting for bottle
+    // AUTO   → tonBottleArrive fires after 3s
+    // MANUAL → operator sets bSIM_BottleSensor
+    // ─────────────────────────────────────────────────
+    E_MachineState.CONVEYOR:
+        IF bEntry THEN
+            fbConveyor.Start();
+            fbValve.Close();
+            ipSelectMode.Reset();
+            IF GVL_IO.eSIM_ModeSelect = E_MachineMode.AUTO THEN
+                tonBottleArrive(IN := FALSE, PT := GVL_Constants.BOTTLE_ARRIVE);
+                tonBottleArrive(IN := TRUE,  PT := GVL_Constants.BOTTLE_ARRIVE);
+                GVL_IO.sLog := 'AUTO — CONVEYOR ON, bottle arriving in 3s...';
+            ELSE
+                GVL_IO.sLog := 'MANUAL — CONVEYOR ON. Set bSIM_BottleSensor';
+            END_IF
+            bEntry := FALSE;
+        END_IF
+
+        tonBottleArrive(IN := TRUE, PT := GVL_Constants.BOTTLE_ARRIVE);
+
+        // Bottle detected — hardware OR SIM OR AUTO timer
+        IF GVL_IO.bBottleSensor
+           OR GVL_IO.bSIM_BottleSensor
+           OR (tonBottleArrive.Q AND
+               GVL_IO.eSIM_ModeSelect = E_MachineMode.AUTO) THEN
+            GVL_IO.bSIM_BottleSensor := FALSE;
+            tonBottleArrive(IN := FALSE, PT := GVL_Constants.BOTTLE_ARRIVE);
+            GoTo(E_MachineState.BOTTLE_DETECTED);
+        END_IF
+
+    // ─────────────────────────────────────────────────
+    // BOTTLE_DETECTED — conveyor stops, valve opens
+    // Waits for level sensor to confirm bottle full
+    // AUTO   → tonSimFill fires after 4s
+    // MANUAL → operator sets bSIM_LevelSensor
+    // ─────────────────────────────────────────────────
+    E_MachineState.BOTTLE_DETECTED:
+        IF bEntry THEN
+            fbConveyor.Stop();
+            fbValve.Open();
+
+            // Safety timeout
+            tonFillTimeout(IN := FALSE, PT := GVL_Constants.FILL_TIMEOUT);
+            tonFillTimeout(IN := TRUE,  PT := GVL_Constants.FILL_TIMEOUT);
+
+            // AUTO — start fill simulation timer
+            IF GVL_IO.eSIM_ModeSelect = E_MachineMode.AUTO THEN
+                tonSimFill(IN := FALSE, PT := GVL_Constants.SIM_FILL_TIME);
+                tonSimFill(IN := TRUE,  PT := GVL_Constants.SIM_FILL_TIME);
+            END_IF
+
+            GVL_IO.sLog := CONCAT(ipSelectMode.GetModeName(),
+                            ' — Bottle detected. Conveyor OFF, Valve OPEN');
+            bEntry     := FALSE;
+        END_IF
+
+        // Run timers every scan
+        tonFillTimeout(IN := TRUE, PT := GVL_Constants.FILL_TIMEOUT);
+        tonSimFill(IN     := TRUE, PT := GVL_Constants.SIM_FILL_TIME);
+
+        // Level sensor — hardware OR SIM OR AUTO timer
+        IF GVL_IO.bLevelSensor
+           OR GVL_IO.bSIM_LevelSensor
+           OR (tonSimFill.Q AND
+               GVL_IO.eSIM_ModeSelect = E_MachineMode.AUTO) THEN
+            GVL_IO.bSIM_LevelSensor   := FALSE;
+            tonSimFill(IN     := FALSE, PT := GVL_Constants.SIM_FILL_TIME);
+            tonFillTimeout(IN := FALSE, PT := GVL_Constants.FILL_TIMEOUT);
+            GoTo(E_MachineState.FILL_DONE);
+        END_IF
+
+        // Safety timeout fires error
+        IF tonFillTimeout.Q THEN
+            fbAlarm.SetAlarm('Fill timeout — level sensor not reached');
+            GoTo(E_MachineState.ERROR);
+        END_IF
+
+    // ─────────────────────────────────────────────────
+    // FILL_DONE — valve closes, bottle counted
+    // 1s pause then check strategy for next action
+    // ─────────────────────────────────────────────────
+    E_MachineState.FILL_DONE:
+        IF bEntry THEN
+            fbValve.Close();
+            nBottles := nBottles + 1;
+            IF nBottles >= GVL_Constants.MAX_BOTTLES THEN
+                nBottles := 0;
+            END_IF
+            tonFillDone(IN := FALSE, PT := GVL_Constants.FILL_DONE_DELAY);
+            tonFillDone(IN := TRUE,  PT := GVL_Constants.FILL_DONE_DELAY);
+            GVL_IO.sLog := CONCAT(ipSelectMode.GetModeName(),
+                            CONCAT(' — FILL DONE. Bottles: ',
+                            INT_TO_STRING(nBottles)));
+            bEntry     := FALSE;
+        END_IF
+
+        tonFillDone(IN := TRUE, PT := GVL_Constants.FILL_DONE_DELAY);
+
+        IF tonFillDone.Q THEN
+            tonFillDone(IN := FALSE, PT := GVL_Constants.FILL_DONE_DELAY);
+            GoTo(E_MachineState.RESUME);
+        END_IF
+
+    // ─────────────────────────────────────────────────
+    // RESUME — conveyor restarts, sensors reset
+    // AUTO   → loops back to CONVEYOR after 3s
+    // MANUAL → goes to IDLE after 3s
+    // ─────────────────────────────────────────────────
+    E_MachineState.RESUME:
+        IF bEntry THEN
+            fbConveyor.Start();
+            GVL_IO.bSIM_BottleSensor := FALSE;
+            GVL_IO.bSIM_LevelSensor  := FALSE;
+            tonResume(IN := FALSE, PT := GVL_Constants.RESUME_DELAY);
+            tonResume(IN := TRUE,  PT := GVL_Constants.RESUME_DELAY);
+            GVL_IO.sLog := CONCAT(ipSelectMode.GetModeName(),
+                            CONCAT(' — RESUME. Total bottles: ',
+                            INT_TO_STRING(nBottles)));
+            bEntry     := FALSE;
+        END_IF
+
+        tonResume(IN := TRUE, PT := GVL_Constants.RESUME_DELAY);
+
+        IF tonResume.Q THEN
+            tonResume(IN := FALSE, PT := GVL_Constants.RESUME_DELAY);
+            IF ipSelectMode.ShouldLoop() THEN
+                GoTo(E_MachineState.CONVEYOR);  // AUTO loops
+            ELSE
+                GoTo(E_MachineState.IDLE);      // MANUAL waits
+            END_IF
+        END_IF
+
+    // ─────────────────────────────────────────────────
+    // ERROR — everything stopped, wait for reset
+    // ─────────────────────────────────────────────────
+    E_MachineState.ERROR:
+        IF bEntry THEN
+            fbConveyor.Stop();
+            fbValve.Close();
+            tonBottleArrive(IN := FALSE, PT := GVL_Constants.BOTTLE_ARRIVE);
+            tonSimFill(IN      := FALSE, PT := GVL_Constants.SIM_FILL_TIME);
+            GVL_IO.sLog := CONCAT('ERROR — ', fbAlarm.Message);
+            bEntry     := FALSE;
+        END_IF
+
+    ELSE
+        GoTo(E_MachineState.IDLE);
+
+END_CASE]]></ST>
+    </Implementation>
+    <Property Name="AlarmMessage" Id="{6a4cd72c-7dbb-4ffc-8fd3-2d61018a2488}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY AlarmMessage : STRING
+]]></Declaration>
+      <Get Name="Get" Id="{2883c4d5-41c2-426a-a0cb-d6d4c0a5dd43}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[   AlarmMessage := fbAlarm.Message;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{cadea3bb-9737-4bbf-8f81-1ac4d5a0a801}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="BottleCount" Id="{fdf6c676-6b46-492a-bcb7-b0b72ca7c487}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY BottleCount : INT
+]]></Declaration>
+      <Get Name="Get" Id="{6f418fee-b2b1-4e07-8761-e81dc1133a80}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[  BottleCount := nBottles;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9910ab67-0fdd-46d0-884c-8dc7ce989b3b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="CurrentState" Id="{10a9255f-da2c-45c9-abf5-610c14212ed1}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY CurrentState : E_MachineState
+]]></Declaration>
+      <Get Name="Get" Id="{d05f2c7f-379b-4c0d-aefd-27f242abb64c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CurrentState := eState;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{be5397f2-ed51-4bc7-a0c1-e8f2417f8a7b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="GoTo" Id="{f2b1dfe7-da01-4795-9221-e1b2a342c45a}">
+      <Declaration><![CDATA[METHOD PRIVATE GoTo 
+VAR_INPUT
+      eNext : E_MachineState; 
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[eState := eNext;
+bEntry := TRUE;
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IsMachineRunning" Id="{d697ff7d-d11b-4258-92f0-0950252594ea}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY IsMachineRunning : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{1172bde5-1451-4ae1-8dce-8eb6c23da94d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[    IsMachineRunning := (eState <> E_MachineState.IDLE AND
+                  eState <> E_MachineState.ERROR);]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6533bd66-3bc9-4eac-883a-e4ac0bae1e43}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Reset" Id="{d39bec58-42aa-45b1-9ef2-7088b262e4e6}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Reset : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eState <> E_MachineState.ERROR THEN
+    Reset := FALSE;
+    RETURN;
+ END_IF
+    
+fbAlarm.ClearAlarm();
+nBottles := 0;
+GoTo(E_MachineState.IDLE);
+Reset := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetModeStrategy" Id="{f32add5c-8f95-42c0-b3b2-a3ed39678fb4}">
+      <Declaration><![CDATA[METHOD SetModeStrategy : BOOL
+VAR_INPUT
+    ipStrategy : I_ModeStrategy;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[     // Only switch strategy when IDLE
+    // Prevents mode change mid cycle
+    IF eState = E_MachineState.IDLE THEN
+        ipSelectMode             := ipStrategy;
+        GVL_IO.eCurrentMode := GVL_IO.eSIM_ModeSelect;
+        GVL_IO.sLog         := CONCAT('Mode set: ',
+                                ipStrategy.GetModeName());
+    END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Start" Id="{0e092b3e-7951-4512-8a1a-cacfe736151d}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Start : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ IF eState <> E_MachineState.IDLE THEN
+        Start := FALSE;
+        RETURN;
+    END_IF
+ GoTo(E_MachineState.CONVEYOR);
+ GVL_IO.sLog := 'Machine is Stopped by the operator';
+ Start := TRUE;
+ 
+ 
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{e211e6f1-5d4b-4d27-bd21-a2af9fa30cac}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Stop : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbConveyor.Stop();
+fbValve.Close();
+GoTo(E_MachineState.IDLE);
+Stop := TRUE;
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Machine">
+      <LineId Id="2074" Count="0" />
+      <LineId Id="1834" Count="1" />
+      <LineId Id="1838" Count="0" />
+      <LineId Id="2073" Count="0" />
+      <LineId Id="1839" Count="0" />
+      <LineId Id="1841" Count="27" />
+      <LineId Id="1870" Count="1" />
+      <LineId Id="2035" Count="15" />
+      <LineId Id="1883" Count="151" />
+      <LineId Id="45" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.AlarmMessage.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.AlarmMessage.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.BottleCount.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.BottleCount.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.CurrentState.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.CurrentState.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.GoTo">
+      <LineId Id="7" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.IsMachineRunning.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.IsMachineRunning.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.Reset">
+      <LineId Id="19" Count="8" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.SetModeStrategy">
+      <LineId Id="10" Count="6" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Machine.Start">
+      <LineId Id="5" Count="4" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="10" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_Machine.Stop">
+      <LineId Id="5" Count="2" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
