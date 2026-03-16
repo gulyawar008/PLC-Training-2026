@@ -7,7 +7,21 @@ VAR
 	bDecrement : BOOL;
 	bReset : BOOL;
 	nCounter :INT;
+	
+	// HMI pages 0 gray/standby, 10 white/open for is, 1 green/ready for OP, 2 yellow/varning, 3 red/error, blue/ma
+content: ARRAY [0..10] OF INT;
+// state of page respectively machine station
+fbRtContent : ARRAY [0..10] OF R_TRIG;
+// trigger
+contentSelect : BOOL;
+// a page selected
+fbTpContentSelect : TP;
+ x, y: INT;
+// loop index
+myVariable: REAL;
 END_VAR
+
+
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bIncrement THEN
@@ -27,8 +41,43 @@ IF bReset THEN
 END_IF
 
 
+
+a_010_Contents(); // Handling of the main pages
+
 ]]></ST>
     </Implementation>
+    <Action Name="a_010_Contents" Id="{346932cd-1be6-49ce-ab1c-c6da45a15ec2}">
+      <Implementation>
+        <ST><![CDATA[// Rising edge button ucContent
+FOR x:= 0 TO 10 DO
+      fbRtContent[x](CLK:= content[x] = 10);
+  END_FOR
+// Reset all pages
+   FOR y:= 0 TO 10 DO
+    	IF fbRtContent[y].Q THEN
+        	contentSelect := TRUE;
+            FOR x:= 0 TO 10 DO
+               content[x] := 0;
+            END_FOR
+			content[y] := 10; //hold on to the triggered page
+	    END_IF
+   END_FOR
+   
+  fbTpContentSelect (IN:= contentSelect, PT:= T#1S, Q=> contentSelect);
+
+       IF contentSelect THEN 
+           RETURN; 
+       END_IF 
+  // Update page status after switching / white is delayed
+
+
+   // Here you can edit the status of the pages
+    // Page 1
+     //  content[1] := 0;
+    // Page 2
+   //  content [2] :=0;]]></ST>
+      </Implementation>
+    </Action>
     <LineIds Name="MAIN">
       <LineId Id="2" Count="0" />
       <LineId Id="24" Count="2" />
@@ -39,9 +88,26 @@ END_IF
       <LineId Id="21" Count="0" />
       <LineId Id="27" Count="2" />
       <LineId Id="22" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="59" Count="0" />
       <LineId Id="18" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.a_010_Contents">
+      <LineId Id="2" Count="2" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="6" Count="7" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="19" Count="3" />
+      <LineId Id="1" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

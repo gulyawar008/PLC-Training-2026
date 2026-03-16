@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <GVL Name="GVL_IO" Id="{f0c40109-c74f-4a9f-8392-59dc39328f8f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+
+    // ── Hardware Inputs (AT %IX — read only) ──────────────
+    bStartButton  AT %IX0.0 : BOOL;  
+    bStopButton    AT %IX0.1 : BOOL; 
+    bBottleSensor   AT %IX0.2 : BOOL;
+    bLevelSensor   AT %IX0.3 : BOOL; 
+    bResetButton AT %IX0.4  : BOOL;  
+
+    // ── Hardware Outputs (AT %QX — PLC writes) ────────────
+    bConveyorMotor  AT %QX0.0 : BOOL; 
+    bFillingValve  AT %QX0.1 : BOOL; 
+    bAlarmLamp    AT %QX0.2  : BOOL; 
+
+    // ── Simulation inputs (Watch Window sets these) ───────
+    bSIM_Start        : BOOL;
+    bSIM_Stop         : BOOL;
+    bSIM_Reset        : BOOL;
+    bSIM_BottleSensor : BOOL;
+    bSIM_LevelSensor  : BOOL;
+    eSIM_ModeSelect   : E_MachineMode;
+
+    // ── PLC Status (Watch Window reads) ───────────────────
+    eCurrentState   : E_MachineState;
+    eCurrentMode    : E_MachineMode;
+    nBottleCount    : INT    := 0;
+    bMachineRunning : BOOL   := FALSE;
+    sLog            : STRING := '';
+    sAlarmMsg       : STRING := '';
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

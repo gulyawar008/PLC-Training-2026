@@ -34,8 +34,8 @@
     "DISCOVERY": 2,
     "ENABLE_SERVER_UPDATE": true,
     "ENDPOINTS": [
-        "http://127.0.0.1:13000",
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:13001",
+        "http://127.0.0.1:3001"
     ],
     "ETAGENABLED": true,
     "EXTENSIONS": {
@@ -2538,6 +2538,26 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.MAIN.content.1": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::content[1]",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/INT"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.MAIN.content.2": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::content[2]",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/INT"
+            },
+            "USEMAPPING": true
+        },
         "PLC1.MAIN.nCounter": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -3470,6 +3490,8 @@
                 "PLC1.MAIN.bDecrement": 3,
                 "PLC1.MAIN.bIncrement": 3,
                 "PLC1.MAIN.bReset": 3,
+                "PLC1.MAIN.content.1": 3,
+                "PLC1.MAIN.content.2": 3,
                 "PLC1.MAIN.nCounter": 3,
                 "SetLocale": 3,
                 "SubscribeEvents": 3,

@@ -12,7 +12,7 @@
     <HmiTitle>Please enter your Title...</HmiTitle>
     <HmiVerboseLevel>2</HmiVerboseLevel>
     <HmiVersion>1.0.0.0</HmiVersion>
-    <HmiCommunicationServerPort>3000</HmiCommunicationServerPort>
+    <HmiCommunicationServerPort>3001</HmiCommunicationServerPort>
     <HmiLogTcHmiServerMessages>false</HmiLogTcHmiServerMessages>
     <HmiLogDesignerModeComMessages>false</HmiLogDesignerModeComMessages>
     <HmiServerVersion>Latest</HmiServerVersion>
@@ -28,7 +28,7 @@
     <HmiPostProcessing>True</HmiPostProcessing>
     <Name>TcHmiProject1</Name>
     <HmiCommunicationRouterPort>10102</HmiCommunicationRouterPort>
-    <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
+    <HmiCommunicationServerAuthPort>13001</HmiCommunicationServerAuthPort>
     <HmiInitial>1.12.762.56</HmiInitial>
     <HmiRecent>1.12.762.56</HmiRecent>
     <HmiServerNodeAdvancedView>False</HmiServerNodeAdvancedView>
@@ -119,6 +119,7 @@
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
     <Folder Include="NavigationPages" />
+    <Folder Include="Contents" />
     <Folder Include="Themes" />
     <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />
@@ -129,6 +130,27 @@
     <Folder Include="Properties" />
     <Content Include=".eslintrc.json">
       <Visible>false</Visible>
+    </Content>
+    <Content Include="Contents\Content1.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\Content2.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="NavigationPages\UserControl1 - Copy %281%29.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>NavigationPages\UserControl1 - Copy.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="NavigationPages\UserControl1 - Copy - Copy.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>NavigationPages\UserControl1 - Copy.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="NavigationPages\UserControl1 - Copy.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="NavigationPages\UserControl1 - Copy.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>NavigationPages\UserControl1.usercontrol</DependentUpon>
     </Content>
     <Content Include="NavigationPages\UserControl1.usercontrol">
       <SubType>Content</SubType>

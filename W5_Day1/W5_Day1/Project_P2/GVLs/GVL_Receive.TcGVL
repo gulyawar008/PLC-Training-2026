@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <GVL Name="GVL_Receive" Id="{826d62d6-a9fd-485f-af78-dcad7fda7595}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+    // ── Data received FROM Project 1 ─────────────────────
+    rReceivedTemp  : REAL := 0.0;
+    bReceivedAlarm : BOOL := FALSE;
+
+    // ── Data sent BACK to Project 1 ──────────────────────
+    bSendAck       : BOOL := FALSE;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

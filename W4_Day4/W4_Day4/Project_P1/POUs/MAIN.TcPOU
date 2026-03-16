@@ -10,11 +10,15 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-rActualSpeed := rSpeedSetpoint * 0.9;]]></ST>
+rActualSpeed := rSpeedSetpoint * 0.9;
+
+]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="9" Count="0" />
       <LineId Id="2" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="16" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{9773b036-4ef6-473c-a695-4d2931a9577c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbMachine : FB_Machine;
+	
+
+	fbAuto     : FB_AutoStrategy;
+    fbManual   : FB_ManualStrategy;
+     ipMachine  : I_MachineControl;
+	
+	//Watch Window Monitoring
+	eMachineState : E_MachineState;
+	nBottleCount : INT;
+	bMachineRunning : BOOL;
+	sAlarm : STRING;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Wire interface
+ipMachine := fbMachine;
+
+
+// Strategy wiring through interface
+IF GVL_IO.eSIM_ModeSelect = E_MachineMode.AUTO THEN
+    fbMachine.SetModeStrategy(ipStrategy := fbAuto);
+ELSE
+    fbMachine.SetModeStrategy(ipStrategy := fbManual);
+END_IF
+
+fbAuto();
+fbManual();
+fbMachine();
+
+eMachineState := fbMachine.CurrentState;
+nBottleCount := fbMachine.BottleCount;
+bMachineRunning := fbMachine.IsMachineRunning;
+sAlarm := fbMachine.AlarmMessage;
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="71" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="50" Count="4" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="59" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="35" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

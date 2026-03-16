@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{ece8cbcc-e279-4fa2-b7d4-adb65289b03b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    // ── ADS Settings ──────────────────────────────────────
+    sNetId         : STRING  := '127.0.0.1.1.1'; // same PC
+    nPort          : UINT    := 851;              // Project 1 port
+
+    // ── READ Temperature FB ───────────────────────────────
+    fbReadTemp     : ADSREAD;
+    rTempBuffer    : REAL    := 0.0;
+    bReadTempBusy  : BOOL;
+    bReadTempBusy_Last : BOOL;
+
+    // ── READ Alarm FB ─────────────────────────────────────
+    fbReadAlarm    : ADSREAD;
+    bAlarmBuffer   : BOOL    := FALSE;
+    bReadAlarmBusy : BOOL;
+    bReadAlarmBusy_Last : BOOL;
+
+    // ── WRITE Acknowledgement FB ──────────────────────────
+    fbWriteAck     : ADSWRITE;
+    bWriteAckBusy  : BOOL;
+    bWriteAckBusy_Last : BOOL;
+
+    // ── Trigger flags ─────────────────────────────────────
+    bTriggerRead   : BOOL    := FALSE;
+    bTriggerWrite  : BOOL    := FALSE;
+
+    // ── Cycle timer — read every 500ms ────────────────────
+    tonReadCycle   : TON;
+
+    // ── Error tracking ────────────────────────────────────
+    nTempError     : UDINT   := 0;
+    nAlarmError    : UDINT   := 0;
+    nWriteError    : UDINT   := 0;
+    sStatusMsg     : STRING  := 'Waiting...';
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// STEP 1 — Cyclic timer triggers read every 500ms
+tonReadCycle(IN := TRUE, PT := T#500MS);
+
+IF tonReadCycle.Q THEN
+    tonReadCycle(IN := FALSE, PT := T#500MS); // reset timer
+    bTriggerRead := TRUE;                      // fire one read cycle
+END_IF
+
+// STEP 2 — READ Temperature from Project 1
+// Uses: GVL_Send.rTemperature in Project 1
+// IDXGRP 16#F005 = read by variable handle (ADS standard
+fbReadTemp(
+    NETID    := sNetId,
+    PORT     := nPort,
+    IDXGRP   := 16#F005,
+    IDXOFFS  := 16#0,
+    LEN      := SIZEOF(rTempBuffer),
+    DESTADDR := ADR(rTempBuffer),
+    READ     := bTriggerRead,
+    BUSY     => bReadTempBusy,
+    ERR      => ,
+    ERRID    => nTempError
+);
+
+// Detect BUSY falling edge = read complete
+IF bReadTempBusy_Last AND NOT bReadTempBusy THEN
+    IF nTempError = 0 THEN
+        GVL_Receive.rReceivedTemp := rTempBuffer;
+        sStatusMsg := 'Temperature read OK';
+    ELSE
+        sStatusMsg := CONCAT('Temp read ERROR: ',
+                      UDINT_TO_STRING(nTempError));
+    END_IF
+    bTriggerRead := FALSE; // reset trigger
+END_IF
+bReadTempBusy_Last := bReadTempBusy;
+
+// STEP 3 — READ Alarm flag from Project 1
+// Uses: GVL_Send.bAlarm in Project 1
+fbReadAlarm(
+    NETID    := sNetId,
+    PORT     := nPort,
+    IDXGRP   := 16#F005,
+    IDXOFFS  := 16#0,
+    LEN      := SIZEOF(bAlarmBuffer),
+    DESTADDR := ADR(bAlarmBuffer),
+    READ     := bTriggerRead,
+    BUSY     => bReadAlarmBusy,
+    ERR      => ,
+    ERRID    => nAlarmError
+);
+
+// Detect BUSY falling edge = read complete
+IF bReadAlarmBusy_Last AND NOT bReadAlarmBusy THEN
+    IF nAlarmError = 0 THEN
+        GVL_Receive.bReceivedAlarm := bAlarmBuffer;
+        sStatusMsg := 'Alarm read OK';
+    ELSE
+        sStatusMsg := CONCAT('Alarm read ERROR: ',
+                      UDINT_TO_STRING(nAlarmError));
+    END_IF
+END_IF
+bReadAlarmBusy_Last := bReadAlarmBusy;
+
+// STEP 4 — If alarm received, send acknowledgement back
+// Writes TRUE to GVL_Send.bAckFromP2 in Project 1
+IF GVL_Receive.bReceivedAlarm AND NOT bTriggerWrite THEN
+    GVL_Receive.bSendAck := TRUE;
+    bTriggerWrite        := TRUE;
+    sStatusMsg           := 'Sending ACK to Project 1...';
+END_IF
+
+fbWriteAck(
+    NETID    := sNetId,
+    PORT     := nPort,
+    IDXGRP   := 16#F005,
+    IDXOFFS  := 16#0,
+    LEN      := SIZEOF(GVL_Receive.bSendAck),
+    SRCADDR  := ADR(GVL_Receive.bSendAck),
+    WRITE    := bTriggerWrite,
+    BUSY     => bWriteAckBusy,
+    ERR      => ,
+    ERRID    => nWriteError
+);
+
+// Detect BUSY falling edge = write complete
+IF bWriteAckBusy_Last AND NOT bWriteAckBusy THEN
+    IF nWriteError = 0 THEN
+        sStatusMsg           := 'ACK sent successfully';
+        GVL_Receive.bSendAck := FALSE;
+        bTriggerWrite        := FALSE;
+    ELSE
+        sStatusMsg := CONCAT('Write ERROR: ',
+                      UDINT_TO_STRING(nWriteError));
+        bTriggerWrite := FALSE;
+    END_IF
+END_IF
+bWriteAckBusy_Last := bWriteAckBusy;
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="205" Count="6" />
+      <LineId Id="213" Count="3" />
+      <LineId Id="218" Count="24" />
+      <LineId Id="244" Count="2" />
+      <LineId Id="248" Count="23" />
+      <LineId Id="273" Count="2" />
+      <LineId Id="277" Count="31" />
+      <LineId Id="354" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

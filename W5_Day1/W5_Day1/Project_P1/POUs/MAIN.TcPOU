@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{cfee26fe-f190-41cb-af46-439a6ac4aac0}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    // ── Temperature simulation ────────────────────────────
+    tonTempRise    : TON;          // timer to rise temp slowly
+    bTempRiseDone  : BOOL;
+
+    // ── Alarm state tracking ──────────────────────────────
+    bAlarmActive   : BOOL := FALSE;
+    bAlarmHandled  : BOOL := FALSE;
+
+    // ── Status message for Watch Window ───────────────────
+    sStatusMsg     : STRING := 'System starting...';
+
+    // ── Ack edge detection ────────────────────────────────
+    bAckLast       : BOOL := FALSE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// STEP 1 — Simulate temperature rising slowly
+// Rises by 1.0 degree every 2 seconds
+// ════════════════════════════════════════════════════════
+tonTempRise(IN := TRUE, PT := T#2S);
+
+IF tonTempRise.Q THEN
+    tonTempRise(IN := FALSE, PT := T#2S);  // reset timer
+
+    // Only rise if no alarm active
+    IF NOT GVL_Send.bAlarm THEN
+        GVL_Send.rTemperature := GVL_Send.rTemperature + 1.0;
+        sStatusMsg := CONCAT('Temperature: ',
+                      CONCAT(REAL_TO_STRING(GVL_Send.rTemperature),
+                      ' C'));
+    END_IF
+END_IF
+
+// ════════════════════════════════════════════════════════
+// STEP 2 — Check alarm condition
+// Fires when temperature exceeds 90 degrees
+// ════════════════════════════════════════════════════════
+IF GVL_Send.rTemperature > 90.0
+   AND NOT GVL_Send.bAlarm THEN
+
+    GVL_Send.bAlarm  := TRUE;
+    bAlarmActive     := TRUE;
+    bAlarmHandled    := FALSE;
+    sStatusMsg       := 'ALARM FIRED — Temp exceeded 90C';
+
+END_IF
+
+// ════════════════════════════════════════════════════════
+// STEP 3 — Wait for ACK from Project 2
+// Project 2 writes TRUE to bAckFromP2 when it receives alarm
+// We detect the rising edge of that ACK
+// ════════════════════════════════════════════════════════
+IF GVL_Send.bAckFromP2 AND NOT bAckLast THEN
+    // Rising edge detected — ACK just arrived
+    bAlarmHandled         := TRUE;
+    sStatusMsg            := 'ACK received from Project 2';
+END_IF
+bAckLast := GVL_Send.bAckFromP2;
+
+// ════════════════════════════════════════════════════════
+// STEP 4 — Reset after ACK received
+// Reset temperature and alarm back to normal
+// ════════════════════════════════════════════════════════
+IF bAlarmHandled AND GVL_Send.bAckFromP2 THEN
+    GVL_Send.bAlarm       := FALSE;
+    GVL_Send.rTemperature := 75.5;   // reset to starting value
+    GVL_Send.bAckFromP2   := FALSE;  // clear ACK
+    bAlarmActive          := FALSE;
+    bAlarmHandled         := FALSE;
+    sStatusMsg            := 'System RESET — Cycle restarting';
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="57" Count="55" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

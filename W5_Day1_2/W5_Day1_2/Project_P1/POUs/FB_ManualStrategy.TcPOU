@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_ManualStrategy" Id="{e9ae5da6-e60a-4aea-9eeb-53096ea25349}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ManualStrategy IMPLEMENTS I_ModeStrategy
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetModeName" Id="{6792748e-2a6b-47c1-91f0-63c5b9153263}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetModeName : STRING
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+    GetModeName := 'MANUAL';]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{63d4b590-5815-4bc0-bcaf-15c5322a6648}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Reset
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ShouldLoop" Id="{455630bb-d218-4ae4-a308-8698edfe9371}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD ShouldLoop : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[  ShouldLoop := FALSE; ]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_ManualStrategy">
+      <LineId Id="52" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ManualStrategy.GetModeName">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ManualStrategy.Reset">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ManualStrategy.ShouldLoop">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

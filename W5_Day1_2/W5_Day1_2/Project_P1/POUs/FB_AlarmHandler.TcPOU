@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_AlarmHandler" Id="{048ed448-ae4b-4070-8f07-f8008abbe27d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AlarmHandler
+VAR
+	  bActive   : BOOL   := FALSE;
+      sMessage  : STRING := '';
+      tonBlink  : TON;
+      bLampState: BOOL   := FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Blink alarm lamp when active
+tonBlink(IN := bActive, PT := GVL_Constants.ALARM_BLINK);
+
+IF tonBlink.Q THEN
+    bLampState        := NOT bLampState;
+    tonBlink(IN := FALSE, PT := GVL_Constants.ALARM_BLINK);
+    tonBlink(IN := TRUE,  PT := GVL_Constants.ALARM_BLINK);
+END_IF
+
+GVL_IO.bAlarmLamp  := bActive AND bLampState;
+GVL_IO.sAlarmMsg   := sMessage;
+
+]]></ST>
+    </Implementation>
+    <Method Name="ClearAlarm" Id="{f6aa93e6-7af7-4737-97d7-ba64ba17d6ca}">
+      <Declaration><![CDATA[METHOD ClearAlarm : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ bActive   := FALSE;
+ sMessage  := '';
+ bLampState:= FALSE;
+    GVL_IO.bAlarmLamp := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IsActive" Id="{ccc025b8-8e0e-4e97-80d4-350d784ce4fc}">
+      <Declaration><![CDATA[PROPERTY IsActive : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4e02c545-b9bd-495a-9495-18a245a26bbd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsActive := bActive;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{96408d8f-a00b-4ec3-bec1-62d875f9ed00}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Message" Id="{c9bddd77-eeab-4f31-afa6-1d4aaea1a8fa}">
+      <Declaration><![CDATA[PROPERTY Message : STRING]]></Declaration>
+      <Get Name="Get" Id="{ebdd30fd-6652-44b3-b835-7dfdb686c2ff}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Message := sMessage;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{82bbe2dd-f29f-437e-8f26-ad6e94d2dd29}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="SetAlarm" Id="{cd065b06-f720-47e5-8a8d-1454ed7a154b}">
+      <Declaration><![CDATA[METHOD SetAlarm : BOOL
+VAR_INPUT
+	sMsg : STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bActive  := TRUE;
+sMessage := sMsg;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_AlarmHandler">
+      <LineId Id="14" Count="9" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AlarmHandler.ClearAlarm">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AlarmHandler.IsActive.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AlarmHandler.IsActive.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AlarmHandler.Message.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AlarmHandler.Message.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AlarmHandler.SetAlarm">
+      <LineId Id="9" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_FillingValve" Id="{adfeab91-cc87-4840-9834-b8f1cde1f87b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_FillingValve
+VAR
+	  bOpen      : BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[GVL_IO.bFillingValve := bOpen;]]></ST>
+    </Implementation>
+    <Method Name="Close" Id="{0074e288-d2de-4f76-b9c0-68db1767f557}">
+      <Declaration><![CDATA[METHOD Close : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bOpen := FALSE;
+Close  := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Open" Id="{78add915-dbe7-48e3-843e-e93113f2cb29}">
+      <Declaration><![CDATA[METHOD Open : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bOpen := TRUE;
+Open   := TRUE;
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_FillingValve">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FillingValve.Close">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FillingValve.Open">
+      <LineId Id="9" Count="0" />
+      <LineId Id="6" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

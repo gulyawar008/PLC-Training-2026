@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <GVL Name="GVL_Send" Id="{bf1afa37-8d9f-4c91-9581-d64bd995e136}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+// GVL_Send — these variables are visible to outside via ADS
+VAR_GLOBAL
+    rTemperature : REAL := 75.5;
+    bAlarm       : BOOL := FALSE;
+    bAckFromP2   : BOOL := FALSE;  // Project 2 writes back here
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

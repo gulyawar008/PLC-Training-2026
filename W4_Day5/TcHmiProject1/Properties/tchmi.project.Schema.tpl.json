@@ -6,8 +6,16 @@
       "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
       "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
       "frameworkUserControlConfig": "NavigationPages\\UserControl1.usercontrol.json",
-      "id": "tchmi:project#/definitions/UserControl1",
-      "type": "object"
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControl1"
+    },
+    "UserControl1_-_Copy": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "NavigationPages\\UserControl1 - Copy.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControl1_-_Copy"
     }
   }
 }
