@@ -28,6 +28,28 @@
     "DEFAULTTIMEZONE": "client",
     "DEFAULTUSERGROUP": "__SystemUsers",
     "DEFINITIONS": {
+        "PLC1.E_MachineMode": {
+            "attributes": {
+                "generate_implicit_init_function": "",
+                "qualified_only": "",
+                "strict": ""
+            },
+            "enum": [
+                0,
+                1
+            ],
+            "options": [
+                {
+                    "label": "MANUAL",
+                    "value": 0
+                },
+                {
+                    "label": "AUTO",
+                    "value": 1
+                }
+            ],
+            "type": "integer"
+        },
         "PLC1.E_MachineState": {
             "attributes": {
                 "generate_implicit_init_function": "",
@@ -2551,6 +2573,126 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.GVL_IO.bAlarmLamp": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bAlarmLamp",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bBottleSensor": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bBottleSensor",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bConveyorMotor": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bConveyorMotor",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bLevelSensor": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bLevelSensor",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bResetButton": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bResetButton",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bSIM_BottleSensor": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bSIM_BottleSensor",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bSIM_LevelSensor": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bSIM_LevelSensor",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bSIM_Start": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bSIM_Start",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bSIM_Stop": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bSIM_Stop",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bStartButton": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bStartButton",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.bStopButton": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bStopButton",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.eCurrentMode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::eCurrentMode",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.E_MachineMode"
+            },
+            "USEMAPPING": true
+        },
         "PLC1.GVL_IO.eCurrentState": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -2558,6 +2700,46 @@
             "MAPPING": "PLC1::GVL_IO::eCurrentState",
             "SCHEMA": {
                 "$ref": "tchmi:server#/definitions/PLC1.E_MachineState"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.eSIM_ModeSelect": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::eSIM_ModeSelect",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.E_MachineMode"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.nBottleCount": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::nBottleCount",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/INT"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.sAlarmMsg": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::sAlarmMsg",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/STRING%2880%29"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.sLog": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::sLog",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/STRING%2880%29"
             },
             "USEMAPPING": true
         },
@@ -3480,7 +3662,23 @@
                 "LocalizeText": 3,
                 "Login": 3,
                 "Logout": 3,
+                "PLC1.GVL_IO.bAlarmLamp": 3,
+                "PLC1.GVL_IO.bBottleSensor": 3,
+                "PLC1.GVL_IO.bConveyorMotor": 3,
+                "PLC1.GVL_IO.bLevelSensor": 3,
+                "PLC1.GVL_IO.bResetButton": 3,
+                "PLC1.GVL_IO.bSIM_BottleSensor": 3,
+                "PLC1.GVL_IO.bSIM_LevelSensor": 3,
+                "PLC1.GVL_IO.bSIM_Start": 3,
+                "PLC1.GVL_IO.bSIM_Stop": 3,
+                "PLC1.GVL_IO.bStartButton": 3,
+                "PLC1.GVL_IO.bStopButton": 3,
+                "PLC1.GVL_IO.eCurrentMode": 3,
                 "PLC1.GVL_IO.eCurrentState": 3,
+                "PLC1.GVL_IO.eSIM_ModeSelect": 3,
+                "PLC1.GVL_IO.nBottleCount": 3,
+                "PLC1.GVL_IO.sAlarmMsg": 3,
+                "PLC1.GVL_IO.sLog": 3,
                 "SetLocale": 3,
                 "SubscribeEvents": 3,
                 "TcHmiSqliteLogger.Diagnostics": 1,

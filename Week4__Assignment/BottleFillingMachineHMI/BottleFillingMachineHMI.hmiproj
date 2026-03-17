@@ -118,6 +118,7 @@
     <Folder Include="Imports\Videos" />
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
+    <Folder Include="Functions" />
     <Folder Include="Themes" />
     <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />
@@ -128,6 +129,30 @@
     <Folder Include="Properties" />
     <Content Include=".eslintrc.json">
       <Visible>false</Visible>
+    </Content>
+    <Content Include="Functions\FunctionJS1.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\FunctionJS1.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\FunctionJS1.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\FunctionJS2.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\FunctionJS2.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\FunctionJS2.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\getConveyorColor.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\getConveyorColor.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\getConveyorColor.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\icons_bell_pressed.svg">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
       <SubType>Content</SubType>

@@ -8,47 +8,42 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-// Body
-tonSettle(IN := bActive, PT := GVL_Constants.SETTLE_DELAY);
+      <ST><![CDATA[tonSettle(IN := bActive, PT := GVL_Constants.SETTLE_DELAY);
 ]]></ST>
     </Implementation>
     <Method Name="GetModeName" Id="{a0141eda-8943-49d6-8ed4-d5430a879611}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD GetModeName : STRING
+      <Declaration><![CDATA[METHOD GetModeName : STRING
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[  GetModeName := 'AUTO';]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reset" Id="{6b96ff0a-cddf-435d-b637-3a5c3cd5883c}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD Reset
+      <Declaration><![CDATA[METHOD Reset
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[   bActive := FALSE;
-  tonSettle(IN := FALSE, PT := GVL_Constants.SETTLE_DELAY);
+        <ST><![CDATA[bActive := FALSE;
+tonSettle(IN := FALSE, PT := GVL_Constants.SETTLE_DELAY);
   ]]></ST>
       </Implementation>
     </Method>
     <Method Name="ShouldLoop" Id="{4cd0e494-3331-4504-922d-c261c3f5c61c}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD ShouldLoop : BOOL
+      <Declaration><![CDATA[METHOD ShouldLoop : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[  ShouldLoop := TRUE;]]></ST>
+        <ST><![CDATA[ShouldLoop := TRUE;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_AutoStrategy">
-      <LineId Id="29" Count="2" />
-      <LineId Id="40" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="46" Count="0" />
     </LineIds>
     <LineIds Name="FB_AutoStrategy.GetModeName">
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_AutoStrategy.Reset">
       <LineId Id="5" Count="0" />
-      <LineId Id="4" Count="0" />
+      <LineId Id="13" Count="0" />
       <LineId Id="10" Count="0" />
     </LineIds>
     <LineIds Name="FB_AutoStrategy.ShouldLoop">

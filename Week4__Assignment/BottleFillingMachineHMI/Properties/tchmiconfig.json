@@ -50,6 +50,21 @@
       "name": "Fonts/Fonts.css",
       "description": "",
       "type": "Stylesheet"
+    },
+    {
+      "name": "Functions/FunctionJS1.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/FunctionJS2.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/getConveyorColor.js",
+      "description": "",
+      "type": "JavaScript"
     }
   ],
   "userControls": [],
@@ -62,7 +77,17 @@
       "preloadBindings": false
     }
   ],
-  "userFunctions": [],
+  "userFunctions": [
+    {
+      "url": "Functions/FunctionJS1.js"
+    },
+    {
+      "url": "Functions/FunctionJS2.js"
+    },
+    {
+      "url": "Functions/getConveyorColor.js"
+    }
+  ],
   "symbols": {
     "internal": {},
     "themedResources": {}

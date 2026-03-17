@@ -9,35 +9,30 @@ END_VAR
       <ST><![CDATA[]]></ST>
     </Implementation>
     <Method Name="GetModeName" Id="{6792748e-2a6b-47c1-91f0-63c5b9153263}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD GetModeName : STRING
+      <Declaration><![CDATA[METHOD GetModeName : STRING
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-    GetModeName := 'MANUAL';]]></ST>
+        <ST><![CDATA[GetModeName := 'MANUAL';]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reset" Id="{63d4b590-5815-4bc0-bcaf-15c5322a6648}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD Reset
+      <Declaration><![CDATA[METHOD Reset
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
     <Method Name="ShouldLoop" Id="{455630bb-d218-4ae4-a308-8698edfe9371}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD ShouldLoop : BOOL
+      <Declaration><![CDATA[METHOD ShouldLoop : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[  ShouldLoop := FALSE; ]]></ST>
+        <ST><![CDATA[ShouldLoop := FALSE; ]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_ManualStrategy">
       <LineId Id="52" Count="0" />
     </LineIds>
     <LineIds Name="FB_ManualStrategy.GetModeName">
-      <LineId Id="5" Count="0" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_ManualStrategy.Reset">

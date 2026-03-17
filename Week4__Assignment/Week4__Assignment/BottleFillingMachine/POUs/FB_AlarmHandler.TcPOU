@@ -10,8 +10,7 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Blink alarm lamp when active
-tonBlink(IN := bActive, PT := GVL_Constants.ALARM_BLINK);
+      <ST><![CDATA[tonBlink(IN := bActive, PT := GVL_Constants.ALARM_BLINK);
 
 IF tonBlink.Q THEN
     bLampState        := NOT bLampState;
@@ -33,7 +32,7 @@ END_VAR
         <ST><![CDATA[ bActive   := FALSE;
  sMessage  := '';
  bLampState:= FALSE;
-    GVL_IO.bAlarmLamp := FALSE;]]></ST>
+ GVL_IO.bAlarmLamp := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Property Name="IsActive" Id="{ccc025b8-8e0e-4e97-80d4-350d784ce4fc}">
@@ -86,7 +85,7 @@ sMessage := sMsg;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_AlarmHandler">
-      <LineId Id="14" Count="9" />
+      <LineId Id="15" Count="8" />
       <LineId Id="9" Count="0" />
       <LineId Id="25" Count="0" />
       <LineId Id="24" Count="0" />

@@ -16,7 +16,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{B0E04C03-B931-4A1D-AB62-E3418EF45C71}" Name="BottleFillingMachine" PrjFilePath="BottleFillingMachine\BottleFillingMachine.plcproj" TmcFilePath="BottleFillingMachine\BottleFillingMachine.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{9529B72F-9629-91C7-EAF6-177673F26D0E}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="BottleFillingMachine\BottleFillingMachine.tmc" TmcHash="{F27720CB-6200-6E50-7D3F-21CB9E81DBEE}">
 					<Name>BottleFillingMachine Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
