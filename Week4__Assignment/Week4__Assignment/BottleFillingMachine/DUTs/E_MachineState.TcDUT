@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_MachineState" Id="{f676affb-a317-469c-aa31-7e1de5fe4943}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_MachineState :
+(
+    IDLE            := 0,
+    CONVEYOR    := 1,   // conveyor running, waiting for bottle
+    BOTTLE_DETECTED := 2,   // bottle detected, conveyor stops
+    FILL_DONE   := 3,   // valve closes, bottle complete
+    RESUME      := 4,   // conveyor restarts, bottle moves away
+    ERROR       := 99
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

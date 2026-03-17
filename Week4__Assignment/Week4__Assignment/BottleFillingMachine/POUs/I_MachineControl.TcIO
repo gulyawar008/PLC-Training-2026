@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_MachineControl" Id="{5fb65a98-a923-4466-aa8d-0dc396baf5f8}">
+    <Declaration><![CDATA[INTERFACE I_MachineControl
+]]></Declaration>
+    <Property Name="AlarmMessage" Id="{47b175be-f256-42d6-adc5-258b3209ead7}">
+      <Declaration><![CDATA[PROPERTY AlarmMessage : STRING]]></Declaration>
+      <Get Name="Get" Id="{63c9b24e-6fc9-41c8-8129-bd4beef12976}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{a23d244f-2ea8-4faa-b4a1-37b6a2ce2414}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="BottleCount" Id="{0420938f-ad46-4a83-96a3-f0b365bfc9e6}">
+      <Declaration><![CDATA[PROPERTY  BottleCount : INT]]></Declaration>
+      <Get Name="Get" Id="{ea4d1660-7388-4e2b-9ac0-6d34c96c88f6}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{63ac77bc-f809-421d-bc32-062d5e32627a}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="CurrentState" Id="{8ab99142-980c-4761-9744-bb773a6fc34f}">
+      <Declaration><![CDATA[PROPERTY CurrentState : E_MachineState]]></Declaration>
+      <Get Name="Get" Id="{9e5c0a24-d9e7-4119-97d8-5d47d60113d9}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{d55e1042-fed5-4198-b4ea-1f7514182845}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="IsMachineRunning" Id="{1412e481-d851-40a7-b9f1-0782d6783774}">
+      <Declaration><![CDATA[PROPERTY IsMachineRunning : BOOL]]></Declaration>
+      <Get Name="Get" Id="{d939bc13-7902-4a35-8e7e-13b893ca5d27}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{988b4556-9736-4950-a7a2-2576fc3c5674}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Reset" Id="{be97819d-6f9c-490e-9b4b-fe96d3a5dfd9}">
+      <Declaration><![CDATA[METHOD Reset : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetModeStrategy" Id="{0c6654b9-890d-49bf-9894-371c1fd8e74a}">
+      <Declaration><![CDATA[METHOD SetModeStrategy : BOOL
+VAR_INPUT
+	  ipStrategy : I_ModeStrategy;
+END_VAR
+
+]]></Declaration>
+    </Method>
+    <Method Name="Start" Id="{f5b4a64c-c017-4fd2-a511-8b332bf9fb07}">
+      <Declaration><![CDATA[METHOD Start : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Stop" Id="{39ccaa6f-088f-466a-a8fa-8f13b1e2100c}">
+      <Declaration><![CDATA[METHOD Stop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
