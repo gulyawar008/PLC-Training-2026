@@ -2603,6 +2603,16 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.GVL_IO.bFillingValve": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::bFillingValve",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
         "PLC1.GVL_IO.bLevelSensor": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -3665,6 +3675,7 @@
                 "PLC1.GVL_IO.bAlarmLamp": 3,
                 "PLC1.GVL_IO.bBottleSensor": 3,
                 "PLC1.GVL_IO.bConveyorMotor": 3,
+                "PLC1.GVL_IO.bFillingValve": 3,
                 "PLC1.GVL_IO.bLevelSensor": 3,
                 "PLC1.GVL_IO.bResetButton": 3,
                 "PLC1.GVL_IO.bSIM_BottleSensor": 3,

@@ -16,6 +16,7 @@
     <Implicit_KindOfTask>{7d9c504a-2566-4037-b3f0-4420384a9a93}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{de4b574e-cf9d-471d-93b5-c6f0099e9a57}</Implicit_Jitter_Distribution>
     <LibraryReferences>{b02e488c-2e01-4e19-8a7b-b0ee1e1f7241}</LibraryReferences>
+    <Released>false</Released>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\E_MachineMode.TcDUT">
@@ -31,6 +32,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Class Diagram.TcCD">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_AlarmHandler.TcPOU">
@@ -92,19 +96,19 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-  <Data>
-    <o xml:space="preserve" t="OptionKey">
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" />
       <d n="Values" t="Hashtable" />
     </o>
-  </Data>
-  <TypeList>
-    <Type n="Hashtable">System.Collections.Hashtable</Type>
-    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-    <Type n="String">System.String</Type>
-  </TypeList>
-</XmlArchive>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

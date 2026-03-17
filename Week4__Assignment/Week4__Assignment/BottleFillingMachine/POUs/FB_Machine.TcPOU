@@ -313,9 +313,7 @@ VAR_INPUT
     ipStrategy : I_ModeStrategy;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[     // Only switch strategy when IDLE
-    // Prevents mode change mid cycle
-    IF eState = E_MachineState.IDLE THEN
+        <ST><![CDATA[    IF eState = E_MachineState.IDLE THEN
         ipSelectMode             := ipStrategy;
         GVL_IO.eCurrentMode := GVL_IO.eSIM_ModeSelect;
         GVL_IO.sLog         := CONCAT('Mode set: ',
@@ -413,7 +411,7 @@ Stop := TRUE;
       <LineId Id="18" Count="0" />
     </LineIds>
     <LineIds Name="FB_Machine.SetModeStrategy">
-      <LineId Id="10" Count="6" />
+      <LineId Id="12" Count="4" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Machine.Start">

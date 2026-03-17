@@ -13,7 +13,6 @@ VAR
 	nBottleCount : INT;
 	bMachineRunning : BOOL;
 	sAlarm : STRING;
-
 END_VAR
 ]]></Declaration>
     <Implementation>
