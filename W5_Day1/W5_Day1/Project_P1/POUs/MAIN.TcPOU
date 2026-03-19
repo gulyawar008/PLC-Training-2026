@@ -18,7 +18,7 @@ VAR
     bAckLast       : BOOL := FALSE;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[(*
 // STEP 1 — Simulate temperature rising slowly
 // Rises by 1.0 degree every 2 seconds
 // ════════════════════════════════════════════════════════
@@ -74,7 +74,7 @@ IF bAlarmHandled AND GVL_Send.bAckFromP2 THEN
     bAlarmHandled         := FALSE;
     sStatusMsg            := 'System RESET — Cycle restarting';
 END_IF
-]]></ST>
+*)]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="57" Count="55" />

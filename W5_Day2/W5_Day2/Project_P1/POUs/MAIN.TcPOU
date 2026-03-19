@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{9601e1cc-1db9-453d-bda5-3275aa4ef18b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    // --- Target PLC (Project B) ---
+    sNetIdTarget : T_AmsNetId := '192.168.1.20.1.1'; // <-- AMS NetId of Project B runtime
+    nPortTarget  : UINT       := 851;                // 851 = PLC Runtime 1
+
+    // --- Symbol names on Project B ---
+    sNameTemp    : STRING := 'GVL_B.rTemperature';   // or 'GVL_B.rTemperature' if qualified_only
+    sNameAlarm   : STRING := 'GVL_B.bAlarm';
+    sNameAck     : STRING := 'GVL_B.bAckFromA';
+
+    // --- ADS FBs ---
+    fbReadTemp   : FB_AdsReadWrite;
+    fbReadAlarm  : FB_AdsReadWrite;
+    fbWriteAck   : FB_AdsReadWrite;
+
+    // --- Buffers ---
+    rTempBuffer  : REAL;
+    bAlarmBuffer : BOOL;
+    bAckValue    : BOOL := TRUE;
+
+    // --- Trigger / cycle control ---
+    tCycle       : TON;
+    doReadCycle  : BOOL := FALSE;
+    doWriteAck   : BOOL := FALSE;
+
+    // --- Status ---
+    sStatus      : STRING(255) := 'Idle';
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+// 500 ms one-shot trigger to poll remote PLC
+tCycle(IN := TRUE, PT := T#500MS);
+IF tCycle.Q THEN
+    doReadCycle := TRUE;
+    // consume pulse and rearm TON cleanly
+    tCycle(IN := FALSE);
+ELSE
+    tCycle(IN := TRUE);
+END_IF
+
+// 1) Read Temperature by name
+IF doReadCycle AND NOT fbReadTemp.bBusy THEN
+    fbReadTemp(
+        NETID    := sNetIdTarget,
+        PORT     := nPortTarget,
+        IDXGRP   := ADSIGRP_SYM_VALBYNAME,   // 16#F004
+        IDXOFFS  := 0,
+        LEN      := SIZEOF(rTempBuffer),
+        SRCADDR  := ADR(sNameTemp),          // symbol name in
+        SRCLEN   := LEN(sNameTemp) + 1,
+        DATAADDR := ADR(rTempBuffer),        // data out
+        TMOUT    := T#500MS,
+        bExecute := TRUE
+    );
+END_IF
+
+IF NOT fbReadTemp.bBusy AND fbReadTemp.bExecute THEN
+    IF NOT fbReadTemp.bError THEN
+        sStatus := CONCAT('Temp OK: ', REAL_TO_STRING(rTempBuffer));
+    ELSE
+        sStatus := CONCAT('Temp ERR: ', DINT_TO_STRING(fbReadTemp.nErrId));
+    END_IF
+END_IF
+
+// 2) Read Alarm by name
+IF doReadCycle AND NOT fbReadAlarm.bBusy THEN
+    fbReadAlarm(
+        NETID    := sNetIdTarget,
+        PORT     := nPortTarget,
+        IDXGRP   := ADSIGRP_SYM_VALBYNAME,   // 16#F004
+        IDXOFFS  := 0,
+        LEN      := SIZEOF(bAlarmBuffer),
+        SRCADDR  := ADR(sNameAlarm),
+        SRCLEN   := LEN(sNameAlarm) + 1,
+        DATAADDR := ADR(bAlarmBuffer),
+        TMOUT    := T#500MS,
+        bExecute := TRUE
+    );
+END_IF
+
+IF NOT fbReadAlarm.bBusy AND fbReadAlarm.bExecute THEN
+    doReadCycle := FALSE; // finish this poll
+    IF NOT fbReadAlarm.bError THEN
+        sStatus := CONCAT('Alarm OK: ', BOOL_TO_STRING(bAlarmBuffer));
+        IF bAlarmBuffer THEN
+            doWriteAck := TRUE;
+        END_IF
+    ELSE
+        sStatus := CONCAT('Alarm ERR: ', DINT_TO_STRING(fbReadAlarm.nErrId));
+    END_IF
+END_IF
+
+// 3) Write ACK by name (TRUE once)
+IF doWriteAck AND NOT fbWriteAck.bBusy THEN
+    bAckValue := TRUE;
+    fbWriteAck(
+        NETID    := sNetIdTarget,
+        PORT     := nPortTarget,
+        IDXGRP   := ADSIGRP_SYM_VALBYNAME,  // 16#F004
+        IDXOFFS  := 0,
+        LEN      := SIZEOF(bAckValue),
+        SRCADDR  := ADR(sNameAck),          // symbol name in
+        SRCLEN   := LEN(sNameAck) + 1,
+        DATAADDR := ADR(bAckValue),         // data to write
+        TMOUT    := T#500MS,
+        bExecute := TRUE
+    );
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="274" Count="78" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

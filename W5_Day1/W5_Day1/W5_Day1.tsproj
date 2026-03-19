@@ -12,11 +12,14 @@
 				<Task Id="4" Priority="21" CycleTime="100000" AmsPort="351" AdtTasks="true">
 					<Name>PlcTask1</Name>
 				</Task>
+				<Task Id="5" Priority="22" CycleTime="100000" AmsPort="352" AdtTasks="true">
+					<Name>PlcTask2</Name>
+				</Task>
 			</Tasks>
 		</System>
 		<Plc>
 			<Project GUID="{591D9D15-562D-46B4-81B4-AF85461125E0}" Name="Project_P1" PrjFilePath="Project_P1\Project_P1.plcproj" TmcFilePath="Project_P1\Project_P1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{0916B7C9-C0ED-8ACF-7D2A-EEF7109F9A8C}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P1\Project_P1.tmc" TmcHash="{A2CFA921-A0CE-74C4-ECDC-3C6568BE6031}">
 					<Name>Project_P1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -36,7 +39,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{1F3CFAC9-32B6-40EC-924E-1CA9CB67A4E5}" Name="Project_P2" PrjFilePath="Project_P2\Project_P2.plcproj" TmcFilePath="Project_P2\Project_P2.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{10AF3CA0-A777-8770-6CBE-FE56B2A29FF2}">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P2\Project_P2.tmc" TmcHash="{9C385088-F676-46AB-2B53-17DEDECBC242}">
 					<Name>Project_P2 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -53,6 +56,18 @@
 					<TaskPouOids>
 						<TaskPouOid Prio="21" OTCID="#x08502041"/>
 					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{A335A0D6-7731-48B2-9627-8AAFDE2C6188}" Name="Project_P3" PrjFilePath="Project_P3\Project_P3.plcproj" TmcFilePath="Project_P3\Project_P3.tmc" ReloadTmc="true" AmsPort="853" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2">
+					<Name>Project_P3 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>1</Id>
+							<Name>Default</Name>
+						</Context>
+					</Contexts>
 				</Instance>
 			</Project>
 		</Plc>

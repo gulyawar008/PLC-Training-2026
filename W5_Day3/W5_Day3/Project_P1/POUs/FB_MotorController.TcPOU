@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_MotorController" Id="{fd02e844-4659-47e7-8b9b-aa5290f4bdd4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MotorController
+VAR
+	bRunning : BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Execute" Id="{2403af05-c88b-4e0b-a5c5-009b91a30af5}">
+      <Declaration><![CDATA[METHOD Execute : BOOL
+VAR_INPUT
+	bFault : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ IF bFault THEN
+        Stop();
+    END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IsRunning" Id="{335bb5be-22a4-4892-9e44-0dd66460863e}">
+      <Declaration><![CDATA[PROPERTY IsRunning : BOOL]]></Declaration>
+      <Get Name="Get" Id="{7cdf8d03-d5a9-46ac-b830-04983b1f458d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsRunning:= bRunning;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{96d0fd99-58ad-485a-a736-3d66f2cb3c91}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Start" Id="{a976234d-fc0b-4507-b238-2e20a32bc19c}">
+      <Declaration><![CDATA[METHOD Start : BOOL
+VAR_INPUT
+	bFault : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bFault THEN
+	Start := FALSE;
+ELSE
+	bRunning := TRUE;
+	Start := TRUE;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{02c79e06-86b9-4ae5-95bb-836180d71092}">
+      <Declaration><![CDATA[METHOD Stop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bRunning := FALSE;
+  
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_MotorController">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MotorController.Execute">
+      <LineId Id="7" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MotorController.IsRunning.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MotorController.IsRunning.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MotorController.Start">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MotorController.Stop">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

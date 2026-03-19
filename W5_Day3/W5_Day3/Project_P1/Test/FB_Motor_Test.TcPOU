@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Motor_Test" Id="{3a16bd69-4871-43c6-a52d-075d93c717d7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Motor_Test EXTENDS FB_TestSuite
+VAR
+    fbMotor : FB_MotorController;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[StartWithNoFault_Test();
+StartWithFault_Test();
+Stop_Test();
+FaultDuringRun_Test();
+StopAfterFault_Test();]]></ST>
+    </Implementation>
+    <Method Name="FaultDuringRun_Test" Id="{ff1ee177-47dc-4396-9d9c-3faf7f54d771}">
+      <Declaration><![CDATA[METHOD FaultDuringRun_Test
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ fbMotor.Stop(); 
+fbMotor.Start(bFault := FALSE);  
+fbMotor.Execute(bFault := TRUE);
+
+Test('FaultDuringRun_Test');
+   AssertFalse(
+      Condition :=  fbMotor.IsRunning,
+        Message   :=   'Motor should not run when there is fault');
+			
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StartWithFault_Test" Id="{66b6cc70-e26c-44cd-bba3-5e78ea0e21b5}">
+      <Declaration><![CDATA[METHOD StartWithFault_Test
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+Test('StartWithFault_Test');
+ fbMotor.Stop();
+fbMotor.Start(bFault := TRUE);
+
+   AssertFalse(
+         Condition :=fbMotor.IsRunning,
+         Message   :=  'Motor should not run when there is fault');
+		
+ fbMotor.Stop(); 
+fbMotor.Start(bFault := FALSE);
+
+   AssertTrue(
+        Condition := fbMotor.IsRunning,
+       Message   :=  'Motor should run when no fault');
+				 
+		 
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StartWithNoFault_Test" Id="{f556bbaf-45e1-4112-8709-3e9032a57308}">
+      <Declaration><![CDATA[METHOD StartWithNoFault_Test 
+VAR_INPUT
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ fbMotor.Stop(); 
+fbMotor.Start(bFault := FALSE);
+
+Test('StartWithNoFault_Test');
+   AssertTrue(
+        Condition := fbMotor.IsRunning,
+       Message   :=  'Motor should run when no fault');
+		
+	
+    TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop_Test" Id="{8ef5d4d5-9666-40fb-800f-c408e1821954}">
+      <Declaration><![CDATA[METHOD Stop_Test
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+ fbMotor.Start(bFault := FALSE);  
+fbMotor.Stop();
+
+Test('Stop_Test');
+   AssertFalse(
+        Condition := fbMotor.IsRunning,
+         Message   :='Motor should not run when stopped is pressed');
+		
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StopAfterFault_Test" Id="{d393f69e-c48c-4acd-a8a7-c748c2ae80cd}">
+      <Declaration><![CDATA[METHOD StopAfterFault_Test 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbMotor.Stop();
+    fbMotor.Execute(bFault := TRUE);    
+
+  
+    fbMotor.Start(bFault := TRUE);      // Try to restart with fault still on
+
+    // ── Assert ────────────────────────────────────────────────
+    TEST('StartWithActiveFault_MustStayStoped');
+    AssertFalse(
+        Condition := fbMotor.IsRunning,
+        Message   := 'Motor must not restart while fault still active');
+  
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Motor_Test">
+      <LineId Id="9" Count="0" />
+      <LineId Id="13" Count="3" />
+    </LineIds>
+    <LineIds Name="FB_Motor_Test.FaultDuringRun_Test">
+      <LineId Id="15" Count="1" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="9" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor_Test.StartWithFault_Test">
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="9" Count="3" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="24" Count="3" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor_Test.StartWithNoFault_Test">
+      <LineId Id="33" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor_Test.Stop_Test">
+      <LineId Id="6" Count="2" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="9" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor_Test.StopAfterFault_Test">
+      <LineId Id="17" Count="0" />
+      <LineId Id="7" Count="9" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

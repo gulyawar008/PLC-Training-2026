@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{b7f3cab0-8535-4a8b-a1f0-fd4e40a349b9}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbMotor : FB_MotorController;
+	bStartRun : BOOL;
+	bFaultOccurs : BOOL;
+	bStopRun : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bStartRun  THEN
+     fbMotor.Start(bFault := FALSE);
+     bStartRun := FALSE;
+ END_IF
+
+IF bfaultOccurs THEN
+	fbMotor.Execute(bFault := TRUE);
+	bfaultOccurs := FALSE;
+END_IF
+
+IF bStopRun  THEN
+   fbMotor.Stop();
+   bStopRun:= FALSE;
+ END_IF
+
+
+PRG_TEST();]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="35" Count="14" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="32" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

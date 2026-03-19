@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{86399938-059f-4517-a568-5e864f3b7673}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    tRise : TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// Simulate temperature rise every 1s
+tRise(IN := TRUE, PT := T#1S);
+IF tRise.Q THEN
+    tRise(IN := FALSE);
+    GVL_B.rTemperature := GVL_B.rTemperature + 0.5;
+    IF GVL_B.rTemperature > 90.0 THEN
+        GVL_B.bAlarm := TRUE;
+    END_IF
+ELSE
+    tRise(IN := TRUE);
+END_IF
+
+// When ACK arrives from Project A: reset alarm and temperature
+IF GVL_B.bAckFromA THEN
+    GVL_B.bAckFromA  := FALSE;      // clear ACK
+    GVL_B.bAlarm     := FALSE;      // clear alarm
+    GVL_B.rTemperature := 75.5;     // reset temp
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="10" Count="17" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

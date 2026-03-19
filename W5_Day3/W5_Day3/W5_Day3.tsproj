@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.71">
-	<Project ProjectGUID="{EF3B805F-6C3B-4977-82F3-51D596DCED19}" Target64Bit="true" ShowHideConfigurations="#x3c7">
+	<Project ProjectGUID="{DAB7B924-53B8-45FA-87FC-47DA31794766}" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
 			<Settings MaxCpus="18" NonWinCpus="1">
 				<Cpu CpuId="17"/>
@@ -9,15 +9,12 @@
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
-				<Task Id="4" Priority="21" CycleTime="100000" AmsPort="351" AdtTasks="true">
-					<Name>PlcTask1</Name>
-				</Task>
 			</Tasks>
 		</System>
 		<Plc>
-			<Project GUID="{163A5A57-A3C1-4246-8920-8F19FC3D2208}" Name="Practice_V1" PrjFilePath="Practice_V1\Practice_V1.plcproj" TmcFilePath="Practice_V1\Practice_V1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Practice_V1\Practice_V1.tmc" TmcHash="{00F683F8-C3AC-D370-E5D9-C9BB337352AB}">
-					<Name>Practice_V1 Instance</Name>
+			<Project GUID="{9157C61C-5C36-4C87-B346-A770C4927362}" Name="Project_P1" PrjFilePath="Project_P1\Project_P1.plcproj" TmcFilePath="Project_P1\Project_P1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P1\Project_P1.tmc" TmcHash="{B184672E-A133-538C-339B-16A3F07D0182}">
+					<Name>Project_P1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
 						<Context>

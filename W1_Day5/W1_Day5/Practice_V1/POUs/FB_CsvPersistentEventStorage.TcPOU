@@ -6,7 +6,7 @@ VAR
 	fbFileOpen : FB_FileOpen := (sPathName := 'C:\Events.log', nMode := FOPEN_MODEAPPEND OR FOPEN_MODETEXT);
 	fbFilePuts : FB_FilePuts;
     fbFileClose : FB_FileClose;
-   	eWriteState : (FILE_OPEN_TRIGGER, FILE_OPEN, WAIT_FOR_EVENT,  WRITE_EVENT_TRIGGER, WRITE_EVENT, FILE_CLOSE_TRIGGER ,FILE_CLOSE, ERROR);
+   	eWriteState : (WAIT_FOR_EVENT,FILE_OPEN_TRIGGER, FILE_OPEN,   WRITE_EVENT_TRIGGER, WRITE_EVENT, FILE_CLOSE_TRIGGER ,FILE_CLOSE, ERROR);
 	stEventWrittenToFile : ST_Event;
 	
 	CsvString : T_MaxString;
@@ -103,20 +103,19 @@ END_IF]]></ST>
       <LineId Id="25" Count="2" />
       <LineId Id="60" Count="0" />
       <LineId Id="17" Count="0" />
-      <LineId Id="28" Count="2" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="29" Count="1" />
       <LineId Id="32" Count="1" />
       <LineId Id="31" Count="0" />
+      <LineId Id="97" Count="1" />
       <LineId Id="59" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="35" Count="0" />
       <LineId Id="40" Count="1" />
       <LineId Id="47" Count="0" />
       <LineId Id="43" Count="0" />
       <LineId Id="36" Count="0" />
       <LineId Id="48" Count="0" />
       <LineId Id="19" Count="0" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="44" Count="0" />
+      <LineId Id="94" Count="1" />
       <LineId Id="38" Count="0" />
       <LineId Id="50" Count="0" />
       <LineId Id="54" Count="1" />
@@ -125,7 +124,8 @@ END_IF]]></ST>
       <LineId Id="52" Count="0" />
       <LineId Id="20" Count="0" />
       <LineId Id="53" Count="0" />
-      <LineId Id="65" Count="2" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="66" Count="1" />
       <LineId Id="69" Count="1" />
       <LineId Id="68" Count="0" />
       <LineId Id="56" Count="2" />
