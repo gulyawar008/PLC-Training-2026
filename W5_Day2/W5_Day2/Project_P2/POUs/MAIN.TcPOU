@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{bb422323-3d72-4129-b108-cdf508c500f8}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    // Existing read FBs
+    fbGetHandle     : ADSRDWRTEX;
+    fbRead          : ADSREAD;
+
+    // ✅ New write FBs
+    fbGetHandleWrite : ADSRDWRTEX;   // get handle for write symbol
+    fbWrite          : ADSWRITE;     // write value
+
+    // Target
+    sNetId          : STRING := '10.138.213.191.1.1';
+    nPort           : UINT   := 851;
+
+    // Read symbol
+    sSymbolRead     : STRING := 'MAIN.nMyValue';
+    hHandleRead     : UDINT  := 0;
+    bHandleReadOk   : BOOL   := FALSE;
+
+    // ✅ Write symbol
+    sSymbolWrite    : STRING := 'MAIN.nWriteValue';  // variable in Runtime 2
+    hHandleWrite    : UDINT  := 0;
+    bHandleWriteOk  : BOOL   := FALSE;
+
+    // Read data
+    nReadValue      : INT    := 0;
+
+    // ✅ Write data
+    nWriteValue     : INT    := 11;     // set this value to send to Runtime 2
+
+    // Control
+    bGetHandle      : BOOL   := TRUE;
+    bRead           : BOOL   := FALSE;
+    bWrite          : BOOL   := FALSE; // ✅ trigger write
+    bError          : BOOL   := FALSE;
+    nErrId          : UDINT  := 0;
+    sLog            : STRING := '';
+	
+	bBOOL1 : BOOL;
+	bBOOL2 : BOOL;
+	bBOOL3 : BOOL;
+	 bWriteBusy    : BOOL;
+        bWriteDone  : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// STEP 1A — Get READ handle
+IF bGetHandle AND NOT bHandleReadOk THEN
+
+    fbGetHandle(
+        NETID    := sNetId,
+        PORT     := nPort,
+        IDXGRP   := 16#F003,
+        IDXOFFS  := 0,
+        WRITELEN := INT_TO_UDINT(LEN(sSymbolRead)),
+        READLEN  := SIZEOF(hHandleRead),
+        SRCADDR  := ADR(sSymbolRead),
+        DESTADDR := ADR(hHandleRead),
+        WRTRD    := TRUE,
+        TMOUT    := T#5S
+    );
+
+    IF NOT fbGetHandle.BUSY AND NOT fbGetHandle.ERR THEN
+        bHandleReadOk := TRUE;
+        sLog          := CONCAT('Read Handle OK: ', UDINT_TO_STRING(hHandleRead));
+    END_IF
+
+    IF fbGetHandle.ERR THEN
+        bError := TRUE;
+        nErrId := fbGetHandle.ERRID;
+        sLog   := CONCAT('Read Handle ERROR: ', UDINT_TO_STRING(nErrId));
+    END_IF
+END_IF
+
+// ─────────────────────────────────────
+// STEP 1B — Get WRITE handle
+// ─────────────────────────────────────
+IF bGetHandle AND NOT bHandleWriteOk THEN
+
+    fbGetHandleWrite(
+        NETID    := sNetId,
+        PORT     := nPort,
+        IDXGRP   := 16#F003,
+        IDXOFFS  := 0,
+        WRITELEN := INT_TO_UDINT(LEN(sSymbolWrite)),
+        READLEN  := SIZEOF(hHandleWrite),
+        SRCADDR  := ADR(sSymbolWrite),
+        DESTADDR := ADR(hHandleWrite),
+        WRTRD    := TRUE,
+        TMOUT    := T#5S
+    );
+
+    IF NOT fbGetHandleWrite.BUSY AND NOT fbGetHandleWrite.ERR THEN
+        bHandleWriteOk := TRUE;
+        sLog           := CONCAT('Write Handle OK: ', UDINT_TO_STRING(hHandleWrite));
+    END_IF
+
+    IF fbGetHandleWrite.ERR THEN
+        bError := TRUE;
+        nErrId := fbGetHandleWrite.ERRID;
+        sLog   := CONCAT('Write Handle ERROR: ', UDINT_TO_STRING(nErrId));
+    END_IF
+END_IF
+
+// ✅ Both handles done — stop getting handles
+IF bHandleReadOk AND bHandleWriteOk THEN
+    bGetHandle := FALSE;
+END_IF
+
+// ─────────────────────────────────────
+// STEP 2 — Read using handle
+// ─────────────────────────────────────
+IF bRead AND bHandleReadOk THEN
+    bRead := FALSE;
+
+    fbRead(
+        NETID    := sNetId,
+        PORT     := nPort,
+        IDXGRP   := 16#F005,
+        IDXOFFS  := hHandleRead,
+        LEN      := SIZEOF(nReadValue),
+        DESTADDR := ADR(nReadValue),
+        READ     := TRUE,
+        TMOUT    := T#5S
+    );
+END_IF
+
+// Call every cycle
+fbRead(READ := fbRead.READ, TMOUT := T#5S);
+
+IF NOT fbRead.BUSY AND NOT fbRead.ERR
+   AND fbRead.READ = FALSE THEN
+    sLog := CONCAT('Read from R2: ', INT_TO_STRING(nReadValue));
+END_IF
+
+IF fbRead.ERR THEN
+    fbRead.READ := FALSE;
+    bError      := TRUE;
+    nErrId      := fbRead.ERRID;
+    sLog        := CONCAT('Read ERROR: ', UDINT_TO_STRING(nErrId));
+END_IF
+
+// ─────────────────────────────────────
+// STEP 3 — Write using handle
+// ─────────────────────────────────────
+IF bWrite AND bHandleWriteOk THEN
+    bWrite := FALSE;
+
+    fbWrite(
+        NETID   := sNetId,
+        PORT    := nPort,
+        IDXGRP  := 16#F005,            // write by handle
+        IDXOFFS := hHandleWrite,       // handle as offset
+        LEN     := SIZEOF(nWriteValue),
+        SRCADDR := ADR(nWriteValue),   // value to send
+        WRITE   := TRUE,
+        TMOUT   := T#5S
+    );
+END_IF
+
+bBOOL1 := fbWrite.WRITE;
+// Call every cycle
+//fbWrite(WRITE := fbWrite.WRITE, TMOUT := T#5S);
+
+bBOOL2 := fbWrite.WRITE;
+IF NOT fbWrite.BUSY AND NOT fbWrite.ERR
+   AND fbWrite.WRITE = FALSE THEN
+    sLog := CONCAT('Written to R2: ', INT_TO_STRING(nWriteValue));
+END_IF
+bBOOL3 := fbWrite.WRITE;
+IF fbWrite.ERR THEN
+    fbWrite.WRITE := FALSE;
+    bError        := TRUE;
+    nErrId        := fbWrite.ERRID;
+    sLog          := CONCAT('Write ERROR: ', UDINT_TO_STRING(nErrId));
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="161" Count="0" />
+      <LineId Id="163" Count="111" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="489" Count="0" />
+      <LineId Id="275" Count="0" />
+      <LineId Id="369" Count="1" />
+      <LineId Id="486" Count="2" />
+      <LineId Id="374" Count="6" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="327" Count="0" />
+      <LineId Id="401" Count="0" />
+      <LineId Id="400" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

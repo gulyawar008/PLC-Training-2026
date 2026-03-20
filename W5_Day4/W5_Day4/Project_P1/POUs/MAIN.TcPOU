@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{6788ef76-f220-47fd-b7d9-9b590ec83fdf}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	nIntToRead : INT;
+	nIntToWrite : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nIntToRead := nIntToRead + 1;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
