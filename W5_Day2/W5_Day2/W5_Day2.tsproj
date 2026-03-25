@@ -16,7 +16,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{468342CF-AED1-4749-8B2B-72CC7E8BCEF5}" Name="Project_P1" PrjFilePath="Project_P1\Project_P1.plcproj" TmcFilePath="Project_P1\Project_P1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P1\Project_P1.tmc" TmcHash="{95D67DD6-FB98-BDE6-64D3-06BC51938DEA}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P1\Project_P1.tmc" TmcHash="{89C00F90-1899-630C-662D-0C0DD7EB8040}">
 					<Name>Project_P1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -36,7 +36,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{246A6BE8-81ED-43C4-A4D5-9F59D2802649}" Name="Project_P2" PrjFilePath="Project_P2\Project_P2.plcproj" TmcFilePath="Project_P2\Project_P2.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P2\Project_P2.tmc" TmcHash="{007560B1-3885-6CC1-87AD-C81FE9788B75}">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Project_P2\Project_P2.tmc" TmcHash="{0DF3BB70-C854-0871-4459-5B308DEE0F54}">
 					<Name>Project_P2 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
