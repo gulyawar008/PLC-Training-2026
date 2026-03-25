@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_AnimalTraits" Id="{156cb202-02be-41b8-93af-e2b80bb59c83}">
+    <Declaration><![CDATA[INTERFACE I_AnimalTraits EXTENDS I_AnimalFamily
+]]></Declaration>
+    <Method Name="DietType" Id="{b3977abb-e730-40c0-89df-bc0ea2b290a4}">
+      <Declaration><![CDATA[METHOD DietType : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsDangerous" Id="{44900d0e-acb6-4573-8f96-0e64f8abf7c2}">
+      <Declaration><![CDATA[METHOD IsDangerous : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="RevivalTime" Id="{90c5d45b-1850-47a6-83a5-53d48f3debdb}">
+      <Declaration><![CDATA[PROPERTY RevivalTime : TIME]]></Declaration>
+      <Get Name="Get" Id="{3e8843ea-d75e-4ea6-8f09-b16d65419ac4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{aa7d94ba-6eb3-45cb-a222-797cf73a86e0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <ObjectProperties>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="UMLStereoTypeContainerObject">
+            <v n="IsType" t="UMLType">BaseArea</v>
+            <v n="Stereotype">""</v>
+            <d n="Stereotypes" t="Hashtable" />
+          </o>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="String">System.String</Type>
+          <Type n="UMLStereoTypeContainerObject">{30250973-b110-4e31-b562-c102e042dca4}</Type>
+          <Type n="UMLType">{0197b136-405a-42ee-bb27-fd08b621d0cf}</Type>
+        </TypeList>
+      </XmlArchive>
+    </ObjectProperties>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_Tiger" Id="{7b4d2bb9-8e01-497f-8b2b-2c7fa30ab563}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Tiger IMPLEMENTS I_AnimalTraits
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="DietType" Id="{9bf16a33-2e09-4b3a-99a9-9ef9395ab37d}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD DietType : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsDangerous" Id="{2eec1d60-d638-4634-a2f5-738303d2c1e8}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD IsDangerous : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <ObjectProperties>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="UMLStereoTypeContainerObject">
+            <v n="IsType" t="UMLType">BaseArea</v>
+            <v n="Stereotype">""</v>
+            <d n="Stereotypes" t="Hashtable" />
+          </o>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="String">System.String</Type>
+          <Type n="UMLStereoTypeContainerObject">{30250973-b110-4e31-b562-c102e042dca4}</Type>
+          <Type n="UMLType">{0197b136-405a-42ee-bb27-fd08b621d0cf}</Type>
+        </TypeList>
+      </XmlArchive>
+    </ObjectProperties>
+    <LineIds Name="FB_Tiger">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tiger.DietType">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tiger.IsDangerous">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

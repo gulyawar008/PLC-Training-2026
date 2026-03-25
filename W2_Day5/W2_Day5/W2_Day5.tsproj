@@ -33,6 +33,9 @@
 				<Task Id="11" Priority="28" CycleTime="100000" AmsPort="358" AdtTasks="true">
 					<Name>PlcTask8</Name>
 				</Task>
+				<Task Id="12" Priority="29" CycleTime="100000" AmsPort="359" AdtTasks="true">
+					<Name>PlcTask9</Name>
+				</Task>
 			</Tasks>
 		</System>
 		<Plc>
@@ -134,6 +137,18 @@
 					<TaskPouOids>
 						<TaskPouOid Prio="28" OTCID="#x08502141"/>
 					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{D209EB0D-3C5C-4954-832A-7F3C435740D9}" Name="Project_P5" PrjFilePath="Project_P5\Project_P5.plcproj" TmcFilePath="Project_P5\Project_P5.tmc" ReloadTmc="true" AmsPort="853" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2">
+					<Name>Project_P5 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>1</Id>
+							<Name>Default</Name>
+						</Context>
+					</Contexts>
 				</Instance>
 			</Project>
 		</Plc>

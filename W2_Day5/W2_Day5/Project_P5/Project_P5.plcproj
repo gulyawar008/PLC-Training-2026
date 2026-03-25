@@ -3,31 +3,55 @@
   <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3a46b867-527c-4e8f-b728-e76e02468abf}</ProjectGuid>
+    <ProjectGuid>{d209eb0d-3c5c-4954-832a-7f3c435740d9}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
-    <Name>Practice_V2</Name>
+    <Name>Project_P5</Name>
     <ProgramVersion>3.1.4024.0</ProgramVersion>
-    <Application>{847368ab-9e3c-4804-8884-0a634ea8c883}</Application>
-    <TypeSystem>{674d24d8-95cf-4534-9e1b-f0fcd321ad1a}</TypeSystem>
-    <Implicit_Task_Info>{cea7e0ca-90a8-4df4-9179-4a16dbe57a07}</Implicit_Task_Info>
-    <Implicit_KindOfTask>{8e044e7a-50c5-44ba-b10e-a4c07412dc35}</Implicit_KindOfTask>
-    <Implicit_Jitter_Distribution>{f0bf5449-66d6-461a-9153-3846086427bd}</Implicit_Jitter_Distribution>
-    <LibraryReferences>{db470ac9-01b4-40d4-8734-7cff756e2634}</LibraryReferences>
+    <Application>{3675fe99-eab6-47a9-b3be-0868bad57f80}</Application>
+    <TypeSystem>{337622c4-40ea-479f-a399-ee3ccffb5bad}</TypeSystem>
+    <Implicit_Task_Info>{1b4cb01e-b08b-4d33-a6b0-8b88128ebce8}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{9a32cd9e-2835-4e4e-8aeb-36fd4eb74eef}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{38af7356-4ca3-420c-a0d8-7ef3bf639d1a}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{14ac2cdf-e783-47dc-8797-d7ee6929a9a3}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Class Diagram_2.TcCD">
+    <Compile Include="PlcTask_1.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_House.TcPOU">
+    <Compile Include="POUs\Class Diagram_1.TcCD">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_Room.TcPOU">
+    <Compile Include="POUs\E_SelectedAnimal.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_AnimalController.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_BabyElephant.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_Elephant.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_Lion.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_PowerBoost.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_Tiger.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\I_AnimalFamily.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\I_AnimalTraits.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -54,16 +78,11 @@
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Practice_V2.tmc">
-      <SubType>Content</SubType>
-    </None>
-  </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-        <Data>
-          <o xml:space="preserve" t="OptionKey">
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -91,12 +110,6 @@
           </d>
           <d n="Values" t="Hashtable" />
         </o>
-        <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
-        <o>
-          <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
-          <d n="SubKeys" t="Hashtable" />
-          <d n="Values" t="Hashtable" />
-        </o>
         <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
         <o>
           <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
@@ -109,13 +122,13 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-        </Data>
-        <TypeList>
-          <Type n="Hashtable">System.Collections.Hashtable</Type>
-          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-          <Type n="String">System.String</Type>
-        </TypeList>
-      </XmlArchive>
+  </Data>
+  <TypeList>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

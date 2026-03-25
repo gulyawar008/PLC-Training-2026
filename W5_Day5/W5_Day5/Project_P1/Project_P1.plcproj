@@ -3,31 +3,22 @@
   <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3a46b867-527c-4e8f-b728-e76e02468abf}</ProjectGuid>
+    <ProjectGuid>{efbef212-774e-457f-b72e-807f170828a4}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
-    <Name>Practice_V2</Name>
+    <Name>Project_P1</Name>
     <ProgramVersion>3.1.4024.0</ProgramVersion>
-    <Application>{847368ab-9e3c-4804-8884-0a634ea8c883}</Application>
-    <TypeSystem>{674d24d8-95cf-4534-9e1b-f0fcd321ad1a}</TypeSystem>
-    <Implicit_Task_Info>{cea7e0ca-90a8-4df4-9179-4a16dbe57a07}</Implicit_Task_Info>
-    <Implicit_KindOfTask>{8e044e7a-50c5-44ba-b10e-a4c07412dc35}</Implicit_KindOfTask>
-    <Implicit_Jitter_Distribution>{f0bf5449-66d6-461a-9153-3846086427bd}</Implicit_Jitter_Distribution>
-    <LibraryReferences>{db470ac9-01b4-40d4-8734-7cff756e2634}</LibraryReferences>
+    <Application>{8b6ca632-6a7a-4369-82e2-d090948ed085}</Application>
+    <TypeSystem>{c9908989-a187-49c4-b2dd-725e599ffd53}</TypeSystem>
+    <Implicit_Task_Info>{65744cb0-2964-4ac6-81a9-59fb9bc7c271}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{ebb8afc9-ea40-4e07-8e3d-f817d0d8b056}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{5d752d20-f1f8-4967-82fc-06b4a428bf64}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{ed7038fc-2fab-4fd5-b248-11cf7c06dc02}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="PlcTask.TcTTO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Class Diagram_2.TcCD">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_House.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_Room.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -54,49 +45,13 @@
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Practice_V2.tmc">
-      <SubType>Content</SubType>
-    </None>
-  </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-        <Data>
-          <o xml:space="preserve" t="OptionKey">
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
-        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
-        <o>
-          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
-          <d n="SubKeys" t="Hashtable" />
-          <d n="Values" t="Hashtable" />
-        </o>
-        <v>{246001F4-279D-43AC-B241-948EB31120E1}</v>
-        <o>
-          <v n="Name">"{246001F4-279D-43AC-B241-948EB31120E1}"</v>
-          <d n="SubKeys" t="Hashtable" />
-          <d n="Values" t="Hashtable" />
-        </o>
-        <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
-        <o>
-          <v n="Name">"{29BD8D0C-3586-4548-BB48-497B9A01693F}"</v>
-          <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
-            <v>Rules</v>
-            <o>
-              <v n="Name">"Rules"</v>
-              <d n="SubKeys" t="Hashtable" />
-              <d n="Values" t="Hashtable" />
-            </o>
-          </d>
-          <d n="Values" t="Hashtable" />
-        </o>
-        <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
-        <o>
-          <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
-          <d n="SubKeys" t="Hashtable" />
-          <d n="Values" t="Hashtable" />
-        </o>
         <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
         <o>
           <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
@@ -109,13 +64,13 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-        </Data>
-        <TypeList>
-          <Type n="Hashtable">System.Collections.Hashtable</Type>
-          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-          <Type n="String">System.String</Type>
-        </TypeList>
-      </XmlArchive>
+  </Data>
+  <TypeList>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>
