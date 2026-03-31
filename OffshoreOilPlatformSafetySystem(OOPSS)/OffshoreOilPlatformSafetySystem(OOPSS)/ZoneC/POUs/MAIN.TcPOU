@@ -32,8 +32,7 @@ VAR
     stZoneCData : ST_ZoneData;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-IF NOT bInitDone THEN
+      <ST><![CDATA[IF NOT bInitDone THEN
     fbZoneC.eZoneId := E_ZoneId.ZONE_C_LIVING;
 
    // Gas x4 — pass E_SensorType.GAS
@@ -42,13 +41,11 @@ IF NOT bInitDone THEN
     fbZoneC.RegisterSensor(fbGas3, E_SensorType.GAS);
     fbZoneC.RegisterSensor(fbGas4, E_SensorType.GAS);
 
-
     // Temp x4
     fbZoneC.RegisterSensor(fbTemp1, E_SensorType.TEMP);
     fbZoneC.RegisterSensor(fbTemp2, E_SensorType.TEMP);
     fbZoneC.RegisterSensor(fbTemp3, E_SensorType.TEMP);
     fbZoneC.RegisterSensor(fbTemp4, E_SensorType.TEMP);
-
 
     // Smoke x12 — any alarm forces emergency
     fbZoneC.RegisterSmokeSensor(fbSmoke1);
@@ -100,11 +97,10 @@ fbZoneC.UpdateSensorStructs(
 stZoneCData := fbZoneC.ZoneData;]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="38" Count="3" />
+      <LineId Id="39" Count="2" />
       <LineId Id="128" Count="4" />
-      <LineId Id="136" Count="0" />
       <LineId Id="145" Count="5" />
-      <LineId Id="48" Count="41" />
+      <LineId Id="49" Count="40" />
       <LineId Id="91" Count="0" />
       <LineId Id="93" Count="5" />
       <LineId Id="2" Count="0" />
