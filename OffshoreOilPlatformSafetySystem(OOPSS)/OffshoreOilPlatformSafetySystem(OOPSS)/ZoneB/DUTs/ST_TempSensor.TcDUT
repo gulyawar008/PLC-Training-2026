@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_TempSensor" Id="{45ce35e1-5246-452e-ab42-c098de970315}">
+    <Declaration><![CDATA[TYPE ST_TempSensor :
+STRUCT
+	nId             : INT;
+    eZone           : E_ZoneId;
+    rValueCelsius   : REAL;             // reading in C
+    rRateOfRise     : REAL;             // C per minute
+    eStatus         : E_SensorStatus;
+    bAlarm          : BOOL;
+    bFault          : BOOL;
+    bBypassed       : BOOL;
+    tLastUpdate     : TIME;
+    sLocation       : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

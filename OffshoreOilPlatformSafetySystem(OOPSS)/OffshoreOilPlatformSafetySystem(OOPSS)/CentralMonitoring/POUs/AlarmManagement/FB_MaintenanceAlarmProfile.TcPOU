@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_MaintenanceAlarmProfile" Id="{8ee66c1d-e511-440d-b602-0ab983401346}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MaintenanceAlarmProfile IMPLEMENTS I_AlarmProfile
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetName" Id="{83a671fc-ce0c-4163-8157-c91d45575af6}">
+      <Declaration><![CDATA[METHOD GetName  : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+GetName := 'MAINTENANCE';]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetVoteAlert" Id="{f73f2000-7413-46f2-8356-577687133c19}">
+      <Declaration><![CDATA[METHOD GetVoteAlert : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+GetVoteAlert     := 2;   // need 2 sensors before alerting
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetVoteEmergency" Id="{543a43be-571e-4bb3-8b74-1de401565e28}">
+      <Declaration><![CDATA[METHOD GetVoteEmergency : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+GetVoteEmergency := 4;   // higher bar during planned maintenance
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetVoteWarning" Id="{07377599-dee2-482d-84bd-b35d76c935a6}">
+      <Declaration><![CDATA[METHOD GetVoteWarning  : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+GetVoteWarning   := 3;   // relaxed — maintenance activity expected
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_MaintenanceAlarmProfile">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MaintenanceAlarmProfile.GetName">
+      <LineId Id="15" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MaintenanceAlarmProfile.GetVoteAlert">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MaintenanceAlarmProfile.GetVoteEmergency">
+      <LineId Id="7" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MaintenanceAlarmProfile.GetVoteWarning">
+      <LineId Id="7" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

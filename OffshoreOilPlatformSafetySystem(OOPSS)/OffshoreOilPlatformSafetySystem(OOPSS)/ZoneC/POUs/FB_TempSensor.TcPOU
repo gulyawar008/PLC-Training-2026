@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_TempSensor" Id="{6f0acb67-80a5-4197-a5cd-4b184f5d0605}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TempSensor EXTENDS FB_BaseSensor
+VAR
+    _rPrevValue     : REAL := 0.0;
+    _rRateOfRise    : REAL := 0.0;
+END_VAR
+VAR_OUTPUT
+    rRateOfRise     : REAL := 0.0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Handle fault simulation
+IF bSimFault THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// Accept raw value
+_rValue := rRawValue;
+
+// Call abstract validate — child implements this
+THIS^.Validate();
+]]></ST>
+    </Implementation>
+    <Method Name="Validate" Id="{fd1653bc-cd41-4caa-9395-cc1e44df0e1b}">
+      <Declaration><![CDATA[METHOD  Validate 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Sensor range check
+IF _rValue < GVL_SafetyLimits.c_rTEMP_SENSOR_MIN OR
+   _rValue > GVL_SafetyLimits.c_rTEMP_SENSOR_MAX THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// Rate of rise
+_rRateOfRise := _rValue - _rPrevValue;
+_rPrevValue  := _rValue;
+rRateOfRise  := _rRateOfRise;
+
+// Threshold check
+IF _rValue >= GVL_SafetyLimits.c_rTEMP_FIRE THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_ALARM;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rTEMP_EMERGENCY THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_ALARM;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rTEMP_WARNING THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_WARNING;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rTEMP_ALERT THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_WARNING;
+
+ELSE
+    _bAlarm  := FALSE;
+    _eStatus := E_SensorStatus.SENSOR_OK;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_TempSensor">
+      <LineId Id="18" Count="11" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TempSensor.Validate">
+      <LineId Id="6" Count="32" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

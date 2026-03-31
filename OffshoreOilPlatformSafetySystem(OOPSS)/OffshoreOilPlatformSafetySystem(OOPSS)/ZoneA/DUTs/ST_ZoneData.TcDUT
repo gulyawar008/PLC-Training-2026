@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_ZoneData" Id="{34c07231-82b3-4b89-abd0-dccade040bf6}">
+    <Declaration><![CDATA[TYPE ST_ZoneData :
+STRUCT
+	  eZoneId             : E_ZoneId;
+    eZoneState          : E_ZoneState;
+
+    // Sensor arrays per zone
+    astGasSensors       : ARRAY[1..6]  OF ST_GasSensor;
+    astPressureSensors  : ARRAY[1..6]  OF ST_PressureSensor;
+    astTempSensors      : ARRAY[1..8]  OF ST_TempSensor;
+    astH2SSensors       : ARRAY[1..2]  OF ST_H2SSensor;
+
+    // Zone summary
+    nGasAlarmCount      : INT;          // how many gas sensors alarming
+    nPressureAlarmCount : INT;          // how many pressure sensors alarming
+    nTempAlarmCount     : INT;          // how many temp sensors alarming
+    bH2SAlarm           : BOOL;         // any H2S alarm
+
+    // Zone worst case
+    eWorstAlarmLevel    : E_AlarmLevel;
+    bESDRequired        : BOOL;         // zone needs ESD
+
+    // Timestamps
+    tLastUpdate         : TIME;
+    tLastAlarm          : TIME;
+
+    // Log
+    sStatusMessage      : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_WorkerMuster" Id="{8bf385b2-63a0-485e-95b3-b498f1a718e6}">
+    <Declaration><![CDATA[TYPE ST_WorkerMuster :
+STRUCT
+	  nTotalOnPlatform    : INT;          // total workers present
+    nAccountedFor       : INT;          // confirmed at muster
+    nUnaccounted        : INT;          // missing
+    bEvacuationComplete : BOOL;         // all safe confirmed
+    bPASystemActive     : BOOL;         // PA announcement running
+    eEvacuationStatus   : E_ZoneState;
+    tEvacuationStarted  : DATE_AND_TIME;
+    tAllClearTime       : DATE_AND_TIME;
+    sStatusMessage      : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

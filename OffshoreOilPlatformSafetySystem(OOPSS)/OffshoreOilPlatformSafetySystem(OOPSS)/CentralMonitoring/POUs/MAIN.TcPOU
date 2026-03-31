@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{a9f5d080-9e56-4c7a-bbeb-25b164f897f5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    // ─────────────────────────────────────
+    // ADS Zone Readers
+    // ─────────────────────────────────────
+    fbReaderZoneA   : FB_ADSZoneReader;
+    fbReaderZoneB   : FB_ADSZoneReader;
+    fbReaderZoneC   : FB_ADSZoneReader;
+
+    // ─────────────────────────────────────
+    // ADS Watchdog
+    // ─────────────────────────────────────
+    fbWatchdog      : FB_ADSWatchdog;
+
+    // ─────────────────────────────────────
+    // Zone data — populated from ADS
+    // ─────────────────────────────────────
+    stZoneAData     : ST_ZoneData;
+    stZoneBData     : ST_ZoneData;
+    stZoneCData     : ST_ZoneData;
+
+    // ─────────────────────────────────────
+    // Alarms folder FBs
+    // ─────────────────────────────────────
+    fbAlarmManager      : FB_AlarmManager;
+    fbPlatformSM        : FB_PlatformStateMachine;
+    fbMaintProfile      : FB_MaintenanceAlarmProfile;
+    fbNormalProfile     : FB_NormalAlarmProfile;
+
+    // ─────────────────────────────────────
+    // ESD folder FBs
+    // ─────────────────────────────────────
+    fbESDController     : FB_ESDController;
+    fbEvacuation        : FB_EvacuationManager;
+
+    // ─────────────────────────────────────
+    // Platform status — HMI reads this
+    // ─────────────────────────────────────
+    stPlatformStatus    : ST_PlatformStatus;
+
+    // ─────────────────────────────────────
+    // HMI inputs
+    // ─────────────────────────────────────
+    bMaintenanceMode    : BOOL := FALSE;
+    bManualESDLevel1    : BOOL := FALSE;
+    bManualESDLevel2    : BOOL := FALSE;
+    bESDReset           : BOOL := FALSE;
+    nTotalWorkers       : INT  := 0;
+    nMustered           : INT  := 0;
+    bAllClear           : BOOL := FALSE;
+
+	stESDStatus     : ST_ESDStatus;
+    // ─────────────────────────────────────
+    // Init flag
+    // ─────────────────────────────────────
+    bInitDone           : BOOL := FALSE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// ─────────────────────────────────────
+// INIT — runs once on first cycle
+IF NOT bInitDone THEN
+
+    // Zone A reader
+    fbReaderZoneA.sNetId      := GVL_SafetyLimits.c_sAMS_NET_ID;
+    fbReaderZoneA.nPort       := GVL_SafetyLimits.c_nPORT_ZONE_A;
+    fbReaderZoneA.sSymbolName := 'MAIN.stZoneAData';
+    fbReaderZoneA.bEnable     := TRUE;
+
+    // Zone B reader
+    fbReaderZoneB.sNetId      := GVL_SafetyLimits.c_sAMS_NET_ID;
+    fbReaderZoneB.nPort       := GVL_SafetyLimits.c_nPORT_ZONE_B;
+    fbReaderZoneB.sSymbolName := 'MAIN.stZoneBData';
+    fbReaderZoneB.bEnable     := TRUE;
+
+    // Zone C reader
+    fbReaderZoneC.sNetId      := GVL_SafetyLimits.c_sAMS_NET_ID;
+    fbReaderZoneC.nPort       := GVL_SafetyLimits.c_nPORT_ZONE_C;
+    fbReaderZoneC.sSymbolName := 'MAIN.stZoneCData';
+    fbReaderZoneC.bEnable     := TRUE;
+
+    bInitDone := TRUE;
+END_IF
+
+// ─────────────────────────────────────
+// COMMUNICATION — read all zone data
+// ─────────────────────────────────────
+fbReaderZoneA();
+fbReaderZoneB();
+fbReaderZoneC();
+
+stZoneAData := fbReaderZoneA.stZoneData;
+stZoneBData := fbReaderZoneB.stZoneData;
+stZoneCData := fbReaderZoneC.stZoneData;
+
+// ─────────────────────────────────────
+// WATCHDOG — monitor comm health
+// ─────────────────────────────────────
+fbWatchdog.bZoneACommOk := fbReaderZoneA.bCommOk;
+fbWatchdog.bZoneBCommOk := fbReaderZoneB.bCommOk;
+fbWatchdog.bZoneCCommOk := fbReaderZoneC.bCommOk;
+fbWatchdog();
+
+// ─────────────────────────────────────
+// SAFE DEFAULTS — comm lost forces fault
+// zone stays in ZONE_FAULT until comm
+// restored — ESD triggered automatically
+// ─────────────────────────────────────
+IF NOT fbWatchdog.bZoneAHealthy THEN
+    stZoneAData.bESDRequired := TRUE;
+    stZoneAData.eZoneState   := E_ZoneState.ZONE_FAULT;
+END_IF
+
+IF NOT fbWatchdog.bZoneBHealthy THEN
+    stZoneBData.bESDRequired := TRUE;
+    stZoneBData.eZoneState   := E_ZoneState.ZONE_FAULT;
+END_IF
+
+IF NOT fbWatchdog.bZoneCHealthy THEN
+    stZoneCData.bESDRequired := TRUE;
+    stZoneCData.eZoneState   := E_ZoneState.ZONE_FAULT;
+END_IF
+
+// ─────────────────────────────────────
+// ALARMS — strategy pattern
+// swap profile based on HMI toggle
+// ─────────────────────────────────────
+IF bMaintenanceMode THEN
+    fbAlarmManager.SetProfile(fbMaintProfile);
+ELSE
+    fbAlarmManager.SetProfile(fbNormalProfile);
+END_IF
+
+fbAlarmManager.bMaintenanceMode := bMaintenanceMode;
+fbAlarmManager();
+
+// ─────────────────────────────────────
+// RAISE ALARMS — from zone state changes
+// ─────────────────────────────────────
+IF stZoneAData.eZoneState >= E_ZoneState.ZONE_ALERT THEN
+    fbAlarmManager.RaiseAlarm(
+        eLevel    := stZoneAData.eWorstAlarmLevel,
+        eZone     := E_ZoneId.ZONE_A_DRILLING,
+        nSensorId := 0,
+        rValue    := 0.0,
+        sDesc     := 'Zone A state changed');
+END_IF
+
+IF stZoneBData.eZoneState >= E_ZoneState.ZONE_ALERT THEN
+    fbAlarmManager.RaiseAlarm(
+        eLevel    := stZoneBData.eWorstAlarmLevel,
+        eZone     := E_ZoneId.ZONE_B_PROCESS,
+        nSensorId := 0,
+        rValue    := 0.0,
+        sDesc     := 'Zone B state changed');
+END_IF
+
+IF stZoneCData.eZoneState >= E_ZoneState.ZONE_ALERT THEN
+    fbAlarmManager.RaiseAlarm(
+        eLevel    := stZoneCData.eWorstAlarmLevel,
+        eZone     := E_ZoneId.ZONE_C_LIVING,
+        nSensorId := 0,
+        rValue    := 0.0,
+        sDesc     := 'Zone C state changed');
+END_IF
+
+// ─────────────────────────────────────
+// PLATFORM STATE MACHINE
+// ─────────────────────────────────────
+fbPlatformSM.stZoneA       := stZoneAData;
+fbPlatformSM.stZoneB       := stZoneBData;
+fbPlatformSM.stZoneC       := stZoneCData;
+fbPlatformSM.bManualESD    := bManualESDLevel1 OR bManualESDLevel2;
+fbPlatformSM.bResetRequest := bESDReset;
+fbPlatformSM();
+
+// ─────────────────────────────────────
+// ESD CONTROLLER
+// ─────────────────────────────────────
+fbESDController.bManualLevel1 := bManualESDLevel1
+                               OR fbPlatformSM.bESDRequired;
+//fbESDController.bManualLevel2 := bManualESDLevel2;
+fbESDController.bManualLevel2 := bManualESDLevel2
+    OR (stZoneAData.eZoneState = E_ZoneState.ZONE_EMERGENCY
+        AND stZoneBData.eZoneState = E_ZoneState.ZONE_EMERGENCY)
+    OR (stZoneAData.eZoneState = E_ZoneState.ZONE_EMERGENCY
+        AND stZoneCData.eZoneState = E_ZoneState.ZONE_EMERGENCY)
+    OR (stZoneBData.eZoneState = E_ZoneState.ZONE_EMERGENCY
+        AND stZoneCData.eZoneState = E_ZoneState.ZONE_EMERGENCY);
+fbESDController.eTriggerZone  := E_ZoneId.ZONE_A_DRILLING;
+
+IF bESDReset THEN
+    fbESDController.ResetESD();
+END_IF
+
+fbESDController();
+
+// ─────────────────────────────────────
+// EVACUATION
+// activates automatically on ESD Level 2
+// ─────────────────────────────────────
+stESDStatus := fbESDController.GetESDStatus();
+
+fbEvacuation.bActivate     := stESDStatus.eESDLevel
+                              = E_ESDLevel.ESD_LEVEL2;
+fbEvacuation.nTotalWorkers := nTotalWorkers;
+fbEvacuation.nMustered     := nMustered;
+fbEvacuation.bAllClear     := bAllClear;
+fbEvacuation();
+
+// ─────────────────────────────────────
+// BUILD PLATFORM STATUS — HMI reads this
+// single struct contains everything
+// ─────────────────────────────────────
+stPlatformStatus.ePlatformState     := fbPlatformSM.ePlatformState;
+stPlatformStatus.eZoneAState        := stZoneAData.eZoneState;
+stPlatformStatus.eZoneBState        := stZoneBData.eZoneState;
+stPlatformStatus.eZoneCState        := stZoneCData.eZoneState;
+stPlatformStatus.nTotalActiveAlarms := fbAlarmManager.GetActiveAlarmCount();
+stPlatformStatus.eHighestAlarmLevel := fbAlarmManager.GetHighestAlarmLevel();
+
+
+stPlatformStatus.bESDActive := stESDStatus.bESDActive;
+stPlatformStatus.eESDLevel  := stESDStatus.eESDLevel;
+stPlatformStatus.stMusterStatus     := fbEvacuation.stMusterStatus;
+stPlatformStatus.bADSZoneAOk        := fbWatchdog.bZoneAHealthy;
+stPlatformStatus.bADSZoneBOk        := fbWatchdog.bZoneBHealthy;
+stPlatformStatus.bADSZoneCOk        := fbWatchdog.bZoneCHealthy;
+stPlatformStatus.bSystemFault       := fbWatchdog.bAnyZoneLost;
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="654" Count="1" />
+      <LineId Id="657" Count="120" />
+      <LineId Id="1326" Count="5" />
+      <LineId Id="1325" Count="0" />
+      <LineId Id="778" Count="11" />
+      <LineId Id="1267" Count="1" />
+      <LineId Id="790" Count="16" />
+      <LineId Id="1266" Count="0" />
+      <LineId Id="1262" Count="0" />
+      <LineId Id="1264" Count="1" />
+      <LineId Id="809" Count="3" />
+      <LineId Id="1037" Count="0" />
+      <LineId Id="813" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

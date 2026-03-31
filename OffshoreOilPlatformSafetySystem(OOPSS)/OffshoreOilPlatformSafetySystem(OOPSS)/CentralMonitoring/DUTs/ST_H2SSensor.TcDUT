@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_H2SSensor" Id="{1a47d2f2-c15a-4ef3-9629-4028fac43770}">
+    <Declaration><![CDATA[TYPE ST_H2SSensor :
+STRUCT
+	   nId             : INT;
+    eZone           : E_ZoneId;
+    rValuePPM       : REAL;             // H2S PPM
+    eStatus         : E_SensorStatus;
+    bAlarm          : BOOL;
+    bCriticalAlarm  : BOOL;             // immediate evacuation
+    bFault          : BOOL;
+    bBypassed       : BOOL;
+    tLastUpdate     : TIME;
+    sLocation       : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_ZoneState" Id="{b76a6fe6-4e47-4a22-af00-d85e5e88e92d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE  E_ZoneState :
+(
+	   ZONE_NORMAL     := 0,
+    ZONE_ALERT      := 1,
+    ZONE_WARNING    := 2,
+    ZONE_EMERGENCY  := 3,
+    ZONE_ISOLATED   := 4,
+    ZONE_FAULT      := 5
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

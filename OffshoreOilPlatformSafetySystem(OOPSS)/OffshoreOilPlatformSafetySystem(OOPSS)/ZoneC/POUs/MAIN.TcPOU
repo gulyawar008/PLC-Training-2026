@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{a2bff036-1af1-4fea-b0a8-82685f92024b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    nADSTestValue   : INT := 1;
+
+    // Gas x4
+    fbGas1  : FB_GasSensor;    fbGas2  : FB_GasSensor;
+    fbGas3  : FB_GasSensor;    fbGas4  : FB_GasSensor;
+
+    // Temp x4
+    fbTemp1 : FB_TempSensor;    fbTemp2 : FB_TempSensor;
+    fbTemp3 : FB_TempSensor;    fbTemp4 : FB_TempSensor;
+
+    // Smoke x12
+    fbSmoke1  : FB_SmokeDetector;    fbSmoke2  : FB_SmokeDetector;
+    fbSmoke3  : FB_SmokeDetector;    fbSmoke4  : FB_SmokeDetector;
+    fbSmoke5  : FB_SmokeDetector;    fbSmoke6  : FB_SmokeDetector;
+    fbSmoke7  : FB_SmokeDetector;    fbSmoke8  : FB_SmokeDetector;
+    fbSmoke9  : FB_SmokeDetector;    fbSmoke10 : FB_SmokeDetector;
+    fbSmoke11 : FB_SmokeDetector;    fbSmoke12 : FB_SmokeDetector;
+
+    // Arrays for UpdateSensorStructs
+    // sized to match method signature even if not all filled
+    aGasSensors     : ARRAY[1..4]  OF FB_GasSensor;
+    aTempSensors    : ARRAY[1..4]  OF FB_TempSensor;
+     
+	
+     fbZoneC     : FB_ZoneAggregator;
+    bInitDone   : BOOL := FALSE;
+    stZoneCData : ST_ZoneData;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF NOT bInitDone THEN
+    fbZoneC.eZoneId := E_ZoneId.ZONE_C_LIVING;
+
+   // Gas x4 — pass E_SensorType.GAS
+    fbZoneC.RegisterSensor(fbGas1, E_SensorType.GAS);
+    fbZoneC.RegisterSensor(fbGas2, E_SensorType.GAS);
+    fbZoneC.RegisterSensor(fbGas3, E_SensorType.GAS);
+    fbZoneC.RegisterSensor(fbGas4, E_SensorType.GAS);
+
+
+    // Temp x4
+    fbZoneC.RegisterSensor(fbTemp1, E_SensorType.TEMP);
+    fbZoneC.RegisterSensor(fbTemp2, E_SensorType.TEMP);
+    fbZoneC.RegisterSensor(fbTemp3, E_SensorType.TEMP);
+    fbZoneC.RegisterSensor(fbTemp4, E_SensorType.TEMP);
+
+
+    // Smoke x12 — any alarm forces emergency
+    fbZoneC.RegisterSmokeSensor(fbSmoke1);
+    fbZoneC.RegisterSmokeSensor(fbSmoke2);
+    fbZoneC.RegisterSmokeSensor(fbSmoke3);
+    fbZoneC.RegisterSmokeSensor(fbSmoke4);
+    fbZoneC.RegisterSmokeSensor(fbSmoke5);
+    fbZoneC.RegisterSmokeSensor(fbSmoke6);
+    fbZoneC.RegisterSmokeSensor(fbSmoke7);
+    fbZoneC.RegisterSmokeSensor(fbSmoke8);
+    fbZoneC.RegisterSmokeSensor(fbSmoke9);
+    fbZoneC.RegisterSmokeSensor(fbSmoke10);
+    fbZoneC.RegisterSmokeSensor(fbSmoke11);
+    fbZoneC.RegisterSmokeSensor(fbSmoke12);
+
+    // Arrays — only fill what exists
+    aGasSensors[1] := fbGas1;    aGasSensors[2] := fbGas2;
+    aGasSensors[3] := fbGas3;    aGasSensors[4] := fbGas4;
+
+    aTempSensors[1] := fbTemp1;    aTempSensors[2] := fbTemp2;
+    aTempSensors[3] := fbTemp3;    aTempSensors[4] := fbTemp4;
+
+    // aPressureSensors and aH2SSensors left empty
+    // nPressCount=0 and nH2SCount=0 passed to UpdateSensorStructs
+
+    bInitDone := TRUE;
+END_IF
+
+// CYCLIC
+fbGas1();  fbGas2();  fbGas3();  fbGas4();
+
+fbTemp1(); fbTemp2(); fbTemp3(); fbTemp4();
+
+fbSmoke1();  fbSmoke2();  fbSmoke3();  fbSmoke4();
+fbSmoke5();  fbSmoke6();  fbSmoke7();  fbSmoke8();
+fbSmoke9();  fbSmoke10(); fbSmoke11(); fbSmoke12();
+
+fbZoneC();
+fbZoneC.UpdateSensors();
+fbZoneC.UpdateSensorStructs(
+    astGas      := aGasSensors,
+    astTemp     := aTempSensors,
+    nGasCount   := GVL_SafetyLimits.c_nGAS_SENSORS_C,    // 4
+    nPressCount := 0,                                      // none in Zone C
+    nTempCount  := GVL_SafetyLimits.c_nTEMP_SENSORS_C,   // 4
+    nH2SCount   := 0                                       // none in Zone C
+);
+
+stZoneCData := fbZoneC.ZoneData;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="38" Count="3" />
+      <LineId Id="128" Count="4" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="145" Count="5" />
+      <LineId Id="48" Count="41" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="93" Count="5" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

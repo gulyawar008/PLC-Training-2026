@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_ADSWatchdog" Id="{9038667c-cc3b-4480-9285-5726ae5e9b38}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ADSWatchdog
+VAR
+    _tZoneA     : TON;
+    _tZoneB     : TON;
+    _tZoneC     : TON;
+    _bZoneAOk   : BOOL := FALSE;
+    _bZoneBOk   : BOOL := FALSE;
+    _bZoneCOk   : BOOL := FALSE;
+END_VAR
+VAR_INPUT
+    bZoneACommOk : BOOL;    // from FB_ADSZoneReader Zone A
+    bZoneBCommOk : BOOL;    // from FB_ADSZoneReader Zone B
+    bZoneCCommOk : BOOL;    // from FB_ADSZoneReader Zone C
+END_VAR
+VAR_OUTPUT
+    bZoneAHealthy   : BOOL;
+    bZoneBHealthy   : BOOL;
+    bZoneCHealthy   : BOOL;
+    bAllZonesHealthy : BOOL;
+    bAnyZoneLost    : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// FB Body
+// ─────────────────────────────────────
+// Each zone gets independent watchdog
+// Loss of comm held for debounce period
+// before declaring zone lost
+// ─────────────────────────────────────
+_tZoneA(
+    IN := NOT bZoneACommOk,
+    PT := GVL_SafetyLimits.c_tADS_WATCHDOG
+);
+
+_tZoneB(
+    IN := NOT bZoneBCommOk,
+    PT := GVL_SafetyLimits.c_tADS_WATCHDOG
+);
+
+_tZoneC(
+    IN := NOT bZoneCCommOk,
+    PT := GVL_SafetyLimits.c_tADS_WATCHDOG
+);
+
+// Zone healthy if watchdog has NOT timed out
+bZoneAHealthy    := NOT _tZoneA.Q;
+bZoneBHealthy    := NOT _tZoneB.Q;
+bZoneCHealthy    := NOT _tZoneC.Q;
+
+bAllZonesHealthy := bZoneAHealthy
+                AND bZoneBHealthy
+                AND bZoneCHealthy;
+
+bAnyZoneLost     := NOT bZoneAHealthy
+                 OR NOT bZoneBHealthy
+                 OR NOT bZoneCHealthy;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ADSWatchdog">
+      <LineId Id="37" Count="31" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

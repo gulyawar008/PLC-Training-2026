@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_EvacuationManager" Id="{a97b129b-2935-4da9-bf81-114b98c74146}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EvacuationManager
+VAR
+    _stMuster       : ST_WorkerMuster;
+    _bActive        : BOOL := FALSE;
+END_VAR
+VAR_INPUT
+    nTotalWorkers   : INT := 0;     // HMI input
+    nMustered       : INT := 0;     // HMI input — updated manually
+    bActivate       : BOOL := FALSE;
+    bAllClear       : BOOL := FALSE;
+END_VAR
+VAR_OUTPUT
+    stMusterStatus  : ST_WorkerMuster;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// FB Body
+IF bActivate AND NOT _bActive THEN
+    _bActive                    := TRUE;
+    _stMuster.bPASystemActive   := TRUE;
+    _stMuster.bEvacuationComplete := FALSE;
+END_IF
+
+IF _bActive THEN
+    _stMuster.nTotalOnPlatform  := nTotalWorkers;
+    _stMuster.nAccountedFor     := nMustered;
+    _stMuster.nUnaccounted      := nTotalWorkers - nMustered;
+
+    IF _stMuster.nUnaccounted <= 0 OR bAllClear THEN
+        _stMuster.bEvacuationComplete := TRUE;
+        _stMuster.bPASystemActive     := FALSE;
+        _stMuster.nUnaccounted        := 0;
+    END_IF
+END_IF
+
+stMusterStatus := _stMuster;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_EvacuationManager">
+      <LineId Id="30" Count="18" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

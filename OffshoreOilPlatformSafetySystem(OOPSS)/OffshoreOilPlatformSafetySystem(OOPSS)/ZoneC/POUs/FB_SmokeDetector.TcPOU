@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_SmokeDetector" Id="{9852d6d9-667c-4618-b34f-5dd8fa55f0a6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SmokeDetector EXTENDS FB_BaseSensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Handle fault simulation
+IF bSimFault THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// Accept raw value
+_rValue := rRawValue;
+
+// Call abstract validate — child implements this
+THIS^.Validate();
+]]></ST>
+    </Implementation>
+    <Method Name="Validate" Id="{d085ccb5-43bb-45d4-9bd9-fbd98c3b9594}">
+      <Declaration><![CDATA[METHOD  Validate 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Smoke detector is binary — any reading above 0 is alarm
+// rRawValue: 0.0 = clear, 1.0 = smoke detected
+IF _rValue < 0.0 OR _rValue > 1.0 THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+IF _rValue >= 1.0 THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_ALARM;
+ELSE
+    _bAlarm  := FALSE;
+    _eStatus := E_SensorStatus.SENSOR_OK;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_SmokeDetector">
+      <LineId Id="17" Count="11" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SmokeDetector.Validate">
+      <LineId Id="8" Count="13" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

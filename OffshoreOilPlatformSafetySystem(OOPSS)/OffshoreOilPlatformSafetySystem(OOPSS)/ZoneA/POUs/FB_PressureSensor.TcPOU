@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_PressureSensor" Id="{6567432c-c4b6-4c5d-a0d8-17ed802bc119}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PressureSensor EXTENDS FB_BaseSensor
+VAR
+    _bHighHighAlarm : BOOL := FALSE;    // critical level
+    _rPrevValue     : REAL := 0.0;      // for rate calculation
+    _rRateOfChange  : REAL := 0.0;      // bar per cycle
+END_VAR
+VAR_OUTPUT
+    bHighHighAlarm  : BOOL := FALSE;
+    rRateOfChange   : REAL := 0.0;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Handle fault simulation
+IF bSimFault THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// Accept raw value
+_rValue := rRawValue;
+
+// Call abstract validate — child implements this
+THIS^.Validate();
+]]></ST>
+    </Implementation>
+    <Method Name="Reset" Id="{4e950ac2-32c0-4ae0-af66-9ee897f8bb7e}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Reset
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// call parent reset first
+_bAlarm         := FALSE;
+_bFault         := FALSE;
+_eStatus        := E_SensorStatus.SENSOR_OK;
+// reset pressure specific flag
+_bHighHighAlarm := FALSE;
+bHighHighAlarm  := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Validate" Id="{fc636986-e434-4847-a819-a82b5d5a6e59}">
+      <Declaration><![CDATA[METHOD  Validate 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Sensor range check
+IF _rValue < GVL_SafetyLimits.c_rPRESS_SENSOR_MIN OR
+   _rValue > GVL_SafetyLimits.c_rPRESS_SENSOR_MAX THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// Rate of change
+_rRateOfChange  := _rValue - _rPrevValue;
+_rPrevValue     := _rValue;
+rRateOfChange   := _rRateOfChange;
+
+// Critical threshold
+IF _rValue >= GVL_SafetyLimits.c_rPRESS_CRITICAL THEN
+    _bHighHighAlarm := TRUE;
+    _bAlarm         := TRUE;
+    bHighHighAlarm  := TRUE;
+    _eStatus        := E_SensorStatus.SENSOR_ALARM;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rPRESS_EMERGENCY THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_ALARM;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rPRESS_WARNING THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_WARNING;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rPRESS_ALERT THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_WARNING;
+
+ELSE
+    _bAlarm         := FALSE;
+    _bHighHighAlarm := FALSE;
+    bHighHighAlarm  := FALSE;
+    _eStatus        := E_SensorStatus.SENSOR_OK;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_PressureSensor">
+      <LineId Id="31" Count="11" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PressureSensor.Reset">
+      <LineId Id="5" Count="5" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PressureSensor.Validate">
+      <LineId Id="6" Count="37" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

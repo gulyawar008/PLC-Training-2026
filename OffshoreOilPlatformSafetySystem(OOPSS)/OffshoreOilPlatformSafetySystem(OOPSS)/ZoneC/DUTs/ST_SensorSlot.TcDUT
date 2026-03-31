@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_SensorSlot" Id="{c2af2fc3-8fd8-4987-8836-36bb796262b1}">
+    <Declaration><![CDATA[TYPE ST_SensorSlot :
+STRUCT
+	    pSensor         : I_SafetySensor;
+       bOccupied       : BOOL;
+        bIsH2SCritical  : BOOL;     // set TRUE when registering H2S sensors
+	    bIsSmokeCritical    : BOOL;     // smoke forces emergency like H2S
+		 eSensorType         : E_SensorType; 
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

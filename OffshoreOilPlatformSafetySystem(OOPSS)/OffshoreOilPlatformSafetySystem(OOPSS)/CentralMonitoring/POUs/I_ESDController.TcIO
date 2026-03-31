@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_ESDController" Id="{f6db9e84-8c28-4ff0-9185-6cc03df8c56e}">
+    <Declaration><![CDATA[INTERFACE  I_ESDController
+]]></Declaration>
+    <Method Name="ExecuteLevel1" Id="{4009f89a-2b38-4df5-b3bf-a44b9e609ecb}">
+      <Declaration><![CDATA[METHOD ExecuteLevel1  : BOOL
+VAR_INPUT
+    eZone : E_ZoneId;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ExecuteLevel2" Id="{107ea0e5-2e0c-4d14-9518-2ce6b955e796}">
+      <Declaration><![CDATA[METHOD ExecuteLevel2 : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetESDStatus" Id="{2b4c0a06-20ec-4cb0-b95f-f501e275b5c0}">
+      <Declaration><![CDATA[METHOD GetESDStatus : ST_ESDStatus
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsESDComplete" Id="{4a64181a-9229-4d99-a28c-993980c58bd7}">
+      <Declaration><![CDATA[METHOD IsESDComplete : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ResetESD" Id="{7d016c3d-1a1a-4981-b4fd-28037fb1e8ff}">
+      <Declaration><![CDATA[METHOD ResetESD : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_GasSensor" Id="{e72dc13c-bec0-4371-992f-0279aefdb9cb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GasSensor EXTENDS FB_BaseSensor
+VAR
+    _rValueLEL  : REAL := 0.0;      // calculated % LEL
+END_VAR
+VAR_OUTPUT
+    rValueLEL   : REAL := 0.0;      // expose LEL to HMI
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Handle fault simulation
+IF bSimFault THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// Accept raw value
+_rValue := rRawValue;
+
+// Call abstract validate — child implements this
+THIS^.Validate();
+]]></ST>
+    </Implementation>
+    <Method Name="Validate" Id="{f838d6c5-efcc-46b3-958e-495f62f16b87}">
+      <Declaration><![CDATA[METHOD  Validate 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Convert PPM to LEL percentage
+// Methane: 50000 PPM = 100% LEL
+_rValueLEL := (_rValue / 50000.0) * 100.0;
+rValueLEL  := _rValueLEL;
+
+// Sensor range check
+IF _rValue < GVL_SafetyLimits.c_rGAS_SENSOR_MIN OR
+   _rValue > GVL_SafetyLimits.c_rGAS_SENSOR_MAX * 500.0 THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// Threshold check
+IF _rValueLEL >= GVL_SafetyLimits.c_rGAS_EMERGENCY_LEL THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_ALARM;
+
+ELSIF _rValueLEL >= GVL_SafetyLimits.c_rGAS_WARNING_LEL THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_WARNING;
+
+ELSIF _rValueLEL >= GVL_SafetyLimits.c_rGAS_ALERT_LEL THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_WARNING;
+
+ELSE
+    _bAlarm  := FALSE;
+    _eStatus := E_SensorStatus.SENSOR_OK;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_GasSensor">
+      <LineId Id="16" Count="11" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GasSensor.Validate">
+      <LineId Id="7" Count="28" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

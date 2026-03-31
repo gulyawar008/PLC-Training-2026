@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_ESDLevel" Id="{8d8211ef-89f0-44ad-af2e-9755ae63e2e4}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ESDLevel :
+(
+	  ESD_NONE        := 0,
+    ESD_LEVEL1      := 1,   // zone isolation
+    ESD_LEVEL2      := 2    // full platform shutdown
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

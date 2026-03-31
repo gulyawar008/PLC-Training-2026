@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_ADSReaderState" Id="{53fcd10a-f6e9-41fd-9578-7917b3b15f3e}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ADSReaderState :
+(
+    IDLE            := 0,
+    GET_HANDLE      := 1,
+    WAIT_TIMER      := 2,
+    TRIGGER_READ    := 3,
+    WAIT_READ_DONE  := 4,
+    ERROR           := 5
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

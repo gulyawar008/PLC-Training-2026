@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN" Id="{5f897a2b-b84c-45d5-abf1-84f876cd5a84}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    nADSTestValue   : INT := 1;
+
+    // Gas x8
+    fbGas1  : FB_GasSensor;    fbGas2  : FB_GasSensor;
+    fbGas3  : FB_GasSensor;    fbGas4  : FB_GasSensor;
+    fbGas5  : FB_GasSensor;    fbGas6  : FB_GasSensor;
+    fbGas7  : FB_GasSensor;    fbGas8  : FB_GasSensor;
+
+    // Pressure x6
+    fbPress1 : FB_PressureSensor;    fbPress2 : FB_PressureSensor;
+    fbPress3 : FB_PressureSensor;    fbPress4 : FB_PressureSensor;
+    fbPress5 : FB_PressureSensor;    fbPress6 : FB_PressureSensor;
+
+    // Temp x8
+    fbTemp1 : FB_TempSensor;    fbTemp2 : FB_TempSensor;
+    fbTemp3 : FB_TempSensor;    fbTemp4 : FB_TempSensor;
+    fbTemp5 : FB_TempSensor;    fbTemp6 : FB_TempSensor;
+    fbTemp7 : FB_TempSensor;    fbTemp8 : FB_TempSensor;
+
+    // H2S x4
+    fbH2S1  : FB_H2SSensor;    fbH2S2  : FB_H2SSensor;
+    fbH2S3  : FB_H2SSensor;    fbH2S4  : FB_H2SSensor;
+
+    // Arrays for UpdateSensorStructs
+    aGasSensors     : ARRAY[1..8] OF FB_GasSensor;
+    aPressureSensors: ARRAY[1..6] OF FB_PressureSensor;
+    aTempSensors    : ARRAY[1..8] OF FB_TempSensor;
+    aH2SSensors     : ARRAY[1..4] OF FB_H2SSensor;
+
+    fbZoneA     : FB_ZoneAggregator;
+    bInitDone   : BOOL := FALSE;
+    stZoneAData : ST_ZoneData;
+	
+	bMine : BOOL;
+	bMine2 : BOOL;
+	bIsCriticalAlarmH2S :BOOL;
+      bIsAlarmH2S : BOOL;
+	bIsPressHighHIghAlarm: BOOL;
+	bPressIsAlarm: BOOL;
+	stPressStatus: E_SensorStatus;
+	nPressAlarmCount: INT;
+	bTempAlarm: BOOL;
+	bIsGasFault: BOOL;
+	eGasStatus :E_SensorStatus;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT bInitDone THEN
+    fbZoneA.eZoneId := E_ZoneId.ZONE_A_DRILLING;
+
+    // Gas x8 — pass E_SensorType.GAS
+    fbZoneA.RegisterSensor(fbGas1, E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas2, E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas3, E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas4, E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas5, E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas6, E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas7, E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas8, E_SensorType.GAS);
+
+    // Pressure x6
+    fbZoneA.RegisterSensor(fbPress1, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress2, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress3, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress4, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress5, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress6, E_SensorType.PRESSURE);
+
+    // Temp x8
+    fbZoneA.RegisterSensor(fbTemp1, E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp2, E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp3, E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp4, E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp5, E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp6, E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp7, E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp8, E_SensorType.TEMP);
+	
+	
+    fbZoneA.RegisterH2SSensor(fbH2S1);  fbZoneA.RegisterH2SSensor(fbH2S2);
+    fbZoneA.RegisterH2SSensor(fbH2S3);  fbZoneA.RegisterH2SSensor(fbH2S4);
+
+    // Fill arrays for UpdateSensorStructs
+    aGasSensors[1] := fbGas1;   aGasSensors[2] := fbGas2;
+    aGasSensors[3] := fbGas3;   aGasSensors[4] := fbGas4;
+    aGasSensors[5] := fbGas5;   aGasSensors[6] := fbGas6;
+    aGasSensors[7] := fbGas7;   aGasSensors[8] := fbGas8;
+
+    aPressureSensors[1] := fbPress1;    aPressureSensors[2] := fbPress2;
+    aPressureSensors[3] := fbPress3;    aPressureSensors[4] := fbPress4;
+    aPressureSensors[5] := fbPress5;    aPressureSensors[6] := fbPress6;
+
+    aTempSensors[1] := fbTemp1;    aTempSensors[2] := fbTemp2;
+    aTempSensors[3] := fbTemp3;    aTempSensors[4] := fbTemp4;
+    aTempSensors[5] := fbTemp5;    aTempSensors[6] := fbTemp6;
+    aTempSensors[7] := fbTemp7;    aTempSensors[8] := fbTemp8;
+
+    aH2SSensors[1] := fbH2S1;    aH2SSensors[2] := fbH2S2;
+    aH2SSensors[3] := fbH2S3;    aH2SSensors[4] := fbH2S4;
+
+    bInitDone := TRUE;
+END_IF
+
+// CYCLIC
+fbGas1();  fbGas2();  fbGas3();  fbGas4();
+fbGas5();  fbGas6();  fbGas7();  fbGas8();
+
+fbPress1(); fbPress2(); fbPress3();
+fbPress4(); fbPress5(); fbPress6();
+
+fbTemp1(); fbTemp2(); fbTemp3(); fbTemp4();
+fbTemp5(); fbTemp6(); fbTemp7(); fbTemp8();
+
+fbH2S1();  fbH2S2();  fbH2S3();  fbH2S4();
+
+fbZoneA();
+fbZoneA.UpdateSensors();
+(*fbZoneA.UpdateSensorStructs(
+    astGas      := aGasSensors,
+    astPressure := aPressureSensors,
+    astTemp     := aTempSensors,
+    astH2S      := aH2SSensors,
+    nGasCount   := GVL_SafetyLimits.c_nGAS_SENSORS_A,
+    nPressCount := GVL_SafetyLimits.c_nPRESS_SENSORS_A,
+    nTempCount  := GVL_SafetyLimits.c_nTEMP_SENSORS_A,
+    nH2SCount   := GVL_SafetyLimits.c_nH2S_SENSORS_A
+);
+
+*)
+bMine := fbGas1.IsAlarm();
+bMine2 := fbZoneA.HasAlarm;
+fbGas1.bSimFault  := bIsGasFault ;
+eGasStatus := fbGas1.GetStatus() ;
+
+bIsCriticalAlarmH2S := fbH2S1.bCriticalAlarm;
+bIsAlarmH2S := fbH2S1.IsAlarm();
+
+bIsPressHighHIghAlarm := fbPress1.bHighHighAlarm ;
+bPressIsAlarm := fbPress1.IsAlarm() ;
+stPressStatus :=   fbPress1.GetStatus();
+nPressAlarmCount := stZoneAData.nPressureAlarmCount;
+
+bTempAlarm := fbTemp1.IsAlarm();
+
+
+stZoneAData := fbZoneA.ZoneData;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="6" Count="99" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

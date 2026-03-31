@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_PressureSensor" Id="{58c08df2-61ac-4938-84db-29b43637fc90}">
+    <Declaration><![CDATA[TYPE ST_PressureSensor :
+STRUCT
+	    nId             : INT;
+    eZone           : E_ZoneId;
+    rValueBar       : REAL;             // reading in bar
+    rRateOfChange   : REAL;             // bar per minute
+    eStatus         : E_SensorStatus;
+    bAlarm          : BOOL;
+    bHighHighAlarm  : BOOL;             // critical level
+    bFault          : BOOL;
+    bBypassed       : BOOL;
+    tLastUpdate     : TIME;
+    sLocation       : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

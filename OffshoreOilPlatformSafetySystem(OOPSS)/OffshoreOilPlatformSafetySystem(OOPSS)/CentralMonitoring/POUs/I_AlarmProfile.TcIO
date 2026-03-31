@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_AlarmProfile" Id="{e83f8b1f-c2e6-4999-af7e-1c3f1c0d96fb}">
+    <Declaration><![CDATA[INTERFACE I_AlarmProfile
+]]></Declaration>
+    <Method Name="GetName" Id="{926baf8a-8fa3-4319-81d1-1c408e604359}">
+      <Declaration><![CDATA[METHOD GetName  : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetVoteAlert" Id="{eccfa7b8-a31b-4e19-b5a2-0d4e71213007}">
+      <Declaration><![CDATA[METHOD GetVoteAlert : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetVoteEmergency" Id="{fd3e33cd-11e4-4138-a684-09a5729374b6}">
+      <Declaration><![CDATA[METHOD GetVoteEmergency : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetVoteWarning" Id="{42dc6c4d-f1b3-45fc-b31c-3f62112b5596}">
+      <Declaration><![CDATA[METHOD GetVoteWarning  : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

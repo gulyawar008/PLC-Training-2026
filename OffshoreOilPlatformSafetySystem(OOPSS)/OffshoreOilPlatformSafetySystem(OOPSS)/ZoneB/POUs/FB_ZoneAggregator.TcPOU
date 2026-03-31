@@ -1,0 +1,446 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_ZoneAggregator" Id="{862783ec-dc18-4045-96e6-6aae4d76f566}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ZoneAggregator IMPLEMENTS I_SafetyZone
+VAR
+    _eZoneId        : E_ZoneId;
+    _stZoneData     : ST_ZoneData;
+    _aSlots         : ARRAY[1..30] OF ST_SensorSlot;
+    _nSlotCount     : INT := 0;
+END_VAR
+VAR_INPUT
+    eZoneId         : E_ZoneId;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// runs every cycle
+// keeps internal zone id in sync with input
+_stZoneData.eZoneId := eZoneId;]]></ST>
+    </Implementation>
+    <Method Name="CheckSafety" Id="{d4eaf0fb-b5d0-4537-89ea-d46334f1a3bc}">
+      <Declaration><![CDATA[METHOD CheckSafety : E_ZoneState]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+THIS^.UpdateSensors();
+CheckSafety := _stZoneData.eZoneState;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CheckZoneData" Id="{1f5df16d-83df-4efb-80cf-059ef7abbd1f}">
+      <Declaration><![CDATA[METHOD CheckZoneData : ST_ZoneData]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+CheckZoneData := _stZoneData;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetZoneState" Id="{e645b7d0-0590-4cf7-b26a-6d892f308c81}">
+      <Declaration><![CDATA[METHOD GetZoneState : E_ZoneState]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+GetZoneState := _stZoneData.eZoneState;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="HasAlarm" Id="{9b04f957-b64f-46fd-a125-cb7ff144d50f}">
+      <Declaration><![CDATA[PROPERTY HasAlarm : BOOL]]></Declaration>
+      <Get Name="Get" Id="{ff7000ec-935d-4edf-879c-1689f4247410}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HasAlarm := _stZoneData.eWorstAlarmLevel > E_AlarmLevel.INFO;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{77ea125f-f3bd-42a0-8c86-ddde8e4b3b4a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="RegisterH2SSensor" Id="{fcaace72-5d36-40b7-a2b4-72723ca6e150}">
+      <Declaration><![CDATA[METHOD RegisterH2SSensor 
+VAR_INPUT
+    pSensor : I_SafetySensor;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF _nSlotCount < 30 THEN
+    _nSlotCount := _nSlotCount + 1;
+    _aSlots[_nSlotCount].pSensor            := pSensor;
+    _aSlots[_nSlotCount].bOccupied          := TRUE;
+    _aSlots[_nSlotCount].bIsH2SCritical     := TRUE;
+    _aSlots[_nSlotCount].bIsSmokeCritical   := FALSE;
+	  _aSlots[_nSlotCount].eSensorType        := E_SensorType.H2S;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RegisterSensor" Id="{733ca4bb-ce29-4419-942f-f07a74098c14}">
+      <Declaration><![CDATA[METHOD RegisterSensor 
+VAR_INPUT
+	pSensor : I_SafetySensor;
+	 eSensorType : E_SensorType;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF _nSlotCount < 30 THEN
+    _nSlotCount := _nSlotCount + 1;
+    _aSlots[_nSlotCount].pSensor            := pSensor;
+    _aSlots[_nSlotCount].bOccupied          := TRUE;
+    _aSlots[_nSlotCount].bIsH2SCritical     := FALSE;
+    _aSlots[_nSlotCount].bIsSmokeCritical   := FALSE;
+	  _aSlots[_nSlotCount].eSensorType        := eSensorType;
+   
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RegisterSmokeSensor" Id="{23b33d24-c685-4448-aba0-4dcb4f14f75e}">
+      <Declaration><![CDATA[METHOD RegisterSmokeSensor 
+VAR_INPUT
+    pSensor : I_SafetySensor;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+IF _nSlotCount < 30 THEN
+    _nSlotCount := _nSlotCount + 1;
+    _aSlots[_nSlotCount].pSensor            := pSensor;
+    _aSlots[_nSlotCount].bOccupied          := TRUE;
+    _aSlots[_nSlotCount].bIsH2SCritical     := FALSE;
+    _aSlots[_nSlotCount].bIsSmokeCritical   := TRUE;
+	  _aSlots[_nSlotCount].eSensorType        := E_SensorType.SMOKE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{61828f95-da84-443d-8cdc-c90e183ef04d}">
+      <Declaration><![CDATA[METHOD Reset : BOOL
+VAR
+    i : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+FOR i := 1 TO _nSlotCount DO
+    IF _aSlots[i].bOccupied THEN
+        _aSlots[i].pSensor.Reset();
+    END_IF
+END_FOR
+
+_stZoneData.eZoneState       := E_ZoneState.ZONE_NORMAL;
+_stZoneData.eWorstAlarmLevel := E_AlarmLevel.NONE;
+_stZoneData.bESDRequired     := FALSE;
+_stZoneData.bH2SAlarm        := FALSE;
+Reset := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TriggerESD" Id="{d3e23fcc-c120-43b7-837f-d3140042419c}">
+      <Declaration><![CDATA[METHOD TriggerESD : BOOL
+VAR_INPUT
+    eLevel : E_ESDLevel;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_stZoneData.bESDRequired := TRUE;
+_stZoneData.eZoneState   := E_ZoneState.ZONE_EMERGENCY;
+TriggerESD := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="UpdateSensors" Id="{1263454a-1cfd-4981-9839-81fec9c24744}">
+      <Declaration><![CDATA[METHOD UpdateSensors
+VAR
+    i               : INT;
+    nAlarms         : INT := 0;
+    nGasAlarms      : INT := 0;
+    nPressAlarms    : INT := 0;
+    nTempAlarms     : INT := 0;
+    bAnyAlarm       : BOOL := FALSE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// ─────────────────────────────────────
+// Pass 1 — H2S critical
+// ─────────────────────────────────────
+FOR i := 1 TO _nSlotCount DO
+    IF _aSlots[i].bOccupied AND _aSlots[i].bIsH2SCritical THEN
+        IF _aSlots[i].pSensor.IsAlarm() THEN
+            _stZoneData.eZoneId          := eZoneId;
+            _stZoneData.bH2SAlarm        := TRUE;
+            _stZoneData.eWorstAlarmLevel := E_AlarmLevel.CRITICAL;
+            _stZoneData.eZoneState       := E_ZoneState.ZONE_EMERGENCY;
+            _stZoneData.bESDRequired     := TRUE;
+            _stZoneData.tLastUpdate      := TIME();
+            _stZoneData.tLastAlarm       := TIME();
+            _stZoneData.sStatusMessage   := 'H2S CRITICAL — immediate emergency';
+            // nGasAlarmCount etc not updated here
+            // H2S emergency returns immediately
+            // not needed — ESD already triggered
+            RETURN;
+        END_IF
+    END_IF
+END_FOR
+
+// ─────────────────────────────────────
+// Pass 2 — Smoke critical
+// ─────────────────────────────────────
+FOR i := 1 TO _nSlotCount DO
+    IF _aSlots[i].bOccupied AND _aSlots[i].bIsSmokeCritical THEN
+        IF _aSlots[i].pSensor.IsAlarm() THEN
+            _stZoneData.eZoneId          := eZoneId;
+            _stZoneData.bH2SAlarm        := FALSE;
+            _stZoneData.eWorstAlarmLevel := E_AlarmLevel.CRITICAL;
+            _stZoneData.eZoneState       := E_ZoneState.ZONE_EMERGENCY;
+            _stZoneData.bESDRequired     := TRUE;
+            _stZoneData.tLastUpdate      := TIME();
+            _stZoneData.tLastAlarm       := TIME();
+            _stZoneData.sStatusMessage   := 'SMOKE DETECTED — immediate emergency';
+            RETURN;
+        END_IF
+    END_IF
+END_FOR
+
+// ─────────────────────────────────────
+// Pass 3 — count alarms per sensor type
+// uses slot index ranges:
+// Zone A: slots 1-8   gas
+//         slots 9-14  pressure
+//         slots 15-22 temp
+//         slots 23-26 H2S (already checked above)
+// We cannot distinguish type via interface alone
+// so we track counts using separate slot type flag
+// ─────────────────────────────────────
+FOR i := 1 TO _nSlotCount DO
+    IF _aSlots[i].bOccupied
+        AND NOT _aSlots[i].bIsH2SCritical
+        AND NOT _aSlots[i].bIsSmokeCritical THEN
+
+        IF _aSlots[i].pSensor.IsAlarm() THEN
+            nAlarms := nAlarms + 1;
+            bAnyAlarm := TRUE;
+
+            // count by sensor type using slot type enum
+            CASE _aSlots[i].eSensorType OF
+                E_SensorType.GAS:
+                    nGasAlarms := nGasAlarms + 1;
+                E_SensorType.PRESSURE:
+                    nPressAlarms := nPressAlarms + 1;
+                E_SensorType.TEMP:
+                    nTempAlarms := nTempAlarms + 1;
+            END_CASE
+        END_IF
+    END_IF
+END_FOR
+
+// ─────────────────────────────────────
+// Update all ST_ZoneData fields
+// ─────────────────────────────────────
+_stZoneData.eZoneId             := eZoneId;
+_stZoneData.bH2SAlarm           := FALSE;
+_stZoneData.nGasAlarmCount      := nGasAlarms;
+_stZoneData.nPressureAlarmCount := nPressAlarms;
+_stZoneData.nTempAlarmCount     := nTempAlarms;
+_stZoneData.tLastUpdate         := TIME();
+
+// update last alarm timestamp only when alarm active
+IF bAnyAlarm THEN
+    _stZoneData.tLastAlarm := TIME();
+END_IF
+
+// ─────────────────────────────────────
+// Voting logic + status message
+// ─────────────────────────────────────
+IF nAlarms >= GVL_SafetyLimits.c_nVOTE_EMERGENCY THEN
+    _stZoneData.eWorstAlarmLevel := E_AlarmLevel.CRITICAL;
+    _stZoneData.eZoneState       := E_ZoneState.ZONE_EMERGENCY;
+    _stZoneData.bESDRequired     := TRUE;
+    _stZoneData.sStatusMessage   := 'EMERGENCY — ESD required';
+
+ELSIF nAlarms >= GVL_SafetyLimits.c_nVOTE_WARNING THEN
+    _stZoneData.eWorstAlarmLevel := E_AlarmLevel.WARNING;
+    _stZoneData.eZoneState       := E_ZoneState.ZONE_WARNING;
+    _stZoneData.bESDRequired     := FALSE;
+    _stZoneData.sStatusMessage   := 'WARNING — operator action required';
+
+ELSIF nAlarms >= GVL_SafetyLimits.c_nVOTE_ALERT THEN
+    _stZoneData.eWorstAlarmLevel := E_AlarmLevel.INFO;
+    _stZoneData.eZoneState       := E_ZoneState.ZONE_ALERT;
+    _stZoneData.bESDRequired     := FALSE;
+    _stZoneData.sStatusMessage   := 'ALERT — investigate sensor';
+
+ELSE
+    _stZoneData.eWorstAlarmLevel := E_AlarmLevel.NONE;
+    _stZoneData.eZoneState       := E_ZoneState.ZONE_NORMAL;
+    _stZoneData.bESDRequired     := FALSE;
+    _stZoneData.sStatusMessage   := 'NORMAL — all sensors ok';
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="UpdateSensorStructs" Id="{775a679a-0388-4e98-bbd0-6de745eda2ee}">
+      <Declaration><![CDATA[METHOD UpdateSensorStructs 
+VAR_INPUT
+    astGas      : ARRAY[1..6] OF FB_GasSensor;
+    astPressure : ARRAY[1..6] OF FB_PressureSensor;
+    astTemp     : ARRAY[1..8] OF FB_TempSensor;
+    astH2S      : ARRAY[1..2] OF FB_H2SSensor;
+    nGasCount   : INT;
+    nPressCount : INT;
+    nTempCount  : INT;
+    nH2SCount   : INT;
+END_VAR
+VAR
+    i : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Gas — all zones have gas
+FOR i := 1 TO nGasCount DO
+    _stZoneData.astGasSensors[i].nId     := i;
+    _stZoneData.astGasSensors[i].eZone     := eZoneId;
+    _stZoneData.astGasSensors[i].rValuePPM := astGas[i].GetReading();
+    _stZoneData.astGasSensors[i].eStatus   := astGas[i].GetStatus();
+    _stZoneData.astGasSensors[i].bAlarm    := astGas[i].IsAlarm();
+    _stZoneData.astGasSensors[i].bFault    := astGas[i].IsFault();
+END_FOR
+
+// Pressure — Zone A and B only
+// nPressCount = 0 for Zone C — loop does not execute
+FOR i := 1 TO nPressCount DO
+    _stZoneData.astPressureSensors[i].nId       := i;
+    _stZoneData.astPressureSensors[i].eZone     := eZoneId;
+    _stZoneData.astPressureSensors[i].rValueBar := astPressure[i].GetReading();
+    _stZoneData.astPressureSensors[i].eStatus   := astPressure[i].GetStatus();
+    _stZoneData.astPressureSensors[i].bAlarm    := astPressure[i].IsAlarm();
+    _stZoneData.astPressureSensors[i].bFault    := astPressure[i].IsFault();
+END_FOR
+
+// Temp — Zone A, B, C
+// nTempCount = 0 skips loop automatically
+FOR i := 1 TO nTempCount DO
+    _stZoneData.astTempSensors[i].nId           := i;
+    _stZoneData.astTempSensors[i].eZone         := eZoneId;
+    _stZoneData.astTempSensors[i].rValueCelsius := astTemp[i].GetReading();
+    _stZoneData.astTempSensors[i].eStatus       := astTemp[i].GetStatus();
+    _stZoneData.astTempSensors[i].bAlarm        := astTemp[i].IsAlarm();
+    _stZoneData.astTempSensors[i].bFault        := astTemp[i].IsFault();
+END_FOR
+
+// H2S — Zone A x4, Zone B x2
+// nH2SCount = 0 for Zone C — loop skips
+FOR i := 1 TO nH2SCount DO
+    _stZoneData.astH2SSensors[i].nId       := i;
+    _stZoneData.astH2SSensors[i].eZone     := eZoneId;
+    _stZoneData.astH2SSensors[i].rValuePPM := astH2S[i].GetReading();
+    _stZoneData.astH2SSensors[i].eStatus   := astH2S[i].GetStatus();
+    _stZoneData.astH2SSensors[i].bAlarm    := astH2S[i].IsAlarm();
+    _stZoneData.astH2SSensors[i].bFault    := astH2S[i].IsFault();
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ZoneData" Id="{54f668f2-fcb2-4835-b97a-3c629076c1d4}">
+      <Declaration><![CDATA[PROPERTY  ZoneData : ST_ZoneData]]></Declaration>
+      <Get Name="Get" Id="{b3352ec6-a398-4910-83cb-e34dbc0e4bbd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ZoneData := _stZoneData;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ddc61968-16b6-4a3c-9f91-589b31c7e8c1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ZoneState" Id="{328f99cf-7192-4a10-b494-8d1b5cf517ea}">
+      <Declaration><![CDATA[PROPERTY ZoneState : E_ZoneState]]></Declaration>
+      <Get Name="Get" Id="{5fcf7f21-adb0-44fe-a86e-7e6e762d81d7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ZoneState := _stZoneData.eZoneState;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{eed0ecb4-7170-43cf-acb2-8e9544b8d57b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_ZoneAggregator">
+      <LineId Id="26" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.CheckSafety">
+      <LineId Id="7" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.CheckZoneData">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.GetZoneState">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.HasAlarm.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.HasAlarm.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.RegisterH2SSensor">
+      <LineId Id="24" Count="6" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.RegisterSensor">
+      <LineId Id="39" Count="6" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.RegisterSmokeSensor">
+      <LineId Id="9" Count="7" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.Reset">
+      <LineId Id="10" Count="9" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.TriggerESD">
+      <LineId Id="11" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.UpdateSensors">
+      <LineId Id="126" Count="114" />
+      <LineId Id="110" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.UpdateSensorStructs">
+      <LineId Id="20" Count="41" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.ZoneData.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.ZoneData.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.ZoneState.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ZoneAggregator.ZoneState.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

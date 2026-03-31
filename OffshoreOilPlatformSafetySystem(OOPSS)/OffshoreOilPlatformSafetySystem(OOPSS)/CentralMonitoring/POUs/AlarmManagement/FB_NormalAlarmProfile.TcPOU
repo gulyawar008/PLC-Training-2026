@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_NormalAlarmProfile" Id="{97e8a250-2a37-4dfd-98bd-fb2fcd10613b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_NormalAlarmProfile IMPLEMENTS I_AlarmProfile
+VAR
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetName" Id="{2ba4b09d-f7a3-47ee-b781-65fd41351279}">
+      <Declaration><![CDATA[METHOD GetName  : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetName := 'NORMAL';]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetVoteAlert" Id="{9f334bf8-4435-42ad-b608-b62d0b8e9456}">
+      <Declaration><![CDATA[METHOD GetVoteAlert : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetVoteAlert     := GVL_SafetyLimits.c_nVOTE_ALERT;      // 1
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetVoteEmergency" Id="{de5a0f29-02d6-4f17-ac4a-522c268954b2}">
+      <Declaration><![CDATA[METHOD GetVoteEmergency : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetVoteEmergency := GVL_SafetyLimits.c_nVOTE_EMERGENCY;  // 3]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetVoteWarning" Id="{e314dfc0-87eb-4281-a379-954c1f51ecec}">
+      <Declaration><![CDATA[METHOD GetVoteWarning  : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+GetVoteWarning   := GVL_SafetyLimits.c_nVOTE_WARNING;    // 2]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_NormalAlarmProfile">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalAlarmProfile.GetName">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalAlarmProfile.GetVoteAlert">
+      <LineId Id="7" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalAlarmProfile.GetVoteEmergency">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_NormalAlarmProfile.GetVoteWarning">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
