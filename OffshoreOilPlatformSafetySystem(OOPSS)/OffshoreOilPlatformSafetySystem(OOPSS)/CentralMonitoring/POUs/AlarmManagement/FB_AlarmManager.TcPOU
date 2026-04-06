@@ -12,42 +12,41 @@ VAR
     _pProfile       : I_AlarmProfile;
     _fbNormal       : FB_NormalAlarmProfile;
 END_VAR
-VAR_INPUT
-    bMaintenanceMode : BOOL := FALSE;   // HMI toggle
+VAR_OUTPUT
+    nActiveAlarmCount   : INT;
+    eHighestAlarmLevel  : E_AlarmLevel;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-// FB_AlarmManager Body — ensure default profile on startup
+      <ST><![CDATA[// ensure profile never null
 IF _pProfile = 0 THEN
     _pProfile := _fbNormal;
 END_IF
-// ─────────────────────────────────────
-// Strategy — swap profile based on mode
-// ─────────────────────────────────────
-IF bMaintenanceMode THEN
-    // set in Central MAIN — injected from HMI
-ELSE
-    _pProfile := _fbNormal;
-END_IF
 
-]]></ST>
+// update output VARs every cycle
+nActiveAlarmCount  := _nActiveAlarms;
+eHighestAlarmLevel := _eHighestLevel;]]></ST>
     </Implementation>
     <Method Name="AcknowledgeAlarm" Id="{96d8611e-b757-41a6-968d-2e210736fd12}">
       <Declaration><![CDATA[METHOD AcknowledgeAlarm : BOOL
 VAR_INPUT
-    nRecordId   : UDINT;
-    sOperator   : STRING;
+    nRecordId  : UDINT;
+    sOperator  : STRING;
 END_VAR
 VAR
     i : INT;
-END_VAR]]></Declaration>
+END_VAR
+]]></Declaration>
       <Implementation>
-        <ST><![CDATA[FOR i := 1 TO GVL_SafetyLimits.c_nALARM_LOG_SIZE DO
-    IF _aLog[i].nRecordId = nRecordId AND NOT _aLog[i].bAcknowledged THEN
-        _aLog[i].bAcknowledged    := TRUE;
-        _aLog[i].sAcknowledgedBy  := sOperator;
-        _nActiveAlarms            := MAX(0, _nActiveAlarms - 1);
-        AcknowledgeAlarm          := TRUE;
+        <ST><![CDATA[
+FOR i := 1 TO GVL_SafetyLimits.c_nALARM_LOG_SIZE DO
+    IF _aLog[i].nRecordId = nRecordId
+       AND NOT _aLog[i].bAcknowledged THEN
+        _aLog[i].bAcknowledged   := TRUE;
+        _aLog[i].sAcknowledgedBy := sOperator;
+        IF _nActiveAlarms > 0 THEN
+            _nActiveAlarms := _nActiveAlarms - 1;
+        END_IF
+        AcknowledgeAlarm := TRUE;
         RETURN;
     END_IF
 END_FOR
@@ -70,13 +69,48 @@ END_VAR
     IF _aLog[i].nRecordId = nRecordId THEN
         _aLog[i].eLevel        := E_AlarmLevel.NONE;
         _aLog[i].bAcknowledged := TRUE;
-        _nActiveAlarms         := MAX(0, _nActiveAlarms - 1);
-        ClearAlarm             := TRUE;
+        IF _nActiveAlarms > 0 THEN
+            _nActiveAlarms := _nActiveAlarms - 1;
+        END_IF
+        ClearAlarm := TRUE;
         RETURN;
     END_IF
 END_FOR
 
 ClearAlarm := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ClearZoneAlarms" Id="{d867512a-b059-4e1f-a5de-653a6a432aba}">
+      <Declaration><![CDATA[METHOD ClearZoneAlarms 
+VAR_INPUT
+    eZone : E_ZoneId;
+END_VAR
+VAR
+    i : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+
+
+FOR i := 1 TO GVL_SafetyLimits.c_nALARM_LOG_SIZE DO
+    IF _aLog[i].eZone = eZone
+       AND _aLog[i].eLevel <> E_AlarmLevel.NONE THEN
+        _aLog[i].eLevel        := E_AlarmLevel.NONE;
+        _aLog[i].bAcknowledged := TRUE;
+        IF _nActiveAlarms > 0 THEN
+            _nActiveAlarms := _nActiveAlarms - 1;
+        END_IF
+    END_IF
+END_FOR
+
+// recalculate highest level after clearing
+_eHighestLevel := E_AlarmLevel.NONE;
+FOR i := 1 TO GVL_SafetyLimits.c_nALARM_LOG_SIZE DO
+    IF _aLog[i].eLevel > _eHighestLevel THEN
+        _eHighestLevel := _aLog[i].eLevel;
+    END_IF
+END_FOR]]></ST>
       </Implementation>
     </Method>
     <Method Name="GetActiveAlarmCount" Id="{da4e89c9-5cac-4aa6-855e-9dab4de1138b}">
@@ -109,29 +143,56 @@ VAR_INPUT
 END_VAR
 VAR
     stRecord : ST_AlarmRecord;
-END_VAR
-]]></Declaration>
+    i        : INT;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-// Build record
-stRecord.nRecordId      := _nNextRecordId;
-stRecord.eLevel         := eLevel;
-stRecord.eZone          := eZone;
-stRecord.nSensorId      := nSensorId;
-stRecord.rSensorValue   := rValue;
-stRecord.sDescription   := sDesc;
-stRecord.tTimestamp     := DT#1970-1-1-0:0:0;  // replace with GetSystemTime
-stRecord.bAcknowledged  := FALSE;
 
-// Ring buffer write
+// skip NONE level
+IF eLevel = E_AlarmLevel.NONE THEN
+    RaiseAlarm := FALSE;
+    RETURN;
+END_IF
+
+// maintenance mode suppression
+// suppress INFO alarms when profile requires 2+ sensors
+IF _pProfile <> 0 THEN
+    IF eLevel = E_AlarmLevel.INFO
+       AND _pProfile.GetVoteAlert() > 1 THEN
+        RaiseAlarm := FALSE;
+        RETURN;
+    END_IF
+END_IF
+
+// duplicate check — same zone same level already active
+FOR i := 1 TO GVL_SafetyLimits.c_nALARM_LOG_SIZE DO
+    IF _aLog[i].eZone  = eZone
+       AND _aLog[i].eLevel = eLevel
+       AND NOT _aLog[i].bAcknowledged
+       AND _aLog[i].eLevel <> E_AlarmLevel.NONE THEN
+        RaiseAlarm := FALSE;
+        RETURN;
+    END_IF
+END_FOR
+
+// build record
+stRecord.nRecordId     := _nNextRecordId;
+stRecord.eLevel        := eLevel;
+stRecord.eZone         := eZone;
+stRecord.nSensorId     := nSensorId;
+stRecord.rSensorValue  := rValue;
+stRecord.sDescription  := sDesc;
+stRecord.bAcknowledged := FALSE;
+
+// ring buffer write
 IF _nLogHead >= GVL_SafetyLimits.c_nALARM_LOG_SIZE THEN
     _nLogHead := 1;
 ELSE
     _nLogHead := _nLogHead + 1;
 END_IF
 
-_aLog[_nLogHead]  := stRecord;
-_nNextRecordId    := _nNextRecordId + 1;
+_aLog[_nLogHead] := stRecord;
+_nNextRecordId   := _nNextRecordId + 1;
 
 IF _nLogCount < GVL_SafetyLimits.c_nALARM_LOG_SIZE THEN
     _nLogCount := _nLogCount + 1;
@@ -139,7 +200,6 @@ END_IF
 
 _nActiveAlarms := _nActiveAlarms + 1;
 
-// Track highest level
 IF eLevel > _eHighestLevel THEN
     _eHighestLevel := eLevel;
 END_IF
@@ -154,22 +214,30 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Inject whichever profile Central passes in
-_pProfile := pProfile;]]></ST>
+_pProfile := pProfile;
+
+
+]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_AlarmManager">
-      <LineId Id="144" Count="3" />
-      <LineId Id="31" Count="8" />
-      <LineId Id="162" Count="0" />
+      <LineId Id="229" Count="6" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AlarmManager.AcknowledgeAlarm">
-      <LineId Id="15" Count="9" />
+      <LineId Id="40" Count="13" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_AlarmManager.ClearAlarm">
-      <LineId Id="14" Count="9" />
+      <LineId Id="54" Count="11" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AlarmManager.ClearZoneAlarms">
+      <LineId Id="40" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="72" Count="17" />
+      <LineId Id="64" Count="0" />
     </LineIds>
     <LineIds Name="FB_AlarmManager.GetActiveAlarmCount">
       <LineId Id="6" Count="0" />
@@ -179,12 +247,14 @@ _pProfile := pProfile;]]></ST>
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_AlarmManager.RaiseAlarm">
-      <LineId Id="17" Count="31" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="399" Count="57" />
+      <LineId Id="60" Count="0" />
     </LineIds>
     <LineIds Name="FB_AlarmManager.SetProfile">
       <LineId Id="11" Count="0" />
       <LineId Id="5" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="15" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

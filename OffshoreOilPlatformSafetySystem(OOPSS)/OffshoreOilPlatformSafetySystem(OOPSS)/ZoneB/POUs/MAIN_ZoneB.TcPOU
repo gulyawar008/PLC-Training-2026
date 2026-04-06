@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
-  <POU Name="MAIN" Id="{20f23482-3553-49de-a6fc-43cd5ba5bd4e}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM MAIN
+  <POU Name="MAIN_ZoneB" Id="{20f23482-3553-49de-a6fc-43cd5ba5bd4e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN_ZoneB
 VAR
     nADSTestValue   : INT := 1;
 
@@ -104,24 +104,16 @@ fbH2S1();  fbH2S2();
 
 fbZoneB();
 fbZoneB.UpdateSensors();
-fbZoneB.UpdateSensorStructs(
-    astGas      := aGasSensors,
-    astPressure := aPressureSensors,
-    astTemp     := aTempSensors,
-    astH2S      := aH2SSensors,
-    nGasCount   := GVL_SafetyLimits.c_nGAS_SENSORS_B,    // 6
-    nPressCount := GVL_SafetyLimits.c_nPRESS_SENSORS_B,  // 6
-    nTempCount  := GVL_SafetyLimits.c_nTEMP_SENSORS_B,   // 8
-    nH2SCount   := GVL_SafetyLimits.c_nH2S_SENSORS_B     // 2
-);
+
 
 stZoneBData := fbZoneB.ZoneData;]]></ST>
     </Implementation>
-    <LineIds Name="MAIN">
+    <LineIds Name="MAIN_ZoneB">
       <LineId Id="41" Count="2" />
       <LineId Id="139" Count="7" />
       <LineId Id="148" Count="16" />
-      <LineId Id="55" Count="51" />
+      <LineId Id="55" Count="40" />
+      <LineId Id="105" Count="1" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

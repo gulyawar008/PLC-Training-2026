@@ -14,6 +14,7 @@ VAR_INPUT
     stZoneC         : ST_ZoneData;      // from ADS
     bManualESD      : BOOL := FALSE;    // HMI manual trigger
     bResetRequest   : BOOL := FALSE;    // HMI reset button
+	bESDComplete    : BOOL := FALSE;
 END_VAR
 VAR_OUTPUT
     ePlatformState  : E_PlatformState;
@@ -21,8 +22,7 @@ VAR_OUTPUT
     eESDLevel       : E_ESDLevel;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// FB Body — state machine
-_ePrevState := _eState;
+      <ST><![CDATA[_ePrevState := _eState;
 
 CASE _eState OF
 
@@ -91,13 +91,36 @@ CASE _eState OF
         END_IF
 
     E_PlatformState.EMERGENCY:
-        bESDRequired := TRUE;
-        eESDLevel    := E_ESDLevel.ESD_LEVEL2;
-        _eState      := E_PlatformState.SAFE_STATE;
+        // ✅ Stay in EMERGENCY — do NOT jump to SAFE_STATE
+        // ESDController reads this state and acts
+        // Only move to SAFE_STATE after ESD acknowledged
+
+        // Decide level based on how many zones in emergency
+        IF (stZoneA.eZoneState = E_ZoneState.ZONE_EMERGENCY
+            AND stZoneB.eZoneState = E_ZoneState.ZONE_EMERGENCY)
+        OR (stZoneA.eZoneState = E_ZoneState.ZONE_EMERGENCY
+            AND stZoneC.eZoneState = E_ZoneState.ZONE_EMERGENCY)
+        OR (stZoneB.eZoneState = E_ZoneState.ZONE_EMERGENCY
+            AND stZoneC.eZoneState = E_ZoneState.ZONE_EMERGENCY)
+        OR bManualESD THEN
+            // Multiple zones or manual ──► full platform shutdown
+            bESDRequired := TRUE;
+            eESDLevel    := E_ESDLevel.ESD_LEVEL2;
+        ELSE
+            // Single zone ──► zone isolation only
+            bESDRequired := TRUE;
+            eESDLevel    := E_ESDLevel.ESD_LEVEL1;
+        END_IF
+
+        // ✅ Only move to SAFE_STATE when ESD is complete
+        IF bESDComplete THEN
+            _eState := E_PlatformState.SAFE_STATE;
+        END_IF
 
     E_PlatformState.SAFE_STATE:
+        // ✅ Hold ESD level — do NOT change it here
+        // ESDController already has the level it needs
         bESDRequired := TRUE;
-        eESDLevel    := E_ESDLevel.ESD_LEVEL2;
 
         IF bResetRequest THEN
             bESDRequired := FALSE;
@@ -111,10 +134,8 @@ CASE _eState OF
 
 END_CASE
 
-// Update output
 ePlatformState := _eState;
 
-// Log state change
 IF _eState <> _ePrevState THEN
     _tStateEntered  := TIME();
     _sStatusMessage := CONCAT('State: ', THIS^.GetStateString(_eState));
@@ -147,9 +168,8 @@ END_CASE]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_PlatformStateMachine">
-      <LineId Id="35" Count="93" />
-      <LineId Id="133" Count="2" />
-      <LineId Id="9" Count="0" />
+      <LineId Id="712" Count="116" />
+      <LineId Id="698" Count="0" />
     </LineIds>
     <LineIds Name="FB_PlatformStateMachine.GetStateString">
       <LineId Id="9" Count="16" />

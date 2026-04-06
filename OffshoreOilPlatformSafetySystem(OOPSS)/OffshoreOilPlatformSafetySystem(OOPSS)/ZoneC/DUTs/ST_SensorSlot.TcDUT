@@ -3,13 +3,12 @@
   <DUT Name="ST_SensorSlot" Id="{c2af2fc3-8fd8-4987-8836-36bb796262b1}">
     <Declaration><![CDATA[TYPE ST_SensorSlot :
 STRUCT
-	    pSensor         : I_SafetySensor;
-       bOccupied       : BOOL;
-        bIsH2SCritical  : BOOL;     // set TRUE when registering H2S sensors
-	    bIsSmokeCritical    : BOOL;     // smoke forces emergency like H2S
-		 eSensorType         : E_SensorType; 
+    ipSensor            : I_SafetySensor;           // ✅ for interface calls
+    bOccupied           : BOOL;
+    bIsH2SCritical      : BOOL;
+    bIsSmokeCritical    : BOOL;
+    eSensorType         : E_SensorType;
 END_STRUCT
-END_TYPE
-]]></Declaration>
+END_TYPE]]></Declaration>
   </DUT>
 </TcPlcObject>

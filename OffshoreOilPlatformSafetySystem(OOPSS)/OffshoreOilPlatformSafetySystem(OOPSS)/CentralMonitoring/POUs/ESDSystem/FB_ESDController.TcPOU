@@ -2,20 +2,21 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
   <POU Name="FB_ESDController" Id="{b8ff74fd-b270-415f-a957-89d6c2710056}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ESDController IMPLEMENTS I_ESDController
+// FB_ESDController VAR block — add reset flag
 VAR
     _fbLevel1       : FB_ESDSequenceLevel1;
     _fbLevel2       : FB_ESDSequenceLevel2;
     _stESDStatus    : ST_ESDStatus;
     _eActiveLevel   : E_ESDLevel := E_ESDLevel.ESD_NONE;
+    _bResetPending  : BOOL := FALSE;    // ADD THIS
 END_VAR
 VAR_INPUT
-    bManualLevel1   : BOOL := FALSE;    // HMI trigger
-    bManualLevel2   : BOOL := FALSE;    // HMI trigger
-    eTriggerZone    : E_ZoneId;         // which zone caused ESD
+    bManualLevel1   : BOOL := FALSE;
+    bManualLevel2   : BOOL := FALSE;
+    eTriggerZone    : E_ZoneId;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// FB Body
-// ─────────────────────────────────────
+      <ST><![CDATA[// ─────────────────────────────────────
 // Determine which level to run
 // Level 2 overrides Level 1
 // ─────────────────────────────────────
@@ -118,22 +119,43 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-_eActiveLevel               := E_ESDLevel.ESD_NONE;
-_stESDStatus.bESDActive     := FALSE;
-_stESDStatus.eESDLevel      := E_ESDLevel.ESD_NONE;
-_stESDStatus.bSequenceComplete := FALSE;
-_stESDStatus.bSequenceFailed   := FALSE;
-_stESDStatus.nCurrentStep      := 0;
-_fbLevel1.bAbort            := TRUE;
-_fbLevel2.bAbort            := TRUE;
+        <ST><![CDATA[// Step 1 — abort both sequences
+// ─────────────────────────────────────
+_fbLevel1.bAbort := TRUE;
+_fbLevel2.bAbort := TRUE;
+
+// ─────────────────────────────────────
+// Step 2 — call both FBs with abort
+// so they process the abort this cycle
+// ─────────────────────────────────────
 _fbLevel1();
 _fbLevel2();
+
+// ─────────────────────────────────────
+// Step 3 — clear abort flags
+// otherwise they stay TRUE forever
+// ─────────────────────────────────────
+_fbLevel1.bAbort := FALSE;
+_fbLevel2.bAbort := FALSE;
+
+// ─────────────────────────────────────
+// Step 4 — reset all ESD state
+// ─────────────────────────────────────
+_eActiveLevel                  := E_ESDLevel.ESD_NONE;
+_stESDStatus.bESDActive        := FALSE;
+_stESDStatus.eESDLevel         := E_ESDLevel.ESD_NONE;
+_stESDStatus.nCurrentStep      := 0;
+_stESDStatus.nTotalSteps       := 0;
+_stESDStatus.bSequenceComplete := FALSE;
+_stESDStatus.bSequenceFailed   := FALSE;
+_stESDStatus.sCurrentStepDesc  := 'ESD Reset - System Ready';
+_stESDStatus.sStatusMessage    := 'Reset complete';
+
 ResetESD := TRUE;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_ESDController">
-      <LineId Id="28" Count="55" />
+      <LineId Id="296" Count="54" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_ESDController.ExecuteLevel1">
@@ -151,7 +173,7 @@ ResetESD := TRUE;]]></ST>
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_ESDController.ResetESD">
-      <LineId Id="6" Count="10" />
+      <LineId Id="44" Count="31" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

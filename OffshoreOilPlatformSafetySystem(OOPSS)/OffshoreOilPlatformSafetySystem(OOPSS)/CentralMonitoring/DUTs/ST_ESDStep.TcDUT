@@ -3,7 +3,7 @@
   <DUT Name="ST_ESDStep" Id="{f837d3a1-cead-4e0a-92d3-c364e601357f}">
     <Declaration><![CDATA[TYPE ST_ESDStep :
 STRUCT
-	 sDescription    : STRING;       // what this step does
+	sDescription    : STRING;       // what this step does
     tTimeout        : TIME;         // max time allowed
     bComplete       : BOOL;         // step confirmed done
     bFailed         : BOOL;         // step timed out

@@ -7,10 +7,10 @@ STRUCT
     eZoneState          : E_ZoneState;
 
     // Sensor arrays per zone
-    astGasSensors       : ARRAY[1..6]  OF ST_GasSensor;
+    astGasSensors       : ARRAY[1..8]  OF ST_GasSensor;
     astPressureSensors  : ARRAY[1..6]  OF ST_PressureSensor;
     astTempSensors      : ARRAY[1..8]  OF ST_TempSensor;
-    astH2SSensors       : ARRAY[1..2]  OF ST_H2SSensor;
+    astH2SSensors       : ARRAY[1..4]  OF ST_H2SSensor;
 
     // Zone summary
     nGasAlarmCount      : INT;          // how many gas sensors alarming

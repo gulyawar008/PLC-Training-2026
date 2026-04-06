@@ -10,6 +10,7 @@ VAR
     _tStepTimer     : TON;
     _aSteps         : ARRAY[1..7] OF ST_ESDStep;
     _bInitDone      : BOOL := FALSE;
+     
 END_VAR
 VAR_INPUT
     bExecute        : BOOL := FALSE;
@@ -17,7 +18,7 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
     bActive         : BOOL;
-    bComplete       : BOOL;
+    bComplete  : BOOL;
     bFailed         : BOOL;
     nCurrentStep    : INT;
     sCurrentDesc    : STRING;
@@ -53,15 +54,31 @@ IF NOT _bInitDone THEN
     _bInitDone := TRUE;
 END_IF
 
+// FB_ESDSequenceLevel1 body — bAbort section
 IF bAbort THEN
     _nCurrentStep   := 0;
     _bActive        := FALSE;
     _bComplete      := FALSE;
     _bFailed        := FALSE;
-    _tStepTimer(IN := FALSE);
-    bActive         := FALSE;
-    bComplete       := FALSE;
-    bFailed         := FALSE;
+    _tStepTimer(IN := FALSE);   // reset timer
+    _tStepTimer();              // call once to process reset
+
+    // reset all step complete flags
+    _aSteps[1].bComplete := FALSE;
+    _aSteps[2].bComplete := FALSE;
+    _aSteps[3].bComplete := FALSE;
+    _aSteps[4].bComplete := FALSE;
+    _aSteps[5].bComplete := FALSE;
+	  _aSteps[6].bComplete := FALSE;
+	    _aSteps[7].bComplete := FALSE;
+
+    // reset outputs
+    bActive      := FALSE;
+    bComplete    := FALSE;
+    bFailed      := FALSE;
+    nCurrentStep := 0;
+    sCurrentDesc := 'Aborted';
+    rProgressPct := 0.0;
     RETURN;
 END_IF
 
@@ -101,7 +118,11 @@ nCurrentStep := _nCurrentStep;
 rProgressPct := INT_TO_REAL(_nCurrentStep - 1) / 7.0 * 100.0;]]></ST>
     </Implementation>
     <LineIds Name="FB_ESDSequenceLevel2">
-      <LineId Id="40" Count="71" />
+      <LineId Id="40" Count="26" />
+      <LineId Id="172" Count="14" />
+      <LineId Id="196" Count="1" />
+      <LineId Id="187" Count="8" />
+      <LineId Id="77" Count="34" />
       <LineId Id="38" Count="0" />
     </LineIds>
   </POU>

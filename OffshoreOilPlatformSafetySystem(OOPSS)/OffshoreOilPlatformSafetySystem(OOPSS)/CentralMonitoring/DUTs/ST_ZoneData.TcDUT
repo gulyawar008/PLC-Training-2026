@@ -1,35 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
   <DUT Name="ST_ZoneData" Id="{82a731cf-184c-4c68-9c42-9d5f92e8a6cd}">
-    <Declaration><![CDATA[TYPE ST_ZoneData :
+    <Declaration><![CDATA[// This exact struct must exist in ALL runtimes
+// Zone A, Zone B, Zone C, Central — copy exactly
+TYPE ST_ZoneData :
 STRUCT
-	  eZoneId             : E_ZoneId;
+    eZoneId             : E_ZoneId;
     eZoneState          : E_ZoneState;
-
-    // Sensor arrays per zone
     astGasSensors       : ARRAY[1..8]  OF ST_GasSensor;
     astPressureSensors  : ARRAY[1..6]  OF ST_PressureSensor;
     astTempSensors      : ARRAY[1..8]  OF ST_TempSensor;
     astH2SSensors       : ARRAY[1..4]  OF ST_H2SSensor;
-
-    // Zone summary
-    nGasAlarmCount      : INT;          // how many gas sensors alarming
-    nPressureAlarmCount : INT;          // how many pressure sensors alarming
-    nTempAlarmCount     : INT;          // how many temp sensors alarming
-    bH2SAlarm           : BOOL;         // any H2S alarm
-
-    // Zone worst case
+    nGasAlarmCount      : INT;
+    nPressureAlarmCount : INT;
+    nTempAlarmCount     : INT;
+    bH2SAlarm           : BOOL;
     eWorstAlarmLevel    : E_AlarmLevel;
-    bESDRequired        : BOOL;         // zone needs ESD
-
-    // Timestamps
+    bESDRequired        : BOOL;
     tLastUpdate         : TIME;
     tLastAlarm          : TIME;
-
-    // Log
     sStatusMessage      : STRING;
 END_STRUCT
-END_TYPE
-]]></Declaration>
+END_TYPE]]></Declaration>
   </DUT>
 </TcPlcObject>

@@ -9,43 +9,43 @@
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
-				<Task Id="6" Priority="22" CycleTime="100000" AmsPort="353" AdtTasks="true">
-					<Name>PlcTask1</Name>
-				</Task>
 				<Task Id="7" Priority="23" CycleTime="100000" AmsPort="354" AdtTasks="true">
 					<Name>PlcTask2</Name>
 				</Task>
 				<Task Id="8" Priority="24" CycleTime="100000" AmsPort="355" AdtTasks="true">
 					<Name>PlcTask3</Name>
 				</Task>
-				<Task Id="9" Priority="25" CycleTime="100000" AmsPort="356" AdtTasks="true">
+				<Task Id="6" Priority="25" CycleTime="100000" AmsPort="356" AdtTasks="true">
 					<Name>PlcTask4</Name>
+				</Task>
+				<Task Id="4" Priority="2" CycleTime="100000" AmsPort="351" AdtTasks="true">
+					<Name>PlcTask1</Name>
 				</Task>
 			</Tasks>
 		</System>
 		<Plc>
 			<Project GUID="{E29BDD72-88D8-4543-9062-13EBE755ED34}" Name="ZoneA" PrjFilePath="ZoneA\ZoneA.plcproj" TmcFilePath="ZoneA\ZoneA.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ZoneA\ZoneA.tmc" TmcHash="{7779FFDD-2A72-B81A-C754-22B6B2DF40A6}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ZoneA\ZoneA.tmc" TmcHash="{DD6F6194-5AF4-5680-6158-4F977C32E959}">
 					<Name>ZoneA Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
 						<Context>
 							<Id>0</Id>
-							<Name>PlcTask</Name>
+							<Name>PlcTask1</Name>
 							<ManualConfig>
-								<OTCID>#x02010060</OTCID>
+								<OTCID>#x02010040</OTCID>
 							</ManualConfig>
-							<Priority>22</Priority>
+							<Priority>2</Priority>
 							<CycleTime>10000000</CycleTime>
 						</Context>
 					</Contexts>
 					<TaskPouOids>
-						<TaskPouOid Prio="22" OTCID="#x08502002"/>
+						<TaskPouOid Prio="2" OTCID="#x08502002"/>
 					</TaskPouOids>
 				</Instance>
 			</Project>
 			<Project GUID="{BA088BA6-5034-43CE-A1BE-28C42699CDE9}" Name="ZoneB" PrjFilePath="ZoneB\ZoneB.plcproj" TmcFilePath="ZoneB\ZoneB.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ZoneB\ZoneB.tmc" TmcHash="{163C00D5-9A57-ACB4-0FC8-DEFEE9223895}">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ZoneB\ZoneB.tmc" TmcHash="{2119ADE8-8D2D-B5DC-4780-13B286986AD6}">
 					<Name>ZoneB Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -65,7 +65,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{72B4C22F-3808-465E-BFC0-3A73BDEC3B63}" Name="ZoneC" PrjFilePath="ZoneC\ZoneC.plcproj" TmcFilePath="ZoneC\ZoneC.tmc" ReloadTmc="true" AmsPort="853" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ZoneC\ZoneC.tmc" TmcHash="{226BFBE1-0CCF-4276-56C4-0E7AA690344A}">
+				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ZoneC\ZoneC.tmc" TmcHash="{CCE5E170-D7B6-DEDC-85FE-CFF24637ED7B}">
 					<Name>ZoneC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -85,7 +85,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{5E2C7D7F-FD55-45A8-A869-4D9DC555B447}" Name="CentralMonitoring" PrjFilePath="CentralMonitoring\CentralMonitoring.plcproj" TmcFilePath="CentralMonitoring\CentralMonitoring.tmc" ReloadTmc="true" AmsPort="854" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x085020c0" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="CentralMonitoring\CentralMonitoring.tmc" TmcHash="{CA2277C8-123B-19AC-9495-1F4C71E76E19}">
+				<Instance Id="#x085020c0" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="CentralMonitoring\CentralMonitoring.tmc" TmcHash="{AEBAC37C-6AB9-2B1D-2CED-A6A3A87974C4}">
 					<Name>CentralMonitoring Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -93,14 +93,14 @@
 							<Id>0</Id>
 							<Name>PlcTask</Name>
 							<ManualConfig>
-								<OTCID>#x02010090</OTCID>
+								<OTCID>#x02010060</OTCID>
 							</ManualConfig>
 							<Priority>25</Priority>
 							<CycleTime>10000000</CycleTime>
 						</Context>
 					</Contexts>
 					<TaskPouOids>
-						<TaskPouOid Prio="25" OTCID="#x085020c2"/>
+						<TaskPouOid Prio="25" OTCID="#x085020c1"/>
 					</TaskPouOids>
 				</Instance>
 			</Project>

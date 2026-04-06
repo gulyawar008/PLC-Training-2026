@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
-  <POU Name="MAIN" Id="{a2bff036-1af1-4fea-b0a8-82685f92024b}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM MAIN
+  <POU Name="MAIN_ZoneC" Id="{a2bff036-1af1-4fea-b0a8-82685f92024b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN_ZoneC
 VAR
     nADSTestValue   : INT := 1;
 
@@ -85,24 +85,15 @@ fbSmoke9();  fbSmoke10(); fbSmoke11(); fbSmoke12();
 
 fbZoneC();
 fbZoneC.UpdateSensors();
-fbZoneC.UpdateSensorStructs(
-    astGas      := aGasSensors,
-    astTemp     := aTempSensors,
-    nGasCount   := GVL_SafetyLimits.c_nGAS_SENSORS_C,    // 4
-    nPressCount := 0,                                      // none in Zone C
-    nTempCount  := GVL_SafetyLimits.c_nTEMP_SENSORS_C,   // 4
-    nH2SCount   := 0                                       // none in Zone C
-);
 
 stZoneCData := fbZoneC.ZoneData;]]></ST>
     </Implementation>
-    <LineIds Name="MAIN">
+    <LineIds Name="MAIN_ZoneC">
       <LineId Id="39" Count="2" />
       <LineId Id="128" Count="4" />
       <LineId Id="145" Count="5" />
-      <LineId Id="49" Count="40" />
-      <LineId Id="91" Count="0" />
-      <LineId Id="93" Count="5" />
+      <LineId Id="49" Count="38" />
+      <LineId Id="98" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
