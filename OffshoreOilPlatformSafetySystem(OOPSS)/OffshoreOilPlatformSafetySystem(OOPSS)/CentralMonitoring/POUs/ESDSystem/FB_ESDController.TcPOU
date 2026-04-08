@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_ESDController" Id="{b8ff74fd-b270-415f-a957-89d6c2710056}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ESDController IMPLEMENTS I_ESDController
+// FB_ESDController VAR block — add reset flag
+VAR
+    _fbLevel1       : FB_ESDSequenceLevel1;
+    _fbLevel2       : FB_ESDSequenceLevel2;
+    _stESDStatus    : ST_ESDStatus;
+    _eActiveLevel   : E_ESDLevel := E_ESDLevel.ESD_NONE;
+    _bResetPending  : BOOL := FALSE;    // ADD THIS
+END_VAR
+VAR_INPUT
+    bManualLevel1   : BOOL := FALSE;
+    bManualLevel2   : BOOL := FALSE;
+    eTriggerZone    : E_ZoneId;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// ─────────────────────────────────────
+// Determine which level to run
+// Level 2 overrides Level 1
+// ─────────────────────────────────────
+IF bManualLevel2 AND _eActiveLevel = E_ESDLevel.ESD_NONE THEN
+    _eActiveLevel                  := E_ESDLevel.ESD_LEVEL2;
+    _stESDStatus.bESDActive        := TRUE;
+    _stESDStatus.eESDLevel         := E_ESDLevel.ESD_LEVEL2;
+    _stESDStatus.eInitiatedByZone  := eTriggerZone;
+    _fbLevel1.bAbort               := TRUE;
+END_IF
+
+IF bManualLevel1 AND _eActiveLevel = E_ESDLevel.ESD_NONE THEN
+    _eActiveLevel                  := E_ESDLevel.ESD_LEVEL1;
+    _stESDStatus.bESDActive        := TRUE;
+    _stESDStatus.eESDLevel         := E_ESDLevel.ESD_LEVEL1;
+    _stESDStatus.eInitiatedByZone  := eTriggerZone;
+END_IF
+
+// ─────────────────────────────────────
+// Execute active level
+// ─────────────────────────────────────
+CASE _eActiveLevel OF
+
+    E_ESDLevel.ESD_LEVEL1:
+        _fbLevel1.eTargetZone := eTriggerZone;
+        _fbLevel1.bExecute    := TRUE;
+        _fbLevel1();
+
+        _stESDStatus.nCurrentStep    := _fbLevel1.nCurrentStep;
+        _stESDStatus.nTotalSteps     := 5;
+        _stESDStatus.sCurrentStepDesc := _fbLevel1.sCurrentDesc;
+        _stESDStatus.bSequenceComplete := _fbLevel1.bComplete;
+        _stESDStatus.bSequenceFailed   := _fbLevel1.bFailed;
+
+        // Escalate to Level 2 if Level 1 fails
+        IF _fbLevel1.bFailed THEN
+            _eActiveLevel          := E_ESDLevel.ESD_LEVEL2;
+            _stESDStatus.eESDLevel := E_ESDLevel.ESD_LEVEL2;
+            _fbLevel1.bAbort       := TRUE;
+        END_IF
+
+    E_ESDLevel.ESD_LEVEL2:
+        _fbLevel2.bExecute := TRUE;
+        _fbLevel2();
+
+        _stESDStatus.nCurrentStep     := _fbLevel2.nCurrentStep;
+        _stESDStatus.nTotalSteps      := 7;
+        _stESDStatus.sCurrentStepDesc := _fbLevel2.sCurrentDesc;
+        _stESDStatus.bSequenceComplete := _fbLevel2.bComplete;
+        _stESDStatus.bSequenceFailed   := _fbLevel2.bFailed;
+
+    E_ESDLevel.ESD_NONE:
+        _stESDStatus.bESDActive := FALSE;
+
+END_CASE]]></ST>
+    </Implementation>
+    <Method Name="ExecuteLevel1" Id="{a95ccc92-20e2-4374-bbc5-61e54e63970a}">
+      <Declaration><![CDATA[METHOD ExecuteLevel1  : BOOL
+VAR_INPUT
+    eZone : E_ZoneId;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bManualLevel1 := TRUE;
+eTriggerZone  := eZone;
+ExecuteLevel1 := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ExecuteLevel2" Id="{90c20f55-712e-46c0-8575-7b99e83c22dc}">
+      <Declaration><![CDATA[METHOD ExecuteLevel2 : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bManualLevel2 := TRUE;
+ExecuteLevel2 := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetESDStatus" Id="{1e4a7e50-7ecd-4cec-a80a-67c5152644ab}">
+      <Declaration><![CDATA[METHOD GetESDStatus: ST_ESDStatus
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetESDStatus := _stESDStatus;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsESDComplete" Id="{cdfd5b7b-30b7-4cd2-b303-373875c92dd4}">
+      <Declaration><![CDATA[METHOD IsESDComplete : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsESDComplete := _stESDStatus.bSequenceComplete;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ResetESD" Id="{e7e38a8d-40ca-48d6-b0c9-f096bc831a71}">
+      <Declaration><![CDATA[METHOD ResetESD : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Step 1 — abort both sequences
+// ─────────────────────────────────────
+_fbLevel1.bAbort := TRUE;
+_fbLevel2.bAbort := TRUE;
+
+// ─────────────────────────────────────
+// Step 2 — call both FBs with abort
+// so they process the abort this cycle
+// ─────────────────────────────────────
+_fbLevel1();
+_fbLevel2();
+
+// ─────────────────────────────────────
+// Step 3 — clear abort flags
+// otherwise they stay TRUE forever
+// ─────────────────────────────────────
+_fbLevel1.bAbort := FALSE;
+_fbLevel2.bAbort := FALSE;
+
+// ─────────────────────────────────────
+// Step 4 — reset all ESD state
+// ─────────────────────────────────────
+_eActiveLevel                  := E_ESDLevel.ESD_NONE;
+_stESDStatus.bESDActive        := FALSE;
+_stESDStatus.eESDLevel         := E_ESDLevel.ESD_NONE;
+_stESDStatus.nCurrentStep      := 0;
+_stESDStatus.nTotalSteps       := 0;
+_stESDStatus.bSequenceComplete := FALSE;
+_stESDStatus.bSequenceFailed   := FALSE;
+_stESDStatus.sCurrentStepDesc  := 'ESD Reset - System Ready';
+_stESDStatus.sStatusMessage    := 'Reset complete';
+
+ResetESD := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_ESDController">
+      <LineId Id="296" Count="54" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ESDController.ExecuteLevel1">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ESDController.ExecuteLevel2">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ESDController.GetESDStatus">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ESDController.IsESDComplete">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ESDController.ResetESD">
+      <LineId Id="44" Count="31" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

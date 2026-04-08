@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_AlarmRecord" Id="{55370b04-3a1e-48af-b451-197b8ceec1a5}">
+    <Declaration><![CDATA[TYPE ST_AlarmRecord :
+STRUCT
+	   nRecordId           : UDINT;        // sequential ID
+    eLevel              : E_AlarmLevel;
+    eZone               : E_ZoneId;
+    eSensorType         : E_SensorStatus;
+    nSensorId           : INT;
+    rSensorValue        : REAL;
+    sDescription        : STRING;
+    tTimestamp          : DATE_AND_TIME;
+    bAcknowledged       : BOOL;
+    tAcknowledgedTime   : DATE_AND_TIME;
+    sAcknowledgedBy     : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

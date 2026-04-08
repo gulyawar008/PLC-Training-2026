@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_SafetySensor" Id="{678dc81f-a007-42a8-ac2d-0f3b552b50cd}">
+    <Declaration><![CDATA[INTERFACE  I_SafetySensor
+]]></Declaration>
+    <Method Name="GetReading" Id="{4d65b50c-ccc5-47c5-8810-4fe1b96863d1}">
+      <Declaration><![CDATA[METHOD GetReading : REAL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetStatus" Id="{4920bd2d-acc5-464f-a899-09a05346a135}">
+      <Declaration><![CDATA[METHOD GetStatus : E_SensorStatus
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsAlarm" Id="{1abb20df-3b7e-4c28-9f73-85b7ba3f3927}">
+      <Declaration><![CDATA[METHOD IsAlarm : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsFault" Id="{ba65a10d-8c39-45da-b613-5b7e21623715}">
+      <Declaration><![CDATA[METHOD IsFault : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Reset" Id="{2fab7bce-7945-4f1c-ae85-14036ac679be}">
+      <Declaration><![CDATA[METHOD Reset 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

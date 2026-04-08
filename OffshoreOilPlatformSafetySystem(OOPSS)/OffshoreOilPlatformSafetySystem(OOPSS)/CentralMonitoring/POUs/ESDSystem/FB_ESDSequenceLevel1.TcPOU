@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_ESDSequenceLevel1" Id="{95becb61-7f13-4e19-b7ba-d1bba626edd4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ESDSequenceLevel1
+VAR
+    _nCurrentStep   : INT := 0;
+    _bActive        : BOOL := FALSE;
+    _bComplete      : BOOL := FALSE;
+    _bFailed        : BOOL := FALSE;
+    _tStepTimer     : TON;
+    _aSteps         : ARRAY[1..5] OF ST_ESDStep;
+    _bInitDone      : BOOL := FALSE;
+END_VAR
+VAR_INPUT
+    eTargetZone     : E_ZoneId;
+    bExecute        : BOOL := FALSE;
+    bAbort          : BOOL := FALSE;
+END_VAR
+VAR_OUTPUT
+    bActive         : BOOL;
+    bComplete       : BOOL;
+    bFailed         : BOOL;
+    nCurrentStep    : INT;
+    sCurrentDesc    : STRING;
+    rProgressPct    : REAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// FB Body
+// ─────────────────────────────────────
+// Init step descriptions once
+// ─────────────────────────────────────
+IF NOT _bInitDone THEN
+    _aSteps[1].sDescription := 'Close zone isolation valves';
+    _aSteps[1].tTimeout     := GVL_SafetyLimits.c_tESD_VALVE_TIMEOUT;
+
+    _aSteps[2].sDescription := 'Stop zone equipment';
+    _aSteps[2].tTimeout     := GVL_SafetyLimits.c_tESD_STEP_TIMEOUT;
+
+    _aSteps[3].sDescription := 'Open pressure relief valve';
+    _aSteps[3].tTimeout     := GVL_SafetyLimits.c_tESD_VALVE_TIMEOUT;
+
+    _aSteps[4].sDescription := 'Confirm pressure dropping';
+    _aSteps[4].tTimeout     := GVL_SafetyLimits.c_tESD_STEP_TIMEOUT;
+
+    _aSteps[5].sDescription := 'Zone isolation confirmed';
+    _aSteps[5].tTimeout     := GVL_SafetyLimits.c_tESD_CONFIRM_DELAY;
+
+    _bInitDone := TRUE;
+END_IF
+
+// ─────────────────────────────────────
+// Abort resets everything
+// ─────────────────────────────────────
+// FB_ESDSequenceLevel1 body — bAbort section
+IF bAbort THEN
+    _nCurrentStep   := 0;
+    _bActive        := FALSE;
+    _bComplete      := FALSE;
+    _bFailed        := FALSE;
+    _tStepTimer(IN := FALSE);   // reset timer
+    _tStepTimer();              // call once to process reset
+
+    // reset all step complete flags
+    _aSteps[1].bComplete := FALSE;
+    _aSteps[2].bComplete := FALSE;
+    _aSteps[3].bComplete := FALSE;
+    _aSteps[4].bComplete := FALSE;
+    _aSteps[5].bComplete := FALSE;
+
+    // reset outputs
+    bActive      := FALSE;
+    bComplete    := FALSE;
+    bFailed      := FALSE;
+    nCurrentStep := 0;
+    sCurrentDesc := 'Aborted';
+    rProgressPct := 0.0;
+    RETURN;
+END_IF
+
+// ─────────────────────────────────────
+// Start sequence on rising bExecute
+// ─────────────────────────────────────
+IF bExecute AND NOT _bActive AND NOT _bComplete THEN
+    _nCurrentStep := 1;
+    _bActive      := TRUE;
+    _bFailed      := FALSE;
+END_IF
+
+// ─────────────────────────────────────
+// Run sequence
+// ─────────────────────────────────────
+IF _bActive AND _nCurrentStep >= 1 AND _nCurrentStep <= 5 THEN
+
+    // Start step timer
+    _tStepTimer(
+        IN  := TRUE,
+        PT  := _aSteps[_nCurrentStep].tTimeout
+    );
+
+    sCurrentDesc := _aSteps[_nCurrentStep].sDescription;
+
+    // Simulate step completion after timeout
+    // Real hardware: replace with actual feedback signal
+    IF _tStepTimer.Q THEN
+        _aSteps[_nCurrentStep].bComplete := TRUE;
+        _tStepTimer(IN := FALSE);   // reset timer
+
+        IF _nCurrentStep < 5 THEN
+            _nCurrentStep := _nCurrentStep + 1;
+        ELSE
+            // All steps done
+            _bComplete    := TRUE;
+            _bActive      := FALSE;
+            _nCurrentStep := 5;
+        END_IF
+    END_IF
+END_IF
+
+// ─────────────────────────────────────
+// Update outputs
+// ─────────────────────────────────────
+bActive      := _bActive;
+bComplete    := _bComplete;
+bFailed      := _bFailed;
+nCurrentStep := _nCurrentStep;
+rProgressPct := INT_TO_REAL(_nCurrentStep - 1) / 5.0 * 100.0;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ESDSequenceLevel1">
+      <LineId Id="39" Count="25" />
+      <LineId Id="179" Count="23" />
+      <LineId Id="75" Count="47" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

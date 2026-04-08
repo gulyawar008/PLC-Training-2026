@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_SensorType" Id="{256011d2-3523-4e54-8702-f1774865768d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_SensorType :
+(
+	  UNKNOWN     := 0,
+    GAS         := 1,
+    PRESSURE    := 2,
+    TEMP        := 3,
+    H2S         := 4,
+    SMOKE       := 5
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

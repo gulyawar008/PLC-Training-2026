@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_ADSZoneReader" Id="{b2a77ce2-75ec-4632-afa9-e3ed9b2186de}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ADSZoneReader
+VAR
+    _fbGetHandle    : ADSRDWRTEX;
+    _fbRead         : ADSREAD;
+    _hHandle        : UDINT  := 0;
+    _bHandleOk      : BOOL   := FALSE;
+    _stZoneData     : ST_ZoneData;
+    _bError         : BOOL   := FALSE;
+    _nErrorId       : UDINT  := 0;
+    _bCommOk        : BOOL   := FALSE;
+    _sLog           : STRING := '';
+    _tonReadCycle   : TON;
+    _eState         : E_ADSReaderState := E_ADSReaderState.IDLE;
+END_VAR
+VAR_INPUT
+    sNetId          : STRING;
+    nPort           : UINT;
+    sSymbolName     : STRING;
+    bEnable         : BOOL   := TRUE;
+    bResetError     : BOOL   := FALSE;
+END_VAR
+VAR_OUTPUT
+    stZoneData      : ST_ZoneData;
+    bCommOk         : BOOL;
+    bError          : BOOL;
+    nErrorId        : UDINT;
+    sLog            : STRING;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// ─────────────────────────────────────
+// Call FBs at top every cycle
+// so they see signal changes immediately
+// ─────────────────────────────────────
+_tonReadCycle();
+_fbGetHandle();
+_fbRead();
+
+// ─────────────────────────────────────
+// Disabled — reset and stop
+// ─────────────────────────────────────
+IF NOT bEnable THEN
+    _bHandleOk  := FALSE;
+    _hHandle    := 0;
+    _bCommOk    := FALSE;
+    _eState     := E_ADSReaderState.IDLE;
+    bCommOk     := FALSE;
+    RETURN;
+END_IF
+
+// ─────────────────────────────────────
+// STATE MACHINE
+// ─────────────────────────────────────
+CASE _eState OF
+
+    // ─────────────────────────────────
+    E_ADSReaderState.IDLE:
+    // ─────────────────────────────────
+        _bHandleOk := FALSE;
+
+        // reset both FBs — triggers low
+        _fbGetHandle(WRTRD := FALSE);
+        _fbRead(READ := FALSE);
+
+        // move to get handle immediately
+        _eState := E_ADSReaderState.GET_HANDLE;
+        _sLog   := 'Acquiring handle...';
+
+    // ─────────────────────────────────
+    E_ADSReaderState.GET_HANDLE:
+    // ─────────────────────────────────
+        _fbGetHandle(
+            NETID    := sNetId,
+            PORT     := nPort,
+            IDXGRP   := 16#F003,
+            IDXOFFS  := 0,
+            WRITELEN := INT_TO_UDINT(LEN(sSymbolName)),
+            READLEN  := SIZEOF(_hHandle),
+            SRCADDR  := ADR(sSymbolName),
+            DESTADDR := ADR(_hHandle),
+            WRTRD    := TRUE,
+            TMOUT    := GVL_SafetyLimits.c_tADS_TIMEOUT
+        );
+
+        IF NOT _fbGetHandle.BUSY THEN
+            IF NOT _fbGetHandle.ERR THEN
+                // handle acquired successfully
+                _bHandleOk := TRUE;
+                _bError    := FALSE;
+
+                // close trigger so FB resets cleanly
+                _fbGetHandle(WRTRD := FALSE);
+
+                _eState := E_ADSReaderState.WAIT_TIMER;
+                _sLog   := CONCAT('Handle OK: ', sSymbolName);
+            ELSE
+                // handle acquisition failed
+                _bError   := TRUE;
+                _nErrorId := _fbGetHandle.ERRID;
+                _bCommOk  := FALSE;
+                _eState   := E_ADSReaderState.ERROR;
+                _sLog     := CONCAT('Handle FAILED errId: ',
+                             UDINT_TO_STRING(_fbGetHandle.ERRID));
+            END_IF
+        END_IF
+
+    // ─────────────────────────────────
+    E_ADSReaderState.WAIT_TIMER:
+    // ─────────────────────────────────
+        // wait 500ms between reads
+        // prevents flooding ADS router
+        _tonReadCycle(
+            IN := TRUE,
+            PT := GVL_SafetyLimits.c_tADS_WATCHDOG
+        );
+
+        IF _tonReadCycle.Q THEN
+            // reset timer for next cycle
+            _tonReadCycle(IN := FALSE);
+            _eState := E_ADSReaderState.TRIGGER_READ;
+        END_IF
+
+    // ─────────────────────────────────
+    E_ADSReaderState.TRIGGER_READ:
+    // ─────────────────────────────────
+        // trigger the read
+        _fbRead(
+            NETID    := sNetId,
+            PORT     := nPort,
+            IDXGRP   := 16#F005,
+            IDXOFFS  := _hHandle,
+            LEN      := SIZEOF(_stZoneData),
+            DESTADDR := ADR(_stZoneData),
+            READ     := TRUE,
+            TMOUT    := GVL_SafetyLimits.c_tADS_TIMEOUT
+        );
+
+        // move immediately to wait state
+        // fbRead called at top handles the rest
+        _eState := E_ADSReaderState.WAIT_READ_DONE;
+
+    // ─────────────────────────────────
+    E_ADSReaderState.WAIT_READ_DONE:
+    // ─────────────────────────────────
+        // fbRead() already called at top of body
+        // just check result here
+        IF NOT _fbRead.BUSY THEN
+            IF NOT _fbRead.ERR THEN
+                // read succeeded
+                // copy to output
+                _stZoneData := _stZoneData;
+                stZoneData  := _stZoneData;
+                _bCommOk    := TRUE;
+                _bError     := FALSE;
+                _sLog       := CONCAT('Zone data OK port: ',
+                               UINT_TO_STRING(nPort));
+
+                // reset read trigger
+                _fbRead(READ := FALSE);
+
+                // go back to wait timer for next read
+                _eState := E_ADSReaderState.WAIT_TIMER;
+
+            ELSE
+                // read failed
+                _bError          := TRUE;
+                _nErrorId        := _fbRead.ERRID;
+                _bCommOk         := FALSE;
+                _bHandleOk       := FALSE;
+                _hHandle         := 0;
+                _sLog            := CONCAT('Read FAILED errId: ',
+                                   UDINT_TO_STRING(_fbRead.ERRID));
+
+                // reset read trigger
+                _fbRead(READ := FALSE);
+
+                // go back to IDLE to re-acquire handle
+                _eState := E_ADSReaderState.IDLE;
+            END_IF
+        END_IF
+
+    // ─────────────────────────────────
+    E_ADSReaderState.ERROR:
+    // ─────────────────────────────────
+        _bCommOk := FALSE;
+
+        IF bResetError THEN
+            _bError   := FALSE;
+            _nErrorId := 0;
+            _eState   := E_ADSReaderState.IDLE;
+            _sLog     := 'Error reset — retrying...';
+        END_IF
+
+END_CASE
+
+// ─────────────────────────────────────
+// Update all outputs every cycle
+// ─────────────────────────────────────
+bCommOk  := _bCommOk;
+bError   := _bError;
+nErrorId := _nErrorId;
+sLog     := _sLog;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ADSZoneReader">
+      <LineId Id="152" Count="170" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

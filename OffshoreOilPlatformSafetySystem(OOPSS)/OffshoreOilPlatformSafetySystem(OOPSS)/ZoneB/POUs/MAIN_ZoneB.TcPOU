@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN_ZoneB" Id="{20f23482-3553-49de-a6fc-43cd5ba5bd4e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN_ZoneB
+VAR
+    nADSTestValue   : INT := 1;
+
+    // Gas x6
+    fbGas1  : FB_GasSensor;    fbGas2  : FB_GasSensor;
+    fbGas3  : FB_GasSensor;    fbGas4  : FB_GasSensor;
+    fbGas5  : FB_GasSensor;    fbGas6  : FB_GasSensor;
+
+    // Pressure x6
+    fbPress1 : FB_PressureSensor;    fbPress2 : FB_PressureSensor;
+    fbPress3 : FB_PressureSensor;    fbPress4 : FB_PressureSensor;
+    fbPress5 : FB_PressureSensor;    fbPress6 : FB_PressureSensor;
+
+    // Temp x8
+    fbTemp1 : FB_TempSensor;    fbTemp2 : FB_TempSensor;
+    fbTemp3 : FB_TempSensor;    fbTemp4 : FB_TempSensor;
+    fbTemp5 : FB_TempSensor;    fbTemp6 : FB_TempSensor;
+    fbTemp7 : FB_TempSensor;    fbTemp8 : FB_TempSensor;
+
+    // H2S x2
+    fbH2S1  : FB_H2SSensor;    fbH2S2  : FB_H2SSensor;
+
+    // Arrays for UpdateSensorStructs
+    aGasSensors     : ARRAY[1..6] OF FB_GasSensor;
+    aPressureSensors: ARRAY[1..6] OF FB_PressureSensor;
+    aTempSensors    : ARRAY[1..8] OF FB_TempSensor;
+    aH2SSensors     : ARRAY[1..2] OF FB_H2SSensor;  // sized for method sig
+
+    fbZoneB     : FB_ZoneAggregator;
+    bInitDone   : BOOL := FALSE;
+    stZoneBData : ST_ZoneData;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT bInitDone THEN
+    fbZoneB.eZoneId := E_ZoneId.ZONE_B_PROCESS;
+
+   // Gas x6 — pass E_SensorType.GAS
+    fbZoneB.RegisterSensor(fbGas1, E_SensorType.GAS);
+    fbZoneB.RegisterSensor(fbGas2, E_SensorType.GAS);
+    fbZoneB.RegisterSensor(fbGas3, E_SensorType.GAS);
+    fbZoneB.RegisterSensor(fbGas4, E_SensorType.GAS);
+    fbZoneB.RegisterSensor(fbGas5, E_SensorType.GAS);
+    fbZoneB.RegisterSensor(fbGas6, E_SensorType.GAS);
+   
+
+    // Pressure x6
+    fbZoneB.RegisterSensor(fbPress1, E_SensorType.PRESSURE);
+    fbZoneB.RegisterSensor(fbPress2, E_SensorType.PRESSURE);
+    fbZoneB.RegisterSensor(fbPress3, E_SensorType.PRESSURE);
+    fbZoneB.RegisterSensor(fbPress4, E_SensorType.PRESSURE);
+    fbZoneB.RegisterSensor(fbPress5, E_SensorType.PRESSURE);
+    fbZoneB.RegisterSensor(fbPress6, E_SensorType.PRESSURE);
+
+    // Temp x8
+    fbZoneB.RegisterSensor(fbTemp1, E_SensorType.TEMP);
+    fbZoneB.RegisterSensor(fbTemp2, E_SensorType.TEMP);
+    fbZoneB.RegisterSensor(fbTemp3, E_SensorType.TEMP);
+    fbZoneB.RegisterSensor(fbTemp4, E_SensorType.TEMP);
+    fbZoneB.RegisterSensor(fbTemp5, E_SensorType.TEMP);
+    fbZoneB.RegisterSensor(fbTemp6, E_SensorType.TEMP);
+    fbZoneB.RegisterSensor(fbTemp7, E_SensorType.TEMP);
+    fbZoneB.RegisterSensor(fbTemp8, E_SensorType.TEMP);
+
+    // H2S x2 — Zone B has 2 not 4
+    fbZoneB.RegisterH2SSensor(fbH2S1);
+    fbZoneB.RegisterH2SSensor(fbH2S2);
+
+    // Arrays — only fill what exists
+    aGasSensors[1] := fbGas1;   aGasSensors[2] := fbGas2;
+    aGasSensors[3] := fbGas3;   aGasSensors[4] := fbGas4;
+    aGasSensors[5] := fbGas5;   aGasSensors[6] := fbGas6;
+
+    aPressureSensors[1] := fbPress1;    aPressureSensors[2] := fbPress2;
+    aPressureSensors[3] := fbPress3;    aPressureSensors[4] := fbPress4;
+    aPressureSensors[5] := fbPress5;    aPressureSensors[6] := fbPress6;
+
+    aTempSensors[1] := fbTemp1;    aTempSensors[2] := fbTemp2;
+    aTempSensors[3] := fbTemp3;    aTempSensors[4] := fbTemp4;
+    aTempSensors[5] := fbTemp5;    aTempSensors[6] := fbTemp6;
+    aTempSensors[7] := fbTemp7;    aTempSensors[8] := fbTemp8;
+
+    aH2SSensors[1] := fbH2S1;
+    aH2SSensors[2] := fbH2S2;
+    // [3] and [4] left empty — count passed as 2
+
+    bInitDone := TRUE;
+END_IF
+
+// CYCLIC
+fbGas1();  fbGas2();  fbGas3();
+fbGas4();  fbGas5();  fbGas6();
+
+fbPress1(); fbPress2(); fbPress3();
+fbPress4(); fbPress5(); fbPress6();
+
+fbTemp1(); fbTemp2(); fbTemp3(); fbTemp4();
+fbTemp5(); fbTemp6(); fbTemp7(); fbTemp8();
+
+fbH2S1();  fbH2S2();
+
+fbZoneB();
+fbZoneB.UpdateSensors();
+
+
+stZoneBData := fbZoneB.ZoneData;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN_ZoneB">
+      <LineId Id="41" Count="2" />
+      <LineId Id="139" Count="7" />
+      <LineId Id="148" Count="16" />
+      <LineId Id="55" Count="40" />
+      <LineId Id="105" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

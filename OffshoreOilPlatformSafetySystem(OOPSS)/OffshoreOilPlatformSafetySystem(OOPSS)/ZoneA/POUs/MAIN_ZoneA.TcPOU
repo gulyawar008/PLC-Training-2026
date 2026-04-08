@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="MAIN_ZoneA" Id="{5f897a2b-b84c-45d5-abf1-84f876cd5a84}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN_ZoneA
+VAR
+    nADSTestValue   : INT := 1;
+ fbZoneA     : FB_ZoneAggregator;
+
+    fbGas1      : FB_GasSensor;
+    fbGas2      : FB_GasSensor;
+    fbGas3      : FB_GasSensor;
+    fbGas4      : FB_GasSensor;
+    fbGas5      : FB_GasSensor;
+    fbGas6      : FB_GasSensor;
+    fbGas7      : FB_GasSensor;
+    fbGas8      : FB_GasSensor;
+
+    fbPress1    : FB_PressureSensor;
+    fbPress2    : FB_PressureSensor;
+    fbPress3    : FB_PressureSensor;
+    fbPress4    : FB_PressureSensor;
+    fbPress5    : FB_PressureSensor;
+    fbPress6    : FB_PressureSensor;
+
+    fbTemp1     : FB_TempSensor;
+    fbTemp2     : FB_TempSensor;
+    fbTemp3     : FB_TempSensor;
+    fbTemp4     : FB_TempSensor;
+    fbTemp5     : FB_TempSensor;
+    fbTemp6     : FB_TempSensor;
+    fbTemp7     : FB_TempSensor;
+    fbTemp8     : FB_TempSensor;
+
+    fbH2S1      : FB_H2SSensor;
+    fbH2S2      : FB_H2SSensor;
+    fbH2S3      : FB_H2SSensor;
+    fbH2S4      : FB_H2SSensor;
+
+    stZoneAData : ST_ZoneData;
+    bInitDone   : BOOL := FALSE;
+   
+	bCheckGAsAlarm : BOOL;
+	bHasGasAlarm  : BOOL;
+	bIsCriticalAlarmH2S :BOOL;
+      bIsAlarmH2S : BOOL;
+	bIsPressHighHIghAlarm: BOOL;
+	bPressIsAlarm: BOOL;
+	stPressStatus: E_SensorStatus;
+	nPressAlarmCount: INT;
+	bTempAlarm: BOOL;
+	bIsGasFault: BOOL;
+	eGasStatus :E_SensorStatus;
+	
+	bIsReset : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// ─────────────────────────────────────
+// INIT — runs once only
+// ─────────────────────────────────────
+IF NOT bInitDone THEN
+    fbZoneA.eZoneId := E_ZoneId.ZONE_A_DRILLING;
+
+    // Register all sensors via pointer
+    // ✅ pointer based — always reads live values
+    fbZoneA.RegisterSensor(fbGas1,   E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas2,   E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas3,   E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas4,   E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas5,   E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas6,   E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas7,   E_SensorType.GAS);
+    fbZoneA.RegisterSensor(fbGas8,   E_SensorType.GAS);
+
+    fbZoneA.RegisterSensor(fbPress1, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress2, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress3, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress4, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress5, E_SensorType.PRESSURE);
+    fbZoneA.RegisterSensor(fbPress6, E_SensorType.PRESSURE);
+
+    fbZoneA.RegisterSensor(fbTemp1,  E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp2,  E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp3,  E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp4,  E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp5,  E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp6,  E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp7,  E_SensorType.TEMP);
+    fbZoneA.RegisterSensor(fbTemp8,  E_SensorType.TEMP);
+
+    fbZoneA.RegisterH2SSensor(fbH2S1);
+    fbZoneA.RegisterH2SSensor(fbH2S2);
+    fbZoneA.RegisterH2SSensor(fbH2S3);
+    fbZoneA.RegisterH2SSensor(fbH2S4);
+
+    bInitDone := TRUE;
+END_IF
+
+// ─────────────────────────────────────
+// CYCLIC — runs every scan
+// ─────────────────────────────────────
+
+// Step 1 — run all sensor FBs first
+fbGas1();   fbGas2();   fbGas3();   fbGas4();
+fbGas5();   fbGas6();   fbGas7();   fbGas8();
+
+fbPress1(); fbPress2(); fbPress3();
+fbPress4(); fbPress5(); fbPress6();
+
+fbTemp1();  fbTemp2();  fbTemp3();  fbTemp4();
+fbTemp5();  fbTemp6();  fbTemp7();  fbTemp8();
+
+fbH2S1();   fbH2S2();   fbH2S3();   fbH2S4();
+
+bCheckGasAlarm := fbGas1.IsAlarm();
+bHasGasAlarm := fbZoneA.HasAlarm;
+fbGas1.bSimFault  := bIsGasFault ;
+eGasStatus := fbGas1.GetStatus() ;
+
+IF bIsReset THEN
+	fbGas1.Reset();
+END_IF
+
+bIsCriticalAlarmH2S := fbH2S1.bCriticalAlarm;
+bIsAlarmH2S := fbH2S1.IsAlarm();
+
+bIsPressHighHIghAlarm := fbPress1.bHighHighAlarm ;
+bPressIsAlarm := fbPress1.IsAlarm() ;
+stPressStatus :=   fbPress1.GetStatus();
+nPressAlarmCount := stZoneAData.nPressureAlarmCount;
+
+bTempAlarm := fbTemp1.IsAlarm();
+
+// Step 2 — run zone aggregator FB body
+fbZoneA();
+
+// Step 3 — update sensor counts via pointer system
+// ✅ ONLY call UpdateSensors
+fbZoneA.UpdateSensors();
+
+
+// Step 4 — expose zone data for Central ADS read
+stZoneAData := fbZoneA.ZoneData;
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN_ZoneA">
+      <LineId Id="251" Count="55" />
+      <LineId Id="375" Count="0" />
+      <LineId Id="377" Count="3" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="390" Count="0" />
+      <LineId Id="393" Count="1" />
+      <LineId Id="381" Count="8" />
+      <LineId Id="376" Count="0" />
+      <LineId Id="307" Count="7" />
+      <LineId Id="317" Count="2" />
+      <LineId Id="372" Count="2" />
+      <LineId Id="371" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

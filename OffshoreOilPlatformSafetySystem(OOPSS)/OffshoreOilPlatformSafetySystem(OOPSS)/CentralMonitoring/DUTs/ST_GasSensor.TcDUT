@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_GasSensor" Id="{113d5d5d-10fd-4067-9ecc-9f11c42f61e2}">
+    <Declaration><![CDATA[TYPE ST_GasSensor :
+STRUCT
+    nId             : INT;              // sensor ID
+    eZone           : E_ZoneId;         // which zone
+    rValuePPM       : REAL;             // reading in PPM
+    rValueLEL       : REAL;             // reading as % LEL
+    eStatus         : E_SensorStatus;   // current status
+    bAlarm          : BOOL;             // alarm active
+    bFault          : BOOL;             // sensor fault
+    bBypassed       : BOOL;             // manually bypassed
+    tLastUpdate     : TIME;             // last reading time
+    sLocation       : STRING;           // physical location
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

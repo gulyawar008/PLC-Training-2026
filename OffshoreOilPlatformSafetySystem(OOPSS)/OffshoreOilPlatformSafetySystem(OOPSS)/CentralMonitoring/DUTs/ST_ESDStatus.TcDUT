@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_ESDStatus" Id="{21fafa7f-c515-4317-ab2b-95426789b8fb}">
+    <Declaration><![CDATA[TYPE ST_ESDStatus :
+STRUCT
+	    bESDActive          : BOOL;
+    eESDLevel           : E_ESDLevel;
+    nCurrentStep        : INT;          // which step executing
+    nTotalSteps         : INT;          // total steps in sequence
+    bStepComplete       : BOOL;         // current step done
+    bSequenceComplete   : BOOL;         // all steps done
+    bSequenceFailed     : BOOL;         // step timed out or failed
+    eInitiatedByZone    : E_ZoneId;     // which zone triggered
+    tESDStartTime       : DATE_AND_TIME;
+    tESDCompleteTime    : DATE_AND_TIME;
+    sCurrentStepDesc    : STRING;
+    sStatusMessage      : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_ESDStep" Id="{f837d3a1-cead-4e0a-92d3-c364e601357f}">
+    <Declaration><![CDATA[TYPE ST_ESDStep :
+STRUCT
+	sDescription    : STRING;       // what this step does
+    tTimeout        : TIME;         // max time allowed
+    bComplete       : BOOL;         // step confirmed done
+    bFailed         : BOOL;         // step timed out
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

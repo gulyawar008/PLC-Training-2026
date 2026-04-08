@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_SensorSlot" Id="{f6239027-780c-46e2-8e71-0ab0d39aafe8}">
+    <Declaration><![CDATA[TYPE ST_SensorSlot :
+STRUCT
+    ipSensor            : I_SafetySensor;           // ✅ for interface calls
+    bOccupied           : BOOL;
+    bIsH2SCritical      : BOOL;
+    bIsSmokeCritical    : BOOL;
+    eSensorType         : E_SensorType;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

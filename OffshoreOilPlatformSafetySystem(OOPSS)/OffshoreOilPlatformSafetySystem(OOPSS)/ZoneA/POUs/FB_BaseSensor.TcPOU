@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_BaseSensor" Id="{bf51bf99-13ad-4af1-a9b6-08cd960a6718}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT FB_BaseSensor IMPLEMENTS I_SafetySensor
+VAR
+    _rValue         : REAL ;
+    _eStatus        : E_SensorStatus := E_SensorStatus.SENSOR_OK;
+    _bAlarm         : BOOL := FALSE;
+    _bFault         : BOOL := FALSE;
+    _sLocation      : STRING := '';
+END_VAR
+VAR_INPUT
+    rRawValue       : REAL := 0.0;      // simulated input — HMI slider
+    bSimFault       : BOOL := FALSE;    // simulate sensor fault
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetReading" Id="{9881fa5a-63db-402a-9814-5efafb8c4af0}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetReading : REAL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetReading := _rValue;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetStatus" Id="{3010f4cc-26b6-4326-82f1-02ce4388e158}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD GetStatus : E_SensorStatus
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetStatus := _eStatus;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsAlarm" Id="{33af6297-1961-48e4-b43d-3b5cd6a0f7d9}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD IsAlarm : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsAlarm := _bAlarm;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsFault" Id="{6b7aad0a-f611-473e-9766-0947852a131d}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD IsFault : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsFault := _bFault;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{6eba2955-2f4c-4ed5-89e3-2395f1fa5fc9}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Reset
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bAlarm  := FALSE;
+_bFault  := FALSE;
+_eStatus := E_SensorStatus.SENSOR_OK;
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Validate" Id="{4d3cb52c-6b68-423d-82a2-65f956e97b57}">
+      <Declaration><![CDATA[METHOD ABSTRACT Validate 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_BaseSensor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BaseSensor.GetReading">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BaseSensor.GetStatus">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BaseSensor.IsAlarm">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BaseSensor.IsFault">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BaseSensor.Reset">
+      <LineId Id="5" Count="1" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BaseSensor.Validate">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

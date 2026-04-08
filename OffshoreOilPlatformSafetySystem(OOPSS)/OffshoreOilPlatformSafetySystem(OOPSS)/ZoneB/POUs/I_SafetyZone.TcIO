@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_SafetyZone" Id="{c24b84aa-8132-4314-8786-2ededb562566}">
+    <Declaration><![CDATA[INTERFACE I_SafetyZone
+]]></Declaration>
+    <Method Name="CheckSafety" Id="{3f539663-ce8d-4adc-b934-1f882603586e}">
+      <Declaration><![CDATA[METHOD CheckSafety   : E_ZoneState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="CheckZoneData" Id="{47a3f275-1201-490f-b0fb-71d5a771462a}">
+      <Declaration><![CDATA[METHOD CheckZoneData : ST_ZoneData
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetZoneState" Id="{21eb46c7-5ae8-4ffc-b570-8c3c90eae102}">
+      <Declaration><![CDATA[METHOD GetZoneState : E_ZoneState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Reset" Id="{3aad5c64-c766-4891-833d-1e25cfc08fdd}">
+      <Declaration><![CDATA[METHOD Reset : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="TriggerESD" Id="{37bcd8a3-a6d7-49b1-bd7e-06c8af338dcc}">
+      <Declaration><![CDATA[METHOD TriggerESD : BOOL
+VAR_INPUT
+    eLevel : E_ESDLevel;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

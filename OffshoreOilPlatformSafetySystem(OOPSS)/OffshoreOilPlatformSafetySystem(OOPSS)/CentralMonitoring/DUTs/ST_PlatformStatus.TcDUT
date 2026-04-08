@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_PlatformStatus" Id="{352fad38-cad3-4c68-a523-568803504696}">
+    <Declaration><![CDATA[TYPE ST_PlatformStatus :
+STRUCT
+	    ePlatformState      : E_PlatformState;
+    eZoneAState         : E_ZoneState;
+    eZoneBState         : E_ZoneState;
+    eZoneCState         : E_ZoneState;
+
+    // Active alarm summary
+    nTotalActiveAlarms  : INT;
+    eHighestAlarmLevel  : E_AlarmLevel;
+    bESDActive          : BOOL;
+    eESDLevel           : E_ESDLevel;
+
+    // Worker status
+    stMusterStatus      : ST_WorkerMuster;
+
+    // System health
+    bADSZoneAOk         : BOOL;
+    bADSZoneBOk         : BOOL;
+    bADSZoneCOk         : BOOL;
+    bSystemFault        : BOOL;
+
+    // Timestamps
+    tLastStateChange    : DATE_AND_TIME;
+    tSystemStart        : DATE_AND_TIME;
+
+    // Log
+    sStatusMessage      : STRING;
+    sLastAlarmMessage   : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

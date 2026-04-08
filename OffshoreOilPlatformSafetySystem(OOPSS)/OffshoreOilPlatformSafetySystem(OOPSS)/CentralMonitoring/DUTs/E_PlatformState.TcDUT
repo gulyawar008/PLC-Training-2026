@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_PlatformState" Id="{e7946c41-d856-43fb-9b8b-0c2cc2b8e2c7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_PlatformState :
+(
+	 NORMAL      := 0,   // all zones safe
+    ALERT       := 1,   // single sensor elevated
+    WARNING     := 2,   // two sensors confirmed
+    EMERGENCY   := 3,   // full ESD activating
+    EVACUATION  := 4,   // workers leaving
+    SAFE_STATE  := 5,   // fully shut down
+    FAULT       := 6    // system self fault
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

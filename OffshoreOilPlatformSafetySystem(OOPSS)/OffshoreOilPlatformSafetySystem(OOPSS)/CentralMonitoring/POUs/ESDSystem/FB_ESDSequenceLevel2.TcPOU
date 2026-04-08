@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_ESDSequenceLevel2" Id="{4042f5d3-c14b-41da-8aa7-f754132bc4e9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ESDSequenceLevel2
+VAR
+    _nCurrentStep   : INT := 0;
+    _bActive        : BOOL := FALSE;
+    _bComplete      : BOOL := FALSE;
+    _bFailed        : BOOL := FALSE;
+    _tStepTimer     : TON;
+    _aSteps         : ARRAY[1..7] OF ST_ESDStep;
+    _bInitDone      : BOOL := FALSE;
+     
+END_VAR
+VAR_INPUT
+    bExecute        : BOOL := FALSE;
+    bAbort          : BOOL := FALSE;
+END_VAR
+VAR_OUTPUT
+    bActive         : BOOL;
+    bComplete  : BOOL;
+    bFailed         : BOOL;
+    nCurrentStep    : INT;
+    sCurrentDesc    : STRING;
+    rProgressPct    : REAL;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// FB Body
+IF NOT _bInitDone THEN
+    _aSteps[1].sDescription := 'Close all wellheads';
+    _aSteps[1].tTimeout     := GVL_SafetyLimits.c_tESD_VALVE_TIMEOUT;
+
+    _aSteps[2].sDescription := 'Stop all production equipment';
+    _aSteps[2].tTimeout     := GVL_SafetyLimits.c_tESD_STEP_TIMEOUT;
+
+    _aSteps[3].sDescription := 'Activate flare system';
+    _aSteps[3].tTimeout     := GVL_SafetyLimits.c_tESD_STEP_TIMEOUT;
+
+    _aSteps[4].sDescription := 'Depressurise all vessels';
+    _aSteps[4].tTimeout     := GVL_SafetyLimits.c_tESD_STEP_TIMEOUT;
+
+    _aSteps[5].sDescription := 'Isolate export lines';
+    _aSteps[5].tTimeout     := GVL_SafetyLimits.c_tESD_VALVE_TIMEOUT;
+
+    _aSteps[6].sDescription := 'Confirm safe pressures across all zones';
+    _aSteps[6].tTimeout     := GVL_SafetyLimits.c_tESD_STEP_TIMEOUT;
+
+    _aSteps[7].sDescription := 'Direct all workers to muster stations';
+    _aSteps[7].tTimeout     := GVL_SafetyLimits.c_tESD_CONFIRM_DELAY;
+
+    _bInitDone := TRUE;
+END_IF
+
+// FB_ESDSequenceLevel1 body — bAbort section
+IF bAbort THEN
+    _nCurrentStep   := 0;
+    _bActive        := FALSE;
+    _bComplete      := FALSE;
+    _bFailed        := FALSE;
+    _tStepTimer(IN := FALSE);   // reset timer
+    _tStepTimer();              // call once to process reset
+
+    // reset all step complete flags
+    _aSteps[1].bComplete := FALSE;
+    _aSteps[2].bComplete := FALSE;
+    _aSteps[3].bComplete := FALSE;
+    _aSteps[4].bComplete := FALSE;
+    _aSteps[5].bComplete := FALSE;
+	  _aSteps[6].bComplete := FALSE;
+	    _aSteps[7].bComplete := FALSE;
+
+    // reset outputs
+    bActive      := FALSE;
+    bComplete    := FALSE;
+    bFailed      := FALSE;
+    nCurrentStep := 0;
+    sCurrentDesc := 'Aborted';
+    rProgressPct := 0.0;
+    RETURN;
+END_IF
+
+IF bExecute AND NOT _bActive AND NOT _bComplete THEN
+    _nCurrentStep := 1;
+    _bActive      := TRUE;
+    _bFailed      := FALSE;
+END_IF
+
+IF _bActive AND _nCurrentStep >= 1 AND _nCurrentStep <= 7 THEN
+
+    _tStepTimer(
+        IN := TRUE,
+        PT := _aSteps[_nCurrentStep].tTimeout
+    );
+
+    sCurrentDesc := _aSteps[_nCurrentStep].sDescription;
+
+    IF _tStepTimer.Q THEN
+        _aSteps[_nCurrentStep].bComplete := TRUE;
+        _tStepTimer(IN := FALSE);
+
+        IF _nCurrentStep < 7 THEN
+            _nCurrentStep := _nCurrentStep + 1;
+        ELSE
+            _bComplete    := TRUE;
+            _bActive      := FALSE;
+            _nCurrentStep := 7;
+        END_IF
+    END_IF
+END_IF
+
+bActive      := _bActive;
+bComplete    := _bComplete;
+bFailed      := _bFailed;
+nCurrentStep := _nCurrentStep;
+rProgressPct := INT_TO_REAL(_nCurrentStep - 1) / 7.0 * 100.0;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ESDSequenceLevel2">
+      <LineId Id="40" Count="26" />
+      <LineId Id="172" Count="14" />
+      <LineId Id="196" Count="1" />
+      <LineId Id="187" Count="8" />
+      <LineId Id="77" Count="34" />
+      <LineId Id="38" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

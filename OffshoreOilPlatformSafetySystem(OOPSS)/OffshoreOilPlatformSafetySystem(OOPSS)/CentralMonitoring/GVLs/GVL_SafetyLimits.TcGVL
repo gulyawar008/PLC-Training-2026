@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <GVL Name="GVL_SafetyLimits" Id="{3de48a50-98fe-4f40-abd1-c6a6fbb37437}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+
+    // ─────────────────────────────────────
+    // GAS SENSOR THRESHOLDS
+    // ─────────────────────────────────────
+    // LEL = Lower Explosive Limit
+    // Methane LEL = 5% volume in air = 50,000 PPM
+
+    c_rGAS_ALERT_LEL        : REAL := 10.0;     // 10% LEL — investigate
+    c_rGAS_WARNING_LEL      : REAL := 25.0;     // 25% LEL — auto action
+    c_rGAS_EMERGENCY_LEL    : REAL := 50.0;     // 50% LEL — full ESD
+    c_rGAS_SENSOR_MAX       : REAL := 100.0;    // 100% LEL — sensor max
+    c_rGAS_SENSOR_MIN       : REAL := 0.0;      // 0% LEL — sensor min
+
+    c_rGAS_ALERT_PPM        : REAL := 500.0;    // PPM equivalent alert
+    c_rGAS_WARNING_PPM      : REAL := 1250.0;   // PPM equivalent warning
+    c_rGAS_EMERGENCY_PPM    : REAL := 2500.0;   // PPM equivalent emergency
+
+    // ─────────────────────────────────────
+    // H2S THRESHOLDS (parts per million)
+    // ─────────────────────────────────────
+    // H2S — colorless odorless — deadly at 100ppm
+
+    c_rH2S_ALERT_PPM        : REAL := 1.0;      // 1 PPM — smell threshold
+    c_rH2S_WARNING_PPM      : REAL := 10.0;     // 10 PPM — TWA limit
+    c_rH2S_EMERGENCY_PPM    : REAL := 50.0;     // 50 PPM — IDLH threshold
+    c_rH2S_CRITICAL_PPM     : REAL := 100.0;    // 100 PPM — immediate evacuation
+    c_rH2S_SENSOR_MAX       : REAL := 500.0;    // sensor measurement max
+    c_rH2S_SENSOR_MIN       : REAL := 0.0;      // sensor measurement min
+
+    // ─────────────────────────────────────
+    // PRESSURE THRESHOLDS (bar)
+    // ─────────────────────────────────────
+
+    c_rPRESS_NORMAL_MAX     : REAL := 50.0;     // normal operating max
+    c_rPRESS_ALERT          : REAL := 55.0;     // alert — investigate
+    c_rPRESS_WARNING        : REAL := 60.0;     // warning — relief opens
+    c_rPRESS_EMERGENCY      : REAL := 65.0;     // emergency — ESD level 1
+    c_rPRESS_CRITICAL       : REAL := 70.0;     // critical — ESD level 2
+    c_rPRESS_SENSOR_MAX     : REAL := 150.0;    // sensor measurement max
+    c_rPRESS_SENSOR_MIN     : REAL := 0.0;      // sensor measurement min
+    c_rPRESS_RATE_WARNING   : REAL := 2.0;      // bar/min rate of rise warning
+
+    // ─────────────────────────────────────
+    // TEMPERATURE THRESHOLDS (Celsius)
+    // ─────────────────────────────────────
+
+    c_rTEMP_NORMAL_MAX      : REAL := 75.0;     // normal operating max
+    c_rTEMP_ALERT           : REAL := 80.0;     // alert — investigate
+    c_rTEMP_WARNING         : REAL := 90.0;     // warning — action
+    c_rTEMP_EMERGENCY       : REAL := 100.0;    // emergency — ESD
+    c_rTEMP_FIRE            : REAL := 150.0;    // fire detection threshold
+    c_rTEMP_SENSOR_MAX      : REAL := 500.0;    // sensor measurement max
+    c_rTEMP_SENSOR_MIN      : REAL := -50.0;    // sensor measurement min
+    c_rTEMP_RATE_WARNING    : REAL := 5.0;      // C/min rate of rise warning
+
+    // ─────────────────────────────────────
+    // SENSOR VOTING COUNTS
+    // ─────────────────────────────────────
+
+    c_nVOTE_ALERT           : INT := 1;         // sensors needed for ALERT
+    c_nVOTE_WARNING         : INT := 2;         // sensors needed for WARNING
+    c_nVOTE_EMERGENCY       : INT := 3;         // sensors needed for EMERGENCY
+
+    // ─────────────────────────────────────
+    // ESD TIMING CONSTANTS
+    // ─────────────────────────────────────
+
+    c_tESD_STEP_TIMEOUT     : TIME := T#30S;    // max time per ESD step
+    c_tESD_VALVE_TIMEOUT    : TIME := T#10S;    // valve open/close timeout
+    c_tESD_CONFIRM_DELAY    : TIME := T#2S;     // confirmation wait time
+    c_tESD_LEVEL1_MAX       : TIME := T#30S;    // max level 1 completion
+    c_tESD_LEVEL2_MAX       : TIME := T#60S;    // max level 2 completion
+
+    // ─────────────────────────────────────
+    // ALARM MANAGEMENT TIMING
+    // ─────────────────────────────────────
+
+    c_tALARM_CONFIRM_TIME   : TIME := T#3S;     // time before alarm confirmed
+    c_tALARM_CLEAR_DELAY    : TIME := T#5S;     // time before alarm auto clears
+    c_nALARM_LOG_SIZE       : INT := 50;        // alarm history buffer size
+
+    // ─────────────────────────────────────
+    // SENSOR COUNTS PER ZONE
+    // ─────────────────────────────────────
+
+    c_nGAS_SENSORS_A        : INT := 8;         // Zone A gas sensors
+    c_nGAS_SENSORS_B        : INT := 6;         // Zone B gas sensors
+    c_nGAS_SENSORS_C        : INT := 4;         // Zone C gas sensors
+    c_nPRESS_SENSORS_A      : INT := 6;         // Zone A pressure sensors
+    c_nPRESS_SENSORS_B      : INT := 6;         // Zone B pressure sensors
+    c_nTEMP_SENSORS_A       : INT := 8;         // Zone A temp sensors
+    c_nTEMP_SENSORS_B       : INT := 8;         // Zone B temp sensors
+	c_nTEMP_SENSORS_C       : INT := 4;
+    c_nH2S_SENSORS_A        : INT := 4;         // Zone A H2S sensors
+    c_nH2S_SENSORS_B        : INT := 2;         // Zone B H2S sensors
+	c_nSMOKE_DETECTORS_C    : INT := 12;   // Zone C smoke detectors
+    // ─────────────────────────────────────
+    // WORKER MANAGEMENT
+    // ─────────────────────────────────────
+
+    c_nMAX_WORKERS          : INT := 200;       // maximum platform capacity
+    c_tEVAC_TARGET_TIME     : TIME := T#30M;    // target full evacuation time
+
+    // ─────────────────────────────────────
+    // ADS COMMUNICATION
+    // ─────────────────────────────────────
+
+    c_sAMS_NET_ID           : STRING := '10.138.213.191.1.1'; // local AMS NetID
+    c_nPORT_ZONE_A          : UINT := 851;      // Zone A runtime port
+    c_nPORT_ZONE_B          : UINT := 852;      // Zone B runtime port
+    c_nPORT_ZONE_C          : UINT := 853;      // Zone C runtime port
+    c_nPORT_CENTRAL         : UINT := 854;      // Central runtime port
+    c_tADS_TIMEOUT          : TIME := T#5S;     // ADS call timeout
+    c_tADS_WATCHDOG         : TIME := T#500MS;  // max ADS update gap
+
+    // ─────────────────────────────────────
+    // ZONE IDENTIFIERS
+    // ─────────────────────────────────────
+
+    c_sZONE_A_NAME          : STRING := 'Zone A - Drilling';
+    c_sZONE_B_NAME          : STRING := 'Zone B - Processing';
+    c_sZONE_C_NAME          : STRING := 'Zone C - Living Quarters';
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

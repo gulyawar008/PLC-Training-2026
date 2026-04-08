@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_H2SSensor" Id="{4ce63b8d-4437-4562-b255-95c2604cf694}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_H2SSensor EXTENDS FB_BaseSensor
+VAR
+    _bCriticalAlarm : BOOL := FALSE;    // immediate evacuation
+END_VAR
+VAR_OUTPUT
+    bCriticalAlarm  : BOOL := FALSE;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Handle fault simulation
+IF bSimFault THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// Accept raw value
+_rValue := rRawValue;
+
+// Call abstract validate — child implements this
+THIS^.Validate();
+]]></ST>
+    </Implementation>
+    <Method Name="Reset" Id="{391c5ecf-ac50-44de-b294-b365f5e13e0f}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Reset
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// call parent reset first
+_bAlarm         := FALSE;
+_bFault         := FALSE;
+_eStatus        := E_SensorStatus.SENSOR_OK;
+// reset H2S specific flag
+_bCriticalAlarm := FALSE;
+bCriticalAlarm  := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Validate" Id="{f6009bc8-098e-44ac-95e6-3ee6b1ee963c}">
+      <Declaration><![CDATA[METHOD  Validate 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Sensor range check
+IF _rValue < GVL_SafetyLimits.c_rH2S_SENSOR_MIN OR
+   _rValue > GVL_SafetyLimits.c_rH2S_SENSOR_MAX THEN
+    _bFault  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_FAULT;
+    RETURN;
+END_IF
+
+// H2S is immediately dangerous — any reading is taken seriously
+IF _rValue >= GVL_SafetyLimits.c_rH2S_CRITICAL_PPM THEN
+    _bCriticalAlarm := TRUE;
+    bCriticalAlarm  := TRUE;
+    _bAlarm         := TRUE;
+    _eStatus        := E_SensorStatus.SENSOR_ALARM;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rH2S_EMERGENCY_PPM THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_ALARM;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rH2S_WARNING_PPM THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_WARNING;
+
+ELSIF _rValue >= GVL_SafetyLimits.c_rH2S_ALERT_PPM THEN
+    _bAlarm  := TRUE;
+    _eStatus := E_SensorStatus.SENSOR_WARNING;
+
+ELSE
+    _bAlarm         := FALSE;
+    _bCriticalAlarm := FALSE;
+    bCriticalAlarm  := FALSE;
+    _eStatus        := E_SensorStatus.SENSOR_OK;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_H2SSensor">
+      <LineId Id="30" Count="11" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_H2SSensor.Reset">
+      <LineId Id="5" Count="5" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_H2SSensor.Validate">
+      <LineId Id="6" Count="32" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

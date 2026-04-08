@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <Itf Name="I_AlarmManager" Id="{e520ac3a-9e8e-4870-90ec-590559c3c100}">
+    <Declaration><![CDATA[INTERFACE I_AlarmManager
+]]></Declaration>
+    <Method Name="AcknowledgeAlarm" Id="{b3d76000-f9cb-4689-8f65-dba65dcf6edc}">
+      <Declaration><![CDATA[METHOD AcknowledgeAlarm : BOOL
+VAR_INPUT
+    nRecordId   : UDINT;
+    sOperator   : STRING;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ClearAlarm" Id="{01db593c-336c-402e-905f-9a9efdd00701}">
+      <Declaration><![CDATA[METHOD ClearAlarm : BOOL
+VAR_INPUT
+    nRecordId : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="GetActiveAlarmCount" Id="{009a0774-4251-420c-97b2-f33c6a3c2297}">
+      <Declaration><![CDATA[METHOD GetActiveAlarmCount : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetHighestAlarmLevel" Id="{51eb67b8-8268-414c-abcb-ed3078b96579}">
+      <Declaration><![CDATA[METHOD GetHighestAlarmLevel  : E_AlarmLevel
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="RaiseAlarm" Id="{fba0a1de-fc66-4689-8a49-2d6016a20876}">
+      <Declaration><![CDATA[METHOD RaiseAlarm : BOOL
+VAR_INPUT
+    eLevel      : E_AlarmLevel;
+    eZone       : E_ZoneId;
+    nSensorId   : INT;
+    rValue      : REAL;
+    sDesc       : STRING;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

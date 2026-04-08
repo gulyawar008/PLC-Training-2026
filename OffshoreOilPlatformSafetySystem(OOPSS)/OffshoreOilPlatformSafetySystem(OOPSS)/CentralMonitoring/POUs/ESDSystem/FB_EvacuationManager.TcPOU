@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_EvacuationManager" Id="{a97b129b-2935-4da9-bf81-114b98c74146}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EvacuationManager
+VAR
+    _stMuster       : ST_WorkerMuster;
+    _bActive        : BOOL := FALSE;
+END_VAR
+VAR_INPUT
+    nTotalWorkers   : INT := 0;     // HMI input
+    nMustered       : INT := 0;     // HMI input — updated manually
+    bActivate       : BOOL := FALSE;
+    bAllClear       : BOOL := FALSE;
+END_VAR
+VAR_OUTPUT
+    stMusterStatus  : ST_WorkerMuster;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// FB Body — complete with status messages
+
+// ─────────────────────────────────────
+// Activation
+// ─────────────────────────────────────
+IF bActivate AND NOT _bActive THEN
+    _bActive                      := TRUE;
+    _stMuster.bPASystemActive     := TRUE;
+    _stMuster.bEvacuationComplete := FALSE;
+    _stMuster.nUnaccounted        := nTotalWorkers;
+    _stMuster.sStatusMessage      := 'EVACUATION STARTED - All workers proceed to muster stations';
+END_IF
+
+// ─────────────────────────────────────
+// Active evacuation tracking
+// ─────────────────────────────────────
+IF _bActive THEN
+    _stMuster.nTotalOnPlatform := nTotalWorkers;
+    _stMuster.nAccountedFor    := nMustered;
+
+    // calculate unaccounted — never go below 0
+    IF nMustered >= nTotalWorkers THEN
+        _stMuster.nUnaccounted := 0;
+    ELSE
+        _stMuster.nUnaccounted := nTotalWorkers - nMustered;
+    END_IF
+
+    // ─────────────────────────────────
+    // Completion check
+    // either all mustered or bAllClear
+    // ─────────────────────────────────
+    IF bAllClear THEN
+        // authority confirmed all clear
+        _stMuster.bEvacuationComplete := TRUE;
+        _stMuster.bPASystemActive     := FALSE;
+        _stMuster.nUnaccounted        := 0;
+        _stMuster.sStatusMessage      := 'ALL CLEAR CONFIRMED - Evacuation complete by authority';
+
+    ELSIF _stMuster.nUnaccounted = 0 AND nTotalWorkers > 0 THEN
+        // all workers physically mustered
+        _stMuster.bEvacuationComplete := TRUE;
+        _stMuster.bPASystemActive     := FALSE;
+        _stMuster.sStatusMessage      := 'ALL WORKERS MUSTERED - Evacuation complete';
+
+    ELSIF _stMuster.nUnaccounted > 0 AND _stMuster.nUnaccounted <= 5 THEN
+        // close to complete — urgent message
+        _stMuster.bEvacuationComplete := FALSE;
+        _stMuster.bPASystemActive     := TRUE;
+        _stMuster.sStatusMessage      := CONCAT(
+            'URGENT - ',
+            CONCAT(INT_TO_STRING(_stMuster.nUnaccounted),
+            ' workers unaccounted - locate immediately'));
+
+    ELSIF _stMuster.nUnaccounted > 5 THEN
+        // still many unaccounted
+        _stMuster.bEvacuationComplete := FALSE;
+        _stMuster.bPASystemActive     := TRUE;
+        _stMuster.sStatusMessage      := CONCAT(
+            'EVACUATION IN PROGRESS - Unaccounted: ',
+            INT_TO_STRING(_stMuster.nUnaccounted));
+    END_IF
+
+// ─────────────────────────────────────
+// Not active — show standby message
+// ─────────────────────────────────────
+ELSE
+    _stMuster.bPASystemActive     := FALSE;
+    _stMuster.bEvacuationComplete := FALSE;
+    _stMuster.nUnaccounted        := 0;
+    _stMuster.nAccountedFor       := 0;
+    _stMuster.nTotalOnPlatform    := nTotalWorkers;
+    _stMuster.sStatusMessage      := 'STANDBY - No evacuation active';
+END_IF
+
+// ─────────────────────────────────────
+// Always update output
+// ─────────────────────────────────────
+stMusterStatus := _stMuster;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_EvacuationManager">
+      <LineId Id="66" Count="76" />
+      <LineId Id="62" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

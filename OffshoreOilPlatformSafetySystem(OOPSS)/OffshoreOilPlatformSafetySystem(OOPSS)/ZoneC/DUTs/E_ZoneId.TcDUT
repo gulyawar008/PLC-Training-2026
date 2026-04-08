@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="E_ZoneId" Id="{f5a02120-8696-4572-8e6e-4d5fcf97a5c7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ZoneId :
+(
+    ZONE_NONE       := 0,
+    ZONE_A_DRILLING := 1,
+    ZONE_B_PROCESS  := 2,
+    ZONE_C_LIVING   := 3
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
